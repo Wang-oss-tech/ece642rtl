@@ -23,9 +23,14 @@ void moveForward(QPointF& pos_, Direction dir) {
     }
 }
 
+// Declare or initialize the necessary variables
 bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
+    // Static variables to maintain state across function calls
+    static float w = TIMEOUT; // Timer, initialized to TIMEOUT
+    static float mod = true;  // Modification flag, initially true
+    static float cs = 0;      // Current state, initially 0
+
     ROS_INFO("Turtle update Called  w=%f", w);
-    mod = true;
 
     if(w == 0) {
         // Determine future positions based on current direction
