@@ -3,6 +3,9 @@
 // Enumeration for direction
 enum Direction { NORTH, EAST, SOUTH, WEST };
 
+// Define the TIMEOUT constant
+#define TIMEOUT 40
+
 // Helper function for turning right
 Direction turnRight(Direction dir) {
     return static_cast<Direction>((dir + 1) % 4);
@@ -43,8 +46,8 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
         else if (dir == WEST) futureY1 += 1;
 
         // Check if the turtle is bumped or at the end
-        bool bumped = bumped(futureX1, futureY1, futureX2, futureY2);
-        bool atEnd = atend(pos_.x(), pos_.y());
+        bool bumped = bumped(static_cast<int>(futureX1), static_cast<int>(futureY1), static_cast<int>(futureX2), static_cast<int>(futureY2));
+        bool atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
 
         // Right-hand rule logic
         if(cs == 2) {
