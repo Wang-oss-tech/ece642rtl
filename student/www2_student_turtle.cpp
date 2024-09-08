@@ -33,6 +33,9 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
     static float currentState = 0;
     bool modify = true;
 
+    // Declare atEnd at the beginning of the function
+    bool atEnd;
+
     ROS_INFO("Turtle update Called  timer=%f", timer);
 
     if (timer == 0) {
@@ -46,8 +49,10 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
         else if (dir == WEST) futureY1 += 1;
 
         // Check if the turtle is bumped or at the end
-        bool isBumped = bumped(futureX1, futureY1, futureX2, futureY2);
-        bool atEnd = atend(pos_.x(), pos_.y());
+        bool isBumped = bumped(static_cast<int)(futureX1), static_cast<int>(futureY1), static_cast<int)(futureX2), static_cast<int>(futureY2));
+
+        // Assign a value to atEnd
+        atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
 
         // Apply the right-hand rule logic
         if (currentState == 2) {
@@ -68,7 +73,10 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
         }
     }
 
+    // Now atEnd can be used here, outside the if statement where it was initially assigned
     if (atEnd) return false;
+
+    // Update the timer
     if (timer == 0) timer = TIMEOUT; else timer -= 1;
     if (timer == TIMEOUT) return true;
 
