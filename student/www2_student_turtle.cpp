@@ -2,9 +2,9 @@
  * Originally by Philip Koopman (koopman@cmu.edu)
  * and Milda Zizyte (milda@cmu.edu)
  *
- * STUDENT NAME:
- * ANDREW ID:
- * LAST UPDATE:
+ * STUDENT NAME: William Wang
+ * ANDREW ID: www2	
+ * LAST UPDATE: 9/8/2024
  *
  * This file is an algorithm to solve the ece642rtle maze
  * using the left-hand rule. The code is intentionaly left obfuscated.
@@ -30,7 +30,7 @@ float z, aend, mod, bp, q;
 bool studentMoveTurtle(QPointF& pos_, int& nw_or)
 {   ROS_INFO("Turtle update Called  w=%f", w);
 	mod = true;
-    if(w == 0) 
+    if(w == 0) // timer has completed its countdown, execute logic
 	{ fx1 = pos_.x(); fy1 = pos_.y();
       fx2 = pos_.x(); fy2 = pos_.y();
 	  if (nw_or < 2)
@@ -43,22 +43,45 @@ bool studentMoveTurtle(QPointF& pos_, int& nw_or)
 		}
 		bp = bumped(fx1,fy1,fx2,fy2);
 		aend = atend(pos_.x(), pos_.y());
-		if(nw_or == 0)
-		if(cs == 2)  { nw_or = 3;  cs = 1; }
-		else if (bp) { nw_or = 1;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 1)
-		if(cs == 2)  { nw_or = 0;  cs = 1; }
-		else if (bp) { nw_or = 2;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 2)
-		if(cs == 2)  { nw_or = 1;  cs = 1; }
-		else if (bp) { nw_or = 3;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 3)
-		if(cs == 2)  { nw_or = 2;  cs = 1; }
-		else if (bp) { nw_or = 0;  cs = 0; }
-		else cs = 2;
+
+		// Reversing logic for right hand rule
+		if(nw_or == 0) {
+            if(cs == 2)  { nw_or = 1;  cs = 1; }  // Turn right if possible
+            else if (bp) { nw_or = 3;  cs = 0; }  // Turn left if bumped
+            else cs = 2;
+        }
+        else if(nw_or == 1) {
+            if(cs == 2)  { nw_or = 2;  cs = 1; }  // Turn right if possible
+            else if (bp) { nw_or = 0;  cs = 0; }  // Turn left if bumped
+            else cs = 2;
+        }
+        else if(nw_or == 2) {
+            if(cs == 2)  { nw_or = 3;  cs = 1; }  // Turn right if possible
+            else if (bp) { nw_or = 1;  cs = 0; }  // Turn left if bumped
+            else cs = 2;
+        }
+        else if(nw_or == 3) {
+            if(cs == 2)  { nw_or = 0;  cs = 1; }  // Turn right if possible
+            else if (bp) { nw_or = 2;  cs = 0; }  // Turn left if bumped
+            else cs = 2;
+        }
+
+		// if(nw_or == 0)
+		// if(cs == 2)  { nw_or = 3;  cs = 1; }
+		// else if (bp) { nw_or = 1;  cs = 0; }
+		// else cs = 2;
+		// else if(nw_or == 1)
+		// if(cs == 2)  { nw_or = 0;  cs = 1; }
+		// else if (bp) { nw_or = 2;  cs = 0; }
+		// else cs = 2;
+		// else if(nw_or == 2)
+		// if(cs == 2)  { nw_or = 1;  cs = 1; }
+		// else if (bp) { nw_or = 3;  cs = 0; }
+		// else cs = 2;
+		// else if(nw_or == 3)
+		// if(cs == 2)  { nw_or = 2;  cs = 1; }
+		// else if (bp) { nw_or = 0;  cs = 0; }
+		// else cs = 2;
 	 ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
      z = cs == 2;
      mod = true;

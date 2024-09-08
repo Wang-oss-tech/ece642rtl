@@ -2,9 +2,9 @@
  * Originally by Philip Koopman (koopman@cmu.edu)
  * and Milda Zizyte (milda@cmu.edu)
  *
- * STUDENT NAME:
- * ANDREW ID:
- * LAST UPDATE:
+ * STUDENT NAME: William Wang 
+ * ANDREW ID: www2  
+ * LAST UPDATE: 9/8/2024
  *
  * This file keeps track of where the turtle is in the maze
  * and updates the location when the turtle is moved. It shall not
