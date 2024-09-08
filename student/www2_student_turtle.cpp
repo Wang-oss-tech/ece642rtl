@@ -1,100 +1,76 @@
-/* 
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
- *
- * STUDENT NAME: William Wang
- * ANDREW ID: www2	
- * LAST UPDATE: 9/8/2024
- *
- * This file is an algorithm to solve the ece642rtle maze
- * using the left-hand rule. The code is intentionaly left obfuscated.
- *
- */
-
 #include "student.h"
 
-// Ignore this line until project 5
-turtleMove studentTurtleStep(bool bumped) {return MOVE;}
+// Enumeration for direction
+enum Direction { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
 
-// OK TO MODIFY BELOW THIS LINE
+// Define the TIMEOUT constant
+#define TIMEOUT 40
 
-#define TIMEOUT 40    // bigger number slows down simulation so you can see what's happening
-float w, cs;
-float fx1, fy1, fx2, fy2;
-float z, aend, mod, bp, q;
-		 
-// this procedure takes the current turtle position and orientation and returns
-// true=submit changes, false=do not submit changes
-// Ground rule -- you are only allowed to call the helper functions "bumped(..)" and "atend(..)",
-// and NO other turtle methods or maze methods (no peeking at the maze!)
-bool studentMoveTurtle(QPointF& pos_, int& nw_or)
-{   ROS_INFO("Turtle update Called  w=%f", w);
-	mod = true;
-    if(w == 0) // timer has completed its countdown, execute logic
-	{ fx1 = pos_.x(); fy1 = pos_.y();
-      fx2 = pos_.x(); fy2 = pos_.y();
-	  if (nw_or < 2)
-		if (nw_or == 0) fy2+=1;
-		else            fx2+=1;
-		else
-		{ fx2+=1; fy2+=1; 
-		  if (nw_or == 2) fx1+=1;  
-		  else            fy1+=1; 
-		}
-		bp = bumped(fx1,fy1,fx2,fy2);
-		aend = atend(pos_.x(), pos_.y());
+// Function to turn the turtle right
+Direction turnRight(Direction dir) {
+    return static_cast<Direction>((dir + 1) % 4);
+}
 
-		// Reversing logic for right hand rule
-		if(nw_or == 0) {
-            if(cs == 2)  { nw_or = 1;  cs = 1; }  // Turn right if possible
-            else if (bp) { nw_or = 3;  cs = 0; }  // Turn left if bumped
-            else cs = 2;
-        }
-        else if(nw_or == 1) {
-            if(cs == 2)  { nw_or = 2;  cs = 1; }  // Turn right if possible
-            else if (bp) { nw_or = 0;  cs = 0; }  // Turn left if bumped
-            else cs = 2;
-        }
-        else if(nw_or == 2) {
-            if(cs == 2)  { nw_or = 3;  cs = 1; }  // Turn right if possible
-            else if (bp) { nw_or = 1;  cs = 0; }  // Turn left if bumped
-            else cs = 2;
-        }
-        else if(nw_or == 3) {
-            if(cs == 2)  { nw_or = 0;  cs = 1; }  // Turn right if possible
-            else if (bp) { nw_or = 2;  cs = 0; }  // Turn left if bumped
-            else cs = 2;
+// Function to turn the turtle left
+Direction turnLeft(Direction dir) {
+    return static_cast<Direction>((dir + 3) % 4);
+}
+
+// Function to move the turtle forward based on current direction
+void moveForward(QPointF& pos_, Direction dir) {
+    switch (dir) {
+        case NORTH: pos_.setY(pos_.y() + 1); break;
+        case EAST: pos_.setX(pos_.x() + 1); break;
+        case SOUTH: pos_.setY(pos_.y() - 1); break;
+        case WEST: pos_.setX(pos_.x() - 1); break;
+    }
+}
+
+// Function to determine if the turtle should move and update its state
+bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
+    // Static variables to maintain state across function calls
+    static float timer = TIMEOUT;
+    static float currentState = 0;
+    bool modify = true;
+
+    ROS_INFO("Turtle update Called  timer=%f", timer);
+
+    if (timer == 0) {
+        // Determine future positions based on current direction
+        float futureX1 = pos_.x(), futureY1 = pos_.y();
+        float futureX2 = pos_.x(), futureY2 = pos_.y();
+
+        if (dir == NORTH) futureY2 += 1;
+        else if (dir == EAST) futureX2 += 1;
+        else if (dir == SOUTH) futureX1 += 1;
+        else if (dir == WEST) futureY1 += 1;
+
+        // Check if the turtle is bumped or at the end
+        bool isBumped = bumped(futureX1, futureY1, futureX2, futureY2);
+        bool atEnd = atend(pos_.x(), pos_.y());
+
+        // Apply the right-hand rule logic
+        if (currentState == 2) {
+            dir = turnRight(dir);
+            currentState = 1;
+        } else if (isBumped) {
+            dir = turnLeft(dir);
+            currentState = 0;
+        } else {
+            currentState = 2;
         }
 
-		// if(nw_or == 0)
-		// if(cs == 2)  { nw_or = 3;  cs = 1; }
-		// else if (bp) { nw_or = 1;  cs = 0; }
-		// else cs = 2;
-		// else if(nw_or == 1)
-		// if(cs == 2)  { nw_or = 0;  cs = 1; }
-		// else if (bp) { nw_or = 2;  cs = 0; }
-		// else cs = 2;
-		// else if(nw_or == 2)
-		// if(cs == 2)  { nw_or = 1;  cs = 1; }
-		// else if (bp) { nw_or = 3;  cs = 0; }
-		// else cs = 2;
-		// else if(nw_or == 3)
-		// if(cs == 2)  { nw_or = 2;  cs = 1; }
-		// else if (bp) { nw_or = 0;  cs = 0; }
-		// else cs = 2;
-	 ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
-     z = cs == 2;
-     mod = true;
-	 if(z == true && aend == false) {
-     if (nw_or == 1) pos_.setY(pos_.y() - 1); 
-     if (nw_or == 2) pos_.setX(pos_.x() + 1);
-     if (nw_or == 3) pos_.setY(pos_.y() + 1);
-     if (nw_or == 0) pos_.setX(pos_.x() - 1);
-     z = false;
-     mod = true;
-    }}
-    if (aend) return false;
-    if (w==0) w  = TIMEOUT; else w -= 1;
-    if (w==TIMEOUT) return true;
- return false;
+        ROS_INFO("Orientation=%d  STATE=%f", dir, currentState);
+
+        // Move the turtle if conditions allow
+        if (currentState == 2 && !atEnd) {
+            moveForward(pos_, dir);
+        }
+    }
+
+    if (atEnd) return false;
+    if (timer == 0) timer = TIMEOUT; else timer -= 1;
+    if (timer == TIMEOUT) return true;
+
+    return false;
 }
