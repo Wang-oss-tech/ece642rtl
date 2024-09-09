@@ -153,6 +153,5 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
 
     // Submit the changes
     if (timer == TIMEOUT) return true;
-
     return false;
 }
