@@ -1,10 +1,10 @@
 #include "student.h"
 
 // Enumeration for direction
-enum Direction { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
+enum Direction { NORTH = 0, EAST, SOUTH, WEST };
 
 // Define the TIMEOUT constant
-#define TIMEOUT 40
+#define TIMEOUT 40  // Bigger number slows down simulation so you can see what's happening
 
 // Function to turn the turtle right
 Direction turnRight(Direction dir) {
@@ -31,35 +31,31 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
     // Static variables to maintain state across function calls
     static float timer = TIMEOUT;
     static float currentState = 0;
-    bool modify = true;
 
-    // Declare atEnd at the beginning of the function
-    bool atEnd;
+    ROS_INFO("Turtle update Called, timer=%f", timer);
 
-    ROS_INFO("Turtle update Called  timer=%f", timer);
-
-    if (timer == 0) {
+    if (timer == 0) {  // Timer has completed its countdown, execute logic
         // Determine future positions based on current direction
         float futureX1 = pos_.x(), futureY1 = pos_.y();
         float futureX2 = pos_.x(), futureY2 = pos_.y();
 
-        if (dir == NORTH) futureY2 += 1;
-        else if (dir == EAST) futureX2 += 1;
-        else if (dir == SOUTH) futureX1 += 1;
-        else if (dir == WEST) futureY1 += 1;
+        switch (dir) {
+            case NORTH: futureY2 += 1; break;
+            case EAST: futureX2 += 1; break;
+            case SOUTH: futureY1 += 1; break;
+            case WEST: futureX1 += 1; break;
+        }
 
         // Check if the turtle is bumped or at the end
         bool isBumped = bumped(static_cast<int>(futureX1), static_cast<int>(futureY1), static_cast<int>(futureX2), static_cast<int>(futureY2));
-
-        // Assign a value to atEnd
-        atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
+        bool atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
 
         // Apply the right-hand rule logic
         if (currentState == 2) {
-            dir = turnRight(dir);
+            dir = turnRight(dir); 
             currentState = 1;
         } else if (isBumped) {
-            dir = turnLeft(dir);
+            dir = turnLeft(dir); 
             currentState = 0;
         } else {
             currentState = 2;
@@ -73,10 +69,7 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
         }
     }
 
-    // Now atEnd can be used here, outside the if statement where it was initially assigned
     if (atEnd) return false;
-
-    // Update the timer
     if (timer == 0) timer = TIMEOUT; else timer -= 1;
     if (timer == TIMEOUT) return true;
 
