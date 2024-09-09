@@ -34,6 +34,8 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
 
     ROS_INFO("Turtle update Called, timer=%f", timer);
 
+	bool atEnd;
+
     if (timer == 0) {  // Timer has completed its countdown, execute logic
         // Determine future positions based on current direction
         float futureX1 = pos_.x(), futureY1 = pos_.y();
@@ -48,7 +50,7 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
 
         // Check if the turtle is bumped or at the end
         bool isBumped = bumped(static_cast<int>(futureX1), static_cast<int>(futureY1), static_cast<int>(futureX2), static_cast<int>(futureY2));
-        bool atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
+        atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
 
         // Apply the right-hand rule logic
         if (currentState == 2) {
