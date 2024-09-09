@@ -21,88 +21,88 @@ turtleMove studentTurtleStep(bool bumped) {
 
 #define TIMEOUT 40    // Bigger number slows down simulation so you can see what's happening
 
-float w, cs; // Timer and state
-float fx1, fy1, fx2, fy2; // Temporary positions for checking
-float z, aend, mod, bp, q; // Various variables used in logic
+float timer, currentState; // Timer and state
+float futureX1, futureY1, futureX2, futureY2; // Temporary positions for checking
+float shouldMove, atEnd, modifyFlag, bumpedFlag, tempVar; // Various variables used in logic
 
 // This procedure takes the current turtle position and orientation and returns
 // true = submit changes, false = do not submit changes
 // Ground rule: you are only allowed to call the helper functions "bumped(..)" and "atend(..)",
 // and NO other turtle methods or maze methods (no peeking at the maze!)
-bool studentMoveTurtle(QPointF& pos_, int& nw_or) {
-    ROS_INFO("Turtle update Called  w=%f", w);
+bool studentMoveTurtle(QPointF& position, int& orientation) {
+    ROS_INFO("Turtle update Called  timer=%f", timer);
 
-    mod = true;
+    modifyFlag = true;
 
     // Timer countdown logic
-    if (w == 0) { // Timer has completed its countdown, execute logic
-        fx1 = pos_.x();
-        fy1 = pos_.y();
-        fx2 = pos_.x();
-        fy2 = pos_.y();
+    if (timer == 0) { // Timer has completed its countdown, execute logic
+        futureX1 = position.x();
+        futureY1 = position.y();
+        futureX2 = position.x();
+        futureY2 = position.y();
 
         // Update future position based on current orientation
-        if (nw_or < 2) {
-            if (nw_or == 0) fy2 += 1;
-            else fx2 += 1;
+        if (orientation < 2) {
+            if (orientation == 0) futureY2 += 1;
+            else futureX2 += 1;
         } else {
-            fx2 += 1;
-            fy2 += 1;
-            if (nw_or == 2) fx1 += 1;
-            else fy1 += 1;
+            futureX2 += 1;
+            futureY2 += 1;
+            if (orientation == 2) futureX1 += 1;
+            else futureY1 += 1;
         }
 
         // Check if turtle is about to bump into a wall or has reached the end
-        bp = bumped(fx1, fy1, fx2, fy2);
-        aend = atend(pos_.x(), pos_.y());
+        bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
+        atEnd = atend(position.x(), position.y());
 
         // Reversing logic for right-hand rule
-        if (nw_or == 0) {
-            if (cs == 2) { nw_or = 1; cs = 1; } // Turn right if possible
-            else if (bp) { nw_or = 3; cs = 0; } // Turn left if bumped
-            else cs = 2;
-        } else if (nw_or == 1) {
-            if (cs == 2) { nw_or = 2; cs = 1; } // Turn right if possible
-            else if (bp) { nw_or = 0; cs = 0; } // Turn left if bumped
-            else cs = 2;
-        } else if (nw_or == 2) {
-            if (cs == 2) { nw_or = 3; cs = 1; } // Turn right if possible
-            else if (bp) { nw_or = 1; cs = 0; } // Turn left if bumped
-            else cs = 2;
-        } else if (nw_or == 3) {
-            if (cs == 2) { nw_or = 0; cs = 1; } // Turn right if possible
-            else if (bp) { nw_or = 2; cs = 0; } // Turn left if bumped
-            else cs = 2;
+        if (orientation == 0) {
+            if (currentState == 2) { orientation = 1; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = 3; currentState = 0; } // Turn left if bumped
+            else currentState = 2;
+        } else if (orientation == 1) {
+            if (currentState == 2) { orientation = 2; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = 0; currentState = 0; } // Turn left if bumped
+            else currentState = 2;
+        } else if (orientation == 2) {
+            if (currentState == 2) { orientation = 3; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = 1; currentState = 0; } // Turn left if bumped
+            else currentState = 2;
+        } else if (orientation == 3) {
+            if (currentState == 2) { orientation = 0; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = 2; currentState = 0; } // Turn left if bumped
+            else currentState = 2;
         }
 
-        ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
+        ROS_INFO("Orientation=%f  STATE=%f", orientation, currentState);
 
-        z = (cs == 2);
-        mod = true;
+        shouldMove = (currentState == 2);
+        modifyFlag = true;
 
         // Move the turtle in the direction of the current orientation
-        if (z == true && aend == false) {
-            if (nw_or == 1) pos_.setY(pos_.y() - 1);
-            if (nw_or == 2) pos_.setX(pos_.x() + 1);
-            if (nw_or == 3) pos_.setY(pos_.y() + 1);
-            if (nw_or == 0) pos_.setX(pos_.x() - 1);
-            z = false;
-            mod = true;
+        if (shouldMove && !atEnd) {
+            if (orientation == 1) position.setY(position.y() - 1);
+            if (orientation == 2) position.setX(position.x() + 1);
+            if (orientation == 3) position.setY(position.y() + 1);
+            if (orientation == 0) position.setX(position.x() - 1);
+            shouldMove = false;
+            modifyFlag = true;
         }
     }
 
     // Check if the turtle has reached the end of the maze
-    if (aend) return false;
+    if (atEnd) return false;
 
     // Update the timer
-    if (w == 0) {
-        w = TIMEOUT;
+    if (timer == 0) {
+        timer = TIMEOUT;
     } else {
-        w -= 1;
+        timer -= 1;
     }
 
     // Submit the changes
-    if (w == TIMEOUT) return true;
+    if (timer == TIMEOUT) return true;
 
     return false;
 }
