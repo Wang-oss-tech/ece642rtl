@@ -1,20 +1,4 @@
-/* 
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
- *
- * STUDENT NAME: William Wang
- * ANDREW ID: www2	
- * LAST UPDATE: 9/8/2024
- *
- * This file is an algorithm to solve the ece642rtle maze
- * using the left-hand rule. The code is intentionaly left obfuscated.
- *
- */
-
 #include "student.h"
-
-// Ignore this line until project 5
-turtleMove studentTurtleStep(bool bumped) {return MOVE;}
 
 // Enumeration for direction
 enum Direction { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
@@ -65,7 +49,7 @@ bool studentMoveTurtle(QPointF& pos_, Direction& dir) {
         else if (dir == WEST) futureY1 += 1;
 
         // Check if the turtle is bumped or at the end
-        bool isBumped = bumped(static_cast<int)(futureX1), static_cast<int>(futureY1), static_cast<int)(futureX2), static_cast<int>(futureY2));
+        bool isBumped = bumped(static_cast<int>(futureX1), static_cast<int>(futureY1), static_cast<int>(futureX2), static_cast<int>(futureY2));
 
         // Assign a value to atEnd
         atEnd = atend(static_cast<int>(pos_.x()), static_cast<int>(pos_.y()));
