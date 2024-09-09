@@ -25,6 +25,14 @@ float timer, currentState; // Timer and state
 float futureX1, futureY1, futureX2, futureY2; // Temporary positions for checking
 float shouldMove, atEnd, modifyFlag, bumpedFlag, tempVar; // Various variables used in logic
 
+// Enum to replace magic numbers for directions
+enum Direction {
+    NORTH = 0,
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3
+};
+
 // This procedure takes the current turtle position and orientation and returns
 // true = submit changes, false = do not submit changes
 // Ground rule: you are only allowed to call the helper functions "bumped(..)" and "atend(..)",
@@ -42,14 +50,18 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         futureY2 = position.y();
 
         // Update future position based on current orientation
-        if (orientation < 2) {
-            if (orientation == 0) futureY2 += 1;
-            else futureX2 += 1;
-        } else {
+        if (orientation == NORTH) {
+            futureY2 += 1;
+        } else if (orientation == EAST) {
+            futureX2 += 1;
+        } else if (orientation == SOUTH) {
             futureX2 += 1;
             futureY2 += 1;
-            if (orientation == 2) futureX1 += 1;
-            else futureY1 += 1;
+            futureX1 += 1;
+        } else if (orientation == WEST) {
+            futureX2 += 1;
+            futureY2 += 1;
+            futureY1 += 1;
         }
 
         // Check if turtle is about to bump into a wall or has reached the end
@@ -57,21 +69,21 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         atEnd = atend(position.x(), position.y());
 
         // Reversing logic for right-hand rule
-        if (orientation == 0) {
-            if (currentState == 2) { orientation = 1; currentState = 1; } // Turn right if possible
-            else if (bumpedFlag) { orientation = 3; currentState = 0; } // Turn left if bumped
+        if (orientation == NORTH) {
+            if (currentState == 2) { orientation = EAST; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = WEST; currentState = 0; } // Turn left if bumped
             else currentState = 2;
-        } else if (orientation == 1) {
-            if (currentState == 2) { orientation = 2; currentState = 1; } // Turn right if possible
-            else if (bumpedFlag) { orientation = 0; currentState = 0; } // Turn left if bumped
+        } else if (orientation == EAST) {
+            if (currentState == 2) { orientation = SOUTH; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = NORTH; currentState = 0; } // Turn left if bumped
             else currentState = 2;
-        } else if (orientation == 2) {
-            if (currentState == 2) { orientation = 3; currentState = 1; } // Turn right if possible
-            else if (bumpedFlag) { orientation = 1; currentState = 0; } // Turn left if bumped
+        } else if (orientation == SOUTH) {
+            if (currentState == 2) { orientation = WEST; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = EAST; currentState = 0; } // Turn left if bumped
             else currentState = 2;
-        } else if (orientation == 3) {
-            if (currentState == 2) { orientation = 0; currentState = 1; } // Turn right if possible
-            else if (bumpedFlag) { orientation = 2; currentState = 0; } // Turn left if bumped
+        } else if (orientation == WEST) {
+            if (currentState == 2) { orientation = NORTH; currentState = 1; } // Turn right if possible
+            else if (bumpedFlag) { orientation = SOUTH; currentState = 0; } // Turn left if bumped
             else currentState = 2;
         }
 
@@ -82,10 +94,10 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
 
         // Move the turtle in the direction of the current orientation
         if (shouldMove && !atEnd) {
-            if (orientation == 1) position.setY(position.y() - 1);
-            if (orientation == 2) position.setX(position.x() + 1);
-            if (orientation == 3) position.setY(position.y() + 1);
-            if (orientation == 0) position.setX(position.x() - 1);
+            if (orientation == EAST) position.setY(position.y() - 1);
+            if (orientation == SOUTH) position.setX(position.x() + 1);
+            if (orientation == WEST) position.setY(position.y() + 1);
+            if (orientation == NORTH) position.setX(position.x() - 1);
             shouldMove = false;
             modifyFlag = true;
         }
