@@ -20,6 +20,11 @@ turtleMove studentTurtleStep(bool bumped) {
 // Replacing #define with a constant variable
 const int TIMEOUT = 40;  // Timer value to slow down the simulation for better visibility
 
+// Typedefs for readability and future flexibility
+typedef int State;    // Typedef for state representation
+typedef int Position; // Typedef for position coordinates
+typedef bool Flag;    // Typedef for boolean flags
+
 // Enum to represent directions
 enum Direction {
     NORTH = 0,
@@ -40,12 +45,12 @@ enum Direction {
  *          It updates the orientation and state of the turtle to ensure it follows the right-hand rule in navigating the maze.
  * Inputs:  - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
  *          - `bumpedFlag`: A boolean indicating if the turtle has encountered an obstacle.
- *          - `currentState`: A float representing the turtle's current state.
+ *          - `currentState`: An integer representing the turtle's current state.
  * Outputs: - Updates the `orientation` variable to reflect the turtle's new direction.
  *          - Updates the `currentState` to control the turtle's movement logic.
  * Saved Internal: Updates the `currentState` to manage state transitions.
  */
-void checkDirection(int& orientation, bool bumpedFlag, float& currentState) {
+void checkDirection(int& orientation, Flag bumpedFlag, State& currentState) {
     switch (orientation) {
         case NORTH:
             if (currentState == 2) {
@@ -140,22 +145,24 @@ void updatePosition(QPointF& position, int orientation) {
  * Saved Internal: - Updates the local variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
  */
 bool studentMoveTurtle(QPointF& position, int& orientation) {
-    // Local variables
-    static float timer = TIMEOUT;        // Timer for managing movement
-    static float currentState = 0;       // Current state of the turtle's movement
-    float shouldMove = false;            // Flag to determine if turtle should move
-    bool atEnd = false;                  // Flag to check if turtle has reached the end
-    bool modifyFlag = true;              // Flag to check if movement needs modification
-    bool bumpedFlag = false;             // Flag to check if turtle bumped into something
+    // Define all variables at the start of the procedure
+    static int timer = TIMEOUT;        // Timer for managing movement
+    static State currentState = 0;     // Current state of the turtle's movement
+    Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
+    Flag shouldMove = false;            // Flag to determine if turtle should move
+    Flag atEnd = false;                 // Flag to check if turtle has reached the end
+    Flag modifyFlag = true;             // Flag to check if movement needs modification
+    Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
 
-    ROS_INFO("Turtle update called - timer=%f", timer);
+    ROS_INFO("Turtle update called - timer=%d", timer);
 
     // Timer countdown logic
     if (timer == 0) { // Timer has completed its countdown, execute logic
-        float futureX1 = position.x();
-        float futureY1 = position.y();
-        float futureX2 = position.x();
-        float futureY2 = position.y();
+        // Initialize future positions
+        futureX1 = position.x();
+        futureY1 = position.y();
+        futureX2 = position.x();
+        futureY2 = position.y();
 
         // Determine the future position based on the current orientation
         switch (orientation) {
@@ -184,7 +191,7 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         // Check direction and update orientation
         checkDirection(orientation, bumpedFlag, currentState);
 
-        ROS_INFO("Orientation=%d  STATE=%f", orientation, currentState);
+        ROS_INFO("Orientation=%d  STATE=%d", orientation, currentState);
 
         shouldMove = (currentState == 2);
         modifyFlag = true;
