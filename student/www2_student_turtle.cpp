@@ -17,11 +17,8 @@ turtleMove studentTurtleStep(bool bumped) {
     return MOVE;
 }
 
-#define TIMEOUT 40  // Timer value to slow down the simulation for better visibility
-
-// Global variables
-float timer, currentState;                      // Timer and state variables
-float shouldMove, atEnd, modifyFlag, bumpedFlag; // Flags used in logic control
+// Replacing #define with a constant variable
+const int TIMEOUT = 40;  // Timer value to slow down the simulation for better visibility
 
 // Enum to represent directions
 enum Direction {
@@ -36,17 +33,19 @@ enum Direction {
  * 
  * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
  * @param bumpedFlag  Indicates if the turtle has bumped into an obstacle.
+ * @param currentState The current state of the turtle's movement.
  * 
  * @details
  * Purpose: This function determines the turtle's next move based on its current orientation and whether it has bumped into an obstacle. 
  *          It updates the orientation and state of the turtle to ensure it follows the right-hand rule in navigating the maze.
  * Inputs:  - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
  *          - `bumpedFlag`: A boolean indicating if the turtle has encountered an obstacle.
+ *          - `currentState`: A float representing the turtle's current state.
  * Outputs: - Updates the `orientation` variable to reflect the turtle's new direction.
  *          - Updates the `currentState` to control the turtle's movement logic.
- * Saved Internal: Updates the global variable `currentState` to manage state transitions.
+ * Saved Internal: Updates the `currentState` to manage state transitions.
  */
-void checkDirection(int& orientation, bool bumpedFlag) {
+void checkDirection(int& orientation, bool bumpedFlag, float& currentState) {
     switch (orientation) {
         case NORTH:
             if (currentState == 2) {
@@ -138,12 +137,18 @@ void updatePosition(QPointF& position, int orientation) {
  * Inputs:  - `position`: A QPointF object representing the current position of the turtle on the grid.
  *          - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
  * Outputs: - Returns `true` if the turtle's movement should be submitted (timer has reset), or `false` if it should not.
- * Saved Internal: - Updates the global variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
+ * Saved Internal: - Updates the local variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
  */
 bool studentMoveTurtle(QPointF& position, int& orientation) {
-    ROS_INFO("Turtle update called - timer=%f", timer);
+    // Local variables
+    static float timer = TIMEOUT;        // Timer for managing movement
+    static float currentState = 0;       // Current state of the turtle's movement
+    float shouldMove = false;            // Flag to determine if turtle should move
+    bool atEnd = false;                  // Flag to check if turtle has reached the end
+    bool modifyFlag = true;              // Flag to check if movement needs modification
+    bool bumpedFlag = false;             // Flag to check if turtle bumped into something
 
-    modifyFlag = true;
+    ROS_INFO("Turtle update called - timer=%f", timer);
 
     // Timer countdown logic
     if (timer == 0) { // Timer has completed its countdown, execute logic
@@ -177,7 +182,7 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         atEnd = atend(position.x(), position.y());
 
         // Check direction and update orientation
-        checkDirection(orientation, bumpedFlag);
+        checkDirection(orientation, bumpedFlag, currentState);
 
         ROS_INFO("Orientation=%d  STATE=%f", orientation, currentState);
 
