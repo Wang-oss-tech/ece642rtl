@@ -11,6 +11,7 @@
  */
 
 #include "student.h"
+#include <stdint.h>  // Include stdint.h for fixed-width integer types
 
 // Ignoring this line until project 5
 turtleMove studentTurtleStep(bool bumped) {
@@ -18,21 +19,21 @@ turtleMove studentTurtleStep(bool bumped) {
 }
 
 // Constants for various states and timeout values
-const int TIMEOUT = 40;            // Timer value to slow down the simulation for better visibility
-const int TIMER_EXPIRED = 0;       // Timer value indicating that the countdown has completed
-const int STATE_MOVE_FORWARD = 2;
-const int STATE_TURN_LEFT = 0;
-const int STATE_TURN_RIGHT = 1;
+const int32_t TIMEOUT = 40;            // Timer value to slow down the simulation for better visibility
+const int32_t TIMER_EXPIRED = 0;       // Timer value indicating that the countdown has completed
+const int32_t STATE_MOVE_FORWARD = 2;
+const int32_t STATE_TURN_LEFT = 0;
+const int32_t STATE_TURN_RIGHT = 1;
 
 // Typedefs for readability and future flexibility
-typedef int State;    // Typedef for state representation
-typedef int Position; // Typedef for position coordinates
-typedef bool Flag;    // Typedef for boolean flags
+typedef int32_t State;    // Typedef for state representation
+typedef int32_t Position; // Typedef for position coordinates
+typedef bool Flag;        // Typedef for boolean flags
 
 // Constants for movement increments
-const int MOVE_INCREMENT = 1;
-const int MOVE_DECREMENT = -1;
-const int NO_MOVE = 0;
+const int32_t MOVE_INCREMENT = 1;
+const int32_t MOVE_DECREMENT = -1;
+const int32_t NO_MOVE = 0;
 
 // Enum to represent directions
 enum Direction {
@@ -59,7 +60,7 @@ enum Direction {
  *          - Updates the `currentState` to control the turtle's movement logic.
  * Saved Internal: Updates the `currentState` to manage state transitions.
  */
-void checkDirection(int& orientation, Flag bumpedFlag, State& currentState) {
+void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) {
     switch (orientation) {
         case NORTH:
             if (currentState == STATE_MOVE_FORWARD) {
@@ -121,7 +122,7 @@ void checkDirection(int& orientation, Flag bumpedFlag, State& currentState) {
  * Outputs: - Modifies the `position` variable to reflect the turtle's new location on the grid.
  * Saved Internal: None.
  */
-void updatePosition(QPointF& position, int orientation) {
+void updatePosition(QPointF& position, int32_t orientation) {
     switch (orientation) {
         case EAST:
             position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
@@ -153,9 +154,9 @@ void updatePosition(QPointF& position, int orientation) {
  * Outputs: - Returns `true` if the turtle's movement should be submitted (timer has reset), or `false` if it should not.
  * Saved Internal: - Updates the local variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
  */
-bool studentMoveTurtle(QPointF& position, int& orientation) {
+bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     // Define all variables at the start of the procedure
-    static int timer = TIMEOUT;        // Timer for managing movement
+    static int32_t timer = TIMEOUT;        // Timer for managing movement
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
     Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
     Flag shouldMove = false;            // Flag to determine if turtle should move
