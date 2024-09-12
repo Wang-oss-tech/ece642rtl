@@ -28,14 +28,9 @@ const int32_t MOVE_INCREMENT = 1;
 const int32_t MOVE_DECREMENT = -1;
 
 // Typedefs for readability and future flexibility
-typedef int32_t State;    // Typedef for state representation
-typedef bool Flag;        // Typedef for boolean flags
-
-// Struct to represent a geometric pair (X, Y)
-typedef struct {
-    int32_t x;
-    int32_t y;
-} Position;
+typedef int32_t State;       // Typedef for state representation
+typedef bool Flag;           // Typedef for boolean flags
+typedef float PositionCoord; // Typedef for position coordinates
 
 // Enum to represent directions
 enum Direction {
@@ -117,29 +112,29 @@ void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) 
 /**
  * @brief Updates the position of the turtle based on its current orientation.
  * 
- * @param position    Current position of the turtle as a Position struct.
+ * @param position    Current position of the turtle as a QPointF object.
  * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
  * 
  * @details
  * Purpose: This function updates the turtle's position on the grid based on its current orientation. The position is adjusted to simulate movement in the specified direction.
- * Inputs:  - `position`: A Position struct representing the current position of the turtle on the grid.
+ * Inputs:  - `position`: A QPointF object representing the current position of the turtle on the grid.
  *          - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
  * Outputs: - Modifies the `position` variable to reflect the turtle's new location on the grid.
  * Saved Internal: None.
  */
-void updatePosition(Position& position, int32_t orientation) {
+void updatePosition(QPointF& position, int32_t orientation) {
     switch (orientation) {
         case EAST:
-            position.y += MOVE_DECREMENT; // Move East (right)
+            position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
             break;
         case SOUTH:
-            position.x += MOVE_INCREMENT; // Move South (down)
+            position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
             break;
         case WEST:
-            position.y += MOVE_INCREMENT; // Move West (left)
+            position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
             break;
         case NORTH:
-            position.x += MOVE_DECREMENT; // Move North (up)
+            position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
             break;
         default:
             ROS_ERROR("Invalid orientation value: %d", orientation);
@@ -150,23 +145,23 @@ void updatePosition(Position& position, int32_t orientation) {
 /**
  * @brief Determines whether the turtle should move and updates its position accordingly.
  * 
- * @param position    Current position of the turtle as a Position struct.
+ * @param position    Current position of the turtle as a QPointF object.
  * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
  * @return true if changes should be submitted, false otherwise.
  * 
  * @details
  * Purpose: This function controls the turtle's movement within the maze, determining if it should move based on the current timer, its orientation, and whether it has reached the end of the maze.
  *          It manages the movement logic by updating the position and orientation of the turtle while considering potential obstacles.
- * Inputs:  - `position`: A Position struct representing the current position of the turtle on the grid.
+ * Inputs:  - `position`: A QPointF object representing the current position of the turtle on the grid.
  *          - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
  * Outputs: - Returns `true` if the turtle's movement should be submitted (timer has reset), or `false` if it should not.
  * Saved Internal: - Updates the local variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
  */
-bool studentMoveTurtle(Position& position, int32_t& orientation) {
+bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     // Define all variables at the start of the procedure
     static int32_t timer = TIMEOUT;        // Timer for managing movement
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
-    Position futurePos1 = position, futurePos2 = position; // Future positions based on orientation
+    PositionCoord futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
     Flag shouldMove = false;            // Flag to determine if turtle should move
     Flag atEnd = false;                 // Flag to check if turtle has reached the end
     Flag modifyFlag = true;             // Flag to check if movement needs modification
@@ -176,23 +171,29 @@ bool studentMoveTurtle(Position& position, int32_t& orientation) {
 
     // Timer countdown logic
     if (timer == TIMER_EXPIRED) { // Timer has completed its countdown, execute logic
+        // Initialize future positions
+        futureX1 = position.x();
+        futureY1 = position.y();
+        futureX2 = position.x();
+        futureY2 = position.y();
+
         // Determine the future position based on the current orientation
         switch (orientation) {
             case NORTH:
-                futurePos2.y += MOVE_INCREMENT; // Moving North increases Y
+                futureY2 += MOVE_INCREMENT; // Moving North increases Y
                 break;
             case EAST:
-                futurePos2.x += MOVE_INCREMENT; // Moving East increases X
+                futureX2 += MOVE_INCREMENT; // Moving East increases X
                 break;
             case SOUTH:
-                futurePos2.x += MOVE_INCREMENT; // Moving South increases X
-                futurePos2.y += MOVE_INCREMENT; // Moving South increases Y (diagonal)
-                futurePos1.x += MOVE_INCREMENT;
+                futureX2 += MOVE_INCREMENT; // Moving South increases X
+                futureY2 += MOVE_INCREMENT; // Moving South increases Y (diagonal)
+                futureX1 += MOVE_INCREMENT;
                 break;
             case WEST:
-                futurePos2.x += MOVE_INCREMENT; // Moving West increases X
-                futurePos2.y += MOVE_INCREMENT; // Moving West increases Y (diagonal)
-                futurePos1.y += MOVE_INCREMENT;
+                futureX2 += MOVE_INCREMENT; // Moving West increases X
+                futureY2 += MOVE_INCREMENT; // Moving West increases Y (diagonal)
+                futureY1 += MOVE_INCREMENT;
                 break;
             default:
                 ROS_ERROR("Invalid orientation value: %d", orientation);
@@ -200,8 +201,8 @@ bool studentMoveTurtle(Position& position, int32_t& orientation) {
         }
 
         // Check if the turtle is about to bump into a wall or has reached the end
-        bumpedFlag = bumped(futurePos1.x, futurePos1.y, futurePos2.x, futurePos2.y);
-        atEnd = atend(position.x, position.y);
+        bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
+        atEnd = atend(position.x(), position.y());
 
         // Check direction and update orientation
         checkDirection(orientation, bumpedFlag, currentState);
