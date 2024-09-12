@@ -20,9 +20,9 @@ turtleMove studentTurtleStep(bool bumped) {
 // Constants for various states and timeout values
 const int TIMEOUT = 40;            // Timer value to slow down the simulation for better visibility
 const int TIMER_EXPIRED = 0;       // Timer value indicating that the countdown has completed
-const State STATE_MOVE_FORWARD = 2;
-const State STATE_TURN_LEFT = 0;
-const State STATE_TURN_RIGHT = 1;
+const int STATE_MOVE_FORWARD = 2;
+const int STATE_TURN_LEFT = 0;
+const int STATE_TURN_RIGHT = 1;
 
 // Typedefs for readability and future flexibility
 typedef int State;    // Typedef for state representation
