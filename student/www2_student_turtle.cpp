@@ -17,21 +17,13 @@ turtleMove studentTurtleStep(bool bumped) {
     return MOVE;
 }
 
-// Constants for various states and timeout values
-const int TIMEOUT = 40;            // Timer value to slow down the simulation for better visibility
-const State STATE_MOVE_FORWARD = 2;
-const State STATE_TURN_LEFT = 0;
-const State STATE_TURN_RIGHT = 1;
+// Replacing #define with a constant variable
+const int TIMEOUT = 40;  // Timer value to slow down the simulation for better visibility
 
 // Typedefs for readability and future flexibility
 typedef int State;    // Typedef for state representation
 typedef int Position; // Typedef for position coordinates
 typedef bool Flag;    // Typedef for boolean flags
-
-// Constants for movement increments
-const int MOVE_FORWARD = 1;
-const int MOVE_BACKWARD = -1;
-const int NO_MOVE = 0;
 
 // Enum to represent directions
 enum Direction {
@@ -61,47 +53,47 @@ enum Direction {
 void checkDirection(int& orientation, Flag bumpedFlag, State& currentState) {
     switch (orientation) {
         case NORTH:
-            if (currentState == STATE_MOVE_FORWARD) {
+            if (currentState == 2) {
                 orientation = EAST;  // Turn right to face East
-                currentState = STATE_TURN_RIGHT;
+                currentState = 1;
             } else if (bumpedFlag) {
                 orientation = WEST;  // Turn left to face West if bumped
-                currentState = STATE_TURN_LEFT;
+                currentState = 0;
             } else {
-                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+                currentState = 2;    // Move forward if no bump
             }
             break;
         case EAST:
-            if (currentState == STATE_MOVE_FORWARD) {
+            if (currentState == 2) {
                 orientation = SOUTH; // Turn right to face South
-                currentState = STATE_TURN_RIGHT;
+                currentState = 1;
             } else if (bumpedFlag) {
                 orientation = NORTH; // Turn left to face North if bumped
-                currentState = STATE_TURN_LEFT;
+                currentState = 0;
             } else {
-                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+                currentState = 2;    // Move forward if no bump
             }
             break;
         case SOUTH:
-            if (currentState == STATE_MOVE_FORWARD) {
+            if (currentState == 2) {
                 orientation = WEST;  // Turn right to face West
-                currentState = STATE_TURN_RIGHT;
+                currentState = 1;
             } else if (bumpedFlag) {
                 orientation = EAST;  // Turn left to face East if bumped
-                currentState = STATE_TURN_LEFT;
+                currentState = 0;
             } else {
-                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+                currentState = 2;    // Move forward if no bump
             }
             break;
         case WEST:
-            if (currentState == STATE_MOVE_FORWARD) {
+            if (currentState == 2) {
                 orientation = NORTH; // Turn right to face North
-                currentState = STATE_TURN_RIGHT;
+                currentState = 1;
             } else if (bumpedFlag) {
                 orientation = SOUTH; // Turn left to face South if bumped
-                currentState = STATE_TURN_LEFT;
+                currentState = 0;
             } else {
-                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+                currentState = 2;    // Move forward if no bump
             }
             break;
     }
@@ -123,16 +115,16 @@ void checkDirection(int& orientation, Flag bumpedFlag, State& currentState) {
 void updatePosition(QPointF& position, int orientation) {
     switch (orientation) {
         case EAST:
-            position.setY(position.y() + MOVE_BACKWARD); // Move East (right)
+            position.setY(position.y() - 1); // Move East (right)
             break;
         case SOUTH:
-            position.setX(position.x() + MOVE_FORWARD); // Move South (down)
+            position.setX(position.x() + 1); // Move South (down)
             break;
         case WEST:
-            position.setY(position.y() + MOVE_FORWARD); // Move West (left)
+            position.setY(position.y() + 1); // Move West (left)
             break;
         case NORTH:
-            position.setX(position.x() + MOVE_BACKWARD); // Move North (up)
+            position.setX(position.x() - 1); // Move North (up)
             break;
     }
 }
@@ -155,7 +147,7 @@ void updatePosition(QPointF& position, int orientation) {
 bool studentMoveTurtle(QPointF& position, int& orientation) {
     // Define all variables at the start of the procedure
     static int timer = TIMEOUT;        // Timer for managing movement
-    static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
+    static State currentState = 0;     // Current state of the turtle's movement
     Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
     Flag shouldMove = false;            // Flag to determine if turtle should move
     Flag atEnd = false;                 // Flag to check if turtle has reached the end
@@ -175,20 +167,20 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         // Determine the future position based on the current orientation
         switch (orientation) {
             case NORTH:
-                futureY2 += MOVE_FORWARD; // Moving North increases Y
+                futureY2 += 1; // Moving North increases Y
                 break;
             case EAST:
-                futureX2 += MOVE_FORWARD; // Moving East increases X
+                futureX2 += 1; // Moving East increases X
                 break;
             case SOUTH:
-                futureX2 += MOVE_FORWARD; // Moving South increases X
-                futureY2 += MOVE_FORWARD; // Moving South increases Y (diagonal)
-                futureX1 += MOVE_FORWARD;
+                futureX2 += 1; // Moving South increases X
+                futureY2 += 1; // Moving South increases Y (diagonal)
+                futureX1 += 1;
                 break;
             case WEST:
-                futureX2 += MOVE_FORWARD; // Moving West increases X
-                futureY2 += MOVE_FORWARD; // Moving West increases Y (diagonal)
-                futureY1 += MOVE_FORWARD;
+                futureX2 += 1; // Moving West increases X
+                futureY2 += 1; // Moving West increases Y (diagonal)
+                futureY1 += 1;
                 break;
         }
 
@@ -201,7 +193,7 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
 
         ROS_INFO("Orientation=%d  STATE=%d", orientation, currentState);
 
-        shouldMove = (currentState == STATE_MOVE_FORWARD);
+        shouldMove = (currentState == 2);
         modifyFlag = true;
 
         // Move the turtle if allowed and not at the end
@@ -213,9 +205,7 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
     }
 
     // Check if the turtle has reached the end of the maze
-    if (atEnd) {
-        return false;
-    }
+    if (atEnd) return false;
 
     // Update the timer
     timer = (timer == 0) ? TIMEOUT : timer - 1;
