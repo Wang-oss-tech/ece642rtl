@@ -111,6 +111,9 @@ void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) 
                 currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
             }
             break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
     }
 }
 
@@ -140,6 +143,9 @@ void updatePosition(Position& position, int32_t orientation) {
             break;
         case NORTH:
             position.x += MOVE_DECREMENT; // Move North (up)
+            break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
             break;
     }
 }
@@ -190,6 +196,9 @@ bool studentMoveTurtle(Position& position, int32_t& orientation) {
                 futurePos2.x += MOVE_INCREMENT; // Moving West increases X
                 futurePos2.y += MOVE_INCREMENT; // Moving West increases Y (diagonal)
                 futurePos1.y += MOVE_INCREMENT;
+                break;
+            default:
+                ROS_ERROR("Invalid orientation value: %d", orientation);
                 break;
         }
 
