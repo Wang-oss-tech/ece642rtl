@@ -7,24 +7,23 @@
  * LAST UPDATE: 9/8/2024
  *
  * This file is an algorithm to solve the ece642rtle maze
- * using the left-hand rule. The code is intentionally left obfuscated.
+ * using the right-hand rule.
  */
 
 #include "student.h"
 
-// Ignore this line until project 5
+// Ignoring this line until project 5
 turtleMove studentTurtleStep(bool bumped) {
     return MOVE;
 }
 
-// OK TO MODIFY BELOW THIS LINE
+#define TIMEOUT 40  // Timer value to slow down the simulation for better visibility
 
-#define TIMEOUT 40    // Bigger number slows down simulation so you can see what's happening
+// Global variables
+float timer, currentState;                      // Timer and state variables
+float shouldMove, atEnd, modifyFlag, bumpedFlag; // Flags used in logic control
 
-float timer, currentState; // Timer and state
-float shouldMove, atEnd, modifyFlag, bumpedFlag; // Various variables used in logic
-
-// Enum to replace magic numbers for directions
+// Enum to represent directions
 enum Direction {
     NORTH = 0,
     EAST = 1,
@@ -32,70 +31,117 @@ enum Direction {
     WEST = 3
 };
 
-// Function to check the direction and decide on the new orientation and state
+/**
+ * @brief Checks the turtle's direction and updates its orientation and state.
+ * 
+ * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
+ * @param bumpedFlag  Indicates if the turtle has bumped into an obstacle.
+ * 
+ * @details
+ * Purpose: This function determines the turtle's next move based on its current orientation and whether it has bumped into an obstacle. 
+ *          It updates the orientation and state of the turtle to ensure it follows the right-hand rule in navigating the maze.
+ * Inputs:  - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
+ *          - `bumpedFlag`: A boolean indicating if the turtle has encountered an obstacle.
+ * Outputs: - Updates the `orientation` variable to reflect the turtle's new direction.
+ *          - Updates the `currentState` to control the turtle's movement logic.
+ * Saved Internal: Updates the global variable `currentState` to manage state transitions.
+ */
 void checkDirection(int& orientation, bool bumpedFlag) {
-    if (orientation == NORTH) {
-        if (currentState == 2) {
-            orientation = EAST;  // Turn right to face East if possible
-            currentState = 1;
-        } else if (bumpedFlag) {
-            orientation = WEST;  // Turn left to face West if bumped
-            currentState = 0;
-        } else {
-            currentState = 2;    // Move forward if no bump
-        }
-    } else if (orientation == EAST) {
-        if (currentState == 2) {
-            orientation = SOUTH;  // Turn right to face South if possible
-            currentState = 1;
-        } else if (bumpedFlag) {
-            orientation = NORTH;  // Turn left to face North if bumped
-            currentState = 0;
-        } else {
-            currentState = 2;    // Move forward if no bump
-        }
-    } else if (orientation == SOUTH) {
-        if (currentState == 2) {
-            orientation = WEST;  // Turn right to face West if possible
-            currentState = 1;
-        } else if (bumpedFlag) {
-            orientation = EAST;  // Turn left to face East if bumped
-            currentState = 0;
-        } else {
-            currentState = 2;    // Move forward if no bump
-        }
-    } else if (orientation == WEST) {
-        if (currentState == 2) {
-            orientation = NORTH;  // Turn right to face North if possible
-            currentState = 1;
-        } else if (bumpedFlag) {
-            orientation = SOUTH;  // Turn left to face South if bumped
-            currentState = 0;
-        } else {
-            currentState = 2;    // Move forward if no bump
-        }
+    switch (orientation) {
+        case NORTH:
+            if (currentState == 2) {
+                orientation = EAST;  // Turn right to face East
+                currentState = 1;
+            } else if (bumpedFlag) {
+                orientation = WEST;  // Turn left to face West if bumped
+                currentState = 0;
+            } else {
+                currentState = 2;    // Move forward if no bump
+            }
+            break;
+        case EAST:
+            if (currentState == 2) {
+                orientation = SOUTH; // Turn right to face South
+                currentState = 1;
+            } else if (bumpedFlag) {
+                orientation = NORTH; // Turn left to face North if bumped
+                currentState = 0;
+            } else {
+                currentState = 2;    // Move forward if no bump
+            }
+            break;
+        case SOUTH:
+            if (currentState == 2) {
+                orientation = WEST;  // Turn right to face West
+                currentState = 1;
+            } else if (bumpedFlag) {
+                orientation = EAST;  // Turn left to face East if bumped
+                currentState = 0;
+            } else {
+                currentState = 2;    // Move forward if no bump
+            }
+            break;
+        case WEST:
+            if (currentState == 2) {
+                orientation = NORTH; // Turn right to face North
+                currentState = 1;
+            } else if (bumpedFlag) {
+                orientation = SOUTH; // Turn left to face South if bumped
+                currentState = 0;
+            } else {
+                currentState = 2;    // Move forward if no bump
+            }
+            break;
     }
 }
 
-// Function to update the position of the turtle based on the current orientation
+/**
+ * @brief Updates the position of the turtle based on its current orientation.
+ * 
+ * @param position    Current position of the turtle as a QPointF object.
+ * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
+ * 
+ * @details
+ * Purpose: This function updates the turtle's position on the grid based on its current orientation. The position is adjusted to simulate movement in the specified direction.
+ * Inputs:  - `position`: A QPointF object representing the current position of the turtle on the grid.
+ *          - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
+ * Outputs: - Modifies the `position` variable to reflect the turtle's new location on the grid.
+ * Saved Internal: None.
+ */
 void updatePosition(QPointF& position, int orientation) {
-    if (orientation == EAST) {
-        position.setY(position.y() - 1); // Move East (right)
-    } else if (orientation == SOUTH) {
-        position.setX(position.x() + 1); // Move South (down)
-    } else if (orientation == WEST) {
-        position.setY(position.y() + 1); // Move West (left)
-    } else if (orientation == NORTH) {
-        position.setX(position.x() - 1); // Move North (up)
+    switch (orientation) {
+        case EAST:
+            position.setY(position.y() - 1); // Move East (right)
+            break;
+        case SOUTH:
+            position.setX(position.x() + 1); // Move South (down)
+            break;
+        case WEST:
+            position.setY(position.y() + 1); // Move West (left)
+            break;
+        case NORTH:
+            position.setX(position.x() - 1); // Move North (up)
+            break;
     }
 }
 
-// This procedure takes the current turtle position and orientation and returns
-// true = submit changes, false = do not submit changes
-// Ground rule: you are only allowed to call the helper functions "bumped(..)" and "atend(..)",
-// and NO other turtle methods or maze methods (no peeking at the maze!)
+/**
+ * @brief Determines whether the turtle should move and updates its position accordingly.
+ * 
+ * @param position    Current position of the turtle as a QPointF object.
+ * @param orientation Current orientation of the turtle (NORTH, EAST, SOUTH, WEST).
+ * @return true if changes should be submitted, false otherwise.
+ * 
+ * @details
+ * Purpose: This function controls the turtle's movement within the maze, determining if it should move based on the current timer, its orientation, and whether it has reached the end of the maze.
+ *          It manages the movement logic by updating the position and orientation of the turtle while considering potential obstacles.
+ * Inputs:  - `position`: A QPointF object representing the current position of the turtle on the grid.
+ *          - `orientation`: An integer representing the turtle's current orientation (NORTH, EAST, SOUTH, WEST).
+ * Outputs: - Returns `true` if the turtle's movement should be submitted (timer has reset), or `false` if it should not.
+ * Saved Internal: - Updates the global variables `timer`, `currentState`, `shouldMove`, `atEnd`, `modifyFlag`, and `bumpedFlag` to manage the turtle's state and logic flow.
+ */
 bool studentMoveTurtle(QPointF& position, int& orientation) {
-    ROS_INFO("Turtle update Called  timer=%f", timer);
+    ROS_INFO("Turtle update called - timer=%f", timer);
 
     modifyFlag = true;
 
@@ -107,33 +153,38 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
         float futureY2 = position.y();
 
         // Determine the future position based on the current orientation
-        if (orientation == NORTH) {
-            futureY2 += 1; // Moving North increases Y
-        } else if (orientation == EAST) {
-            futureX2 += 1; // Moving East increases X
-        } else if (orientation == SOUTH) {
-            futureX2 += 1; // Moving South increases X and Y (diagonal)
-            futureY2 += 1;
-            futureX1 += 1;
-        } else if (orientation == WEST) {
-            futureX2 += 1; // Moving West increases X and Y (diagonal)
-            futureY2 += 1;
-            futureY1 += 1;
+        switch (orientation) {
+            case NORTH:
+                futureY2 += 1; // Moving North increases Y
+                break;
+            case EAST:
+                futureX2 += 1; // Moving East increases X
+                break;
+            case SOUTH:
+                futureX2 += 1; // Moving South increases X
+                futureY2 += 1; // Moving South increases Y (diagonal)
+                futureX1 += 1;
+                break;
+            case WEST:
+                futureX2 += 1; // Moving West increases X
+                futureY2 += 1; // Moving West increases Y (diagonal)
+                futureY1 += 1;
+                break;
         }
 
-        // Check if turtle is about to bump into a wall or has reached the end
+        // Check if the turtle is about to bump into a wall or has reached the end
         bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
         atEnd = atend(position.x(), position.y());
 
         // Check direction and update orientation
         checkDirection(orientation, bumpedFlag);
 
-        ROS_INFO("Orientation=%f  STATE=%f", orientation, currentState);
+        ROS_INFO("Orientation=%d  STATE=%f", orientation, currentState);
 
         shouldMove = (currentState == 2);
         modifyFlag = true;
 
-        // Move the turtle in the direction of the current orientation
+        // Move the turtle if allowed and not at the end
         if (shouldMove && !atEnd) {
             updatePosition(position, orientation);
             shouldMove = false;
@@ -145,13 +196,8 @@ bool studentMoveTurtle(QPointF& position, int& orientation) {
     if (atEnd) return false;
 
     // Update the timer
-    if (timer == 0) {
-        timer = TIMEOUT;
-    } else {
-        timer -= 1;
-    }
+    timer = (timer == 0) ? TIMEOUT : timer - 1;
 
-    // Submit the changes
-    if (timer == TIMEOUT) return true;
-    return false;
+    // Submit changes if the timer has reset
+    return (timer == TIMEOUT);
 }
