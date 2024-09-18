@@ -28,6 +28,7 @@ const int32_t STATE_TURN_LEFT = 0;
 const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MOVE_INCREMENT = 1;
 const int32_t MOVE_DECREMENT = -1;
+const int32_t TIME_DECREMENT = 1;
 
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
@@ -181,6 +182,6 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
         return false;
     }
 
-    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - 1;
+    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
     return (timer == TIMEOUT);
 }
