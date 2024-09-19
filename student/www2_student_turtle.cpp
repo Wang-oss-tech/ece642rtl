@@ -42,7 +42,6 @@ enum Direction {
     WEST = 3
 };
 
-
 // Define Struct for Position
 typedef struct {
     int32_t X;
