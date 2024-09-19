@@ -142,27 +142,27 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     ROS_INFO("Turtle update called - timer=%d", timer);
 
     if (timer == TIMER_EXPIRED) {
-        futureX1 = position.x();
-        futureY1 = position.y();
-        futureX2 = position.x();
-        futureY2 = position.y();
+        futureX1.X = position.x();
+        futureY1.Y = position.y();
+        futureX2.X = position.x();
+        futureY2.Y = position.y();
 
         switch (orientation) {
             case NORTH:
-                futureY2 += MOVE_INCREMENT; // Moving North increases Y
+                futureY2.Y += MOVE_INCREMENT; // Moving North increases Y
                 break;
             case EAST:
-                futureX2 += MOVE_INCREMENT; // Moving East increases X
+                futureX2.X += MOVE_INCREMENT; // Moving East increases X
                 break;
             case SOUTH:
-                futureX2 += MOVE_INCREMENT;
-                futureY2 += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
-                futureX1 += MOVE_INCREMENT;
+                futureX2.X += MOVE_INCREMENT;
+                futureY2.Y += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
+                futureX1.X += MOVE_INCREMENT;
                 break;
             case WEST:
-                futureX2 += MOVE_INCREMENT;
-                futureY2 += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
-                futureY1 += MOVE_INCREMENT;
+                futureX2.X += MOVE_INCREMENT;
+                futureY2.Y += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
+                futureY1.Y += MOVE_INCREMENT;
                 break;
             default:
                 ROS_ERROR("Invalid orientation value: %d", orientation);
