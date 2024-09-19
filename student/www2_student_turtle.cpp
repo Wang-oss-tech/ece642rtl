@@ -29,10 +29,16 @@ const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MOVE_INCREMENT = 1;
 const int32_t MOVE_DECREMENT = -1;
 const int32_t TIME_DECREMENT = 1;
+const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
+const int32_t START_POS = 11;         // starting position in center of 23x23 array
+
 
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
+
+// Static array to keep track of visits to each cell
+static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
 // Enum to represent directions
 enum Direction {
@@ -178,6 +184,13 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
 
         if (shouldMove && !atEnd) {
             updatePosition(position, orientation);
+
+            // Update the visit count in the internal map
+            incrementVisits(position.x + START_POS, position.y + START_POS);
+
+            // Call displayVisits to visualize the visit count
+            displayVisits(getVisits(position.x + START_POS, position.y + START_POS));
+
             shouldMove = false;
             modifyFlag = true;
         }
