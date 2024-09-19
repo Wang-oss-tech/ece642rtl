@@ -200,7 +200,8 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
             updatePosition(position, orientation);
 
             // Update the visit count in the internal map
-            incrementVisits(position.x + START_POS, position.y + START_POS);
+            // Update the visit count in the internal map
+            incrementVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS));
 
             // Call displayVisits to visualize the visit count
             // displayVisits(getVisits((position.x + START_POS), (position.y + START_POS)));
