@@ -1,58 +1,173 @@
-/* 
+/*
  * Originally by Philip Koopman (koopman@cmu.edu)
  * and Milda Zizyte (milda@cmu.edu)
  *
- * STUDENT NAME: William Wang 
- * ANDREW ID: www2  
- * LAST UPDATE: 9/8/2024
+ * STUDENT NAME: William Wang
+ * ANDREW ID: www2    
+ * LAST UPDATE: 9/18/2024
  *
- * This file keeps track of where the turtle is in the maze
- * and updates the location when the turtle is moved. It shall not
- * contain the maze solving logic/algorithm.
- *
- * This file is used along with student_turtle.cpp. e_turtle.cpp shall
- * contain the maze solving logic/algorithm and shall not make use of the
- * absolute coordinates or orientation of the turtle.
- *
- * This file shall call studentTurtleStep(..) in student_turtle.cpp to determine
- * the next move the turtle will make, and shall use translatePos(..) and
- * translateOrnt(..) to translate this move into absolute coordinates
- * to display the turtle.
- *
+ * This file is an algorithm to solve the ece642rtle maze
+ * using the right-hand rule.
  */
 
 #include "student.h"
+#include <stdint.h>  // Include stdint.h for fixed-width integer types
 
-/*
- * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
- * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
- * This file interfaces with functions in student_turtle.cpp
- */
-bool moveTurtle(QPointF& pos_, int& nw_or)
-{
-  bool bumped = true; // Replace with your own procedure
-  turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
-  pos_ = translatePos(pos_, nextMove);
-  nw_or = translateOrnt(nw_or, nextMove);
-
-  int32_t new_nw_or = static_cast<int32_t>(nw_or);
-
-  // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  return studentMoveTurtle(pos_, new_nw_or);
+// Ignoring this line until project 5
+turtleMove studentTurtleStep(bool bumped) {
+    return MOVE;
 }
 
-/*
- * Takes a position and a turtleMove and returns a new position
- * based on the move
+// Define size of the maze array
+
+// Constants for various states and timeout values
+const int32_t TIMEOUT = 40;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMER_EXPIRED = 0;      // Timer expired value
+const int32_t STATE_MOVE_FORWARD = 2;
+const int32_t STATE_TURN_LEFT = 0;
+const int32_t STATE_TURN_RIGHT = 1;
+const int32_t MOVE_INCREMENT = 1;
+const int32_t MOVE_DECREMENT = -1;
+const int32_t TIME_DECREMENT = 1;
+
+// Typedefs for readability and future flexibility
+typedef int32_t State;       // Typedef for state representation
+typedef bool Flag;           // Typedef for boolean flags
+
+// Enum to represent directions
+enum Direction {
+    NORTH = 0,
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3
+};
+
+// Struct to couple position (x, y)
+typedef struct {
+    int32_t x;
+    int32_t y;
+
+    // Method to update position based on orientation
+    void update(int32_t orientation) {
+        switch (orientation) {
+            case NORTH:
+                x += MOVE_DECREMENT;
+                break;
+            case EAST:
+                y += MOVE_DECREMENT;
+                break;
+            case SOUTH:
+                x += MOVE_INCREMENT;
+                break;
+            case WEST:
+                y += MOVE_INCREMENT;
+                break;
+            default:
+                ROS_ERROR("Invalid orientation for position update");
+        }
+    }
+
+    // Method to set position directly
+    void set(int32_t newX, int32_t newY) {
+        x = newX;
+        y = newY;
+    }
+
+} Position;
+
+/**
+ * @brief Checks the turtle's direction and updates its orientation and state.
  */
-QPointF translatePos(QPointF pos_, turtleMove nextMove) {
-  return pos_;
+void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) {
+    switch (orientation) {
+        case NORTH:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = EAST;  // Turn right to face East
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = WEST;  // Turn left to face West if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case EAST:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = SOUTH; // Turn right to face South
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = NORTH; // Turn left to face North if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case SOUTH:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = WEST;  // Turn right to face West
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = EAST;  // Turn left to face East if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case WEST:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = NORTH; // Turn right to face North
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = SOUTH; // Turn left to face South if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
+    }
 }
 
-/*
- * Takes an orientation and a turtleMove and returns a new orienation
- * based on the move
+/**
+ * @brief Determines whether the turtle should move and updates its position accordingly.
  */
-int translateOrnt(int orientation, turtleMove nextMove) {
-  return orientation;
+bool studentMoveTurtle(Position& position, int32_t& orientation) {
+    static int32_t timer = TIMEOUT;        // Timer for managing movement
+    static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
+    Flag shouldMove = false;            // Flag to determine if turtle should move
+    Flag atEnd = false;                 // Flag to check if turtle has reached the end
+    Flag modifyFlag = true;             // Flag to check if movement needs modification
+    Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
+
+    ROS_INFO("Turtle update called - timer=%d", timer);
+
+    if (timer == TIMER_EXPIRED) {
+        Position futurePos1 = position;
+        Position futurePos2 = position;
+
+        futurePos2.update(orientation); // Update future position based on orientation
+
+        bumpedFlag = bumped(futurePos1.x, futurePos1.y, futurePos2.x, futurePos2.y);
+        atEnd = atend(position.x, position.y);
+
+        checkDirection(orientation, bumpedFlag, currentState);
+
+        shouldMove = (currentState == STATE_MOVE_FORWARD);
+        modifyFlag = true;
+
+        if (shouldMove && !atEnd) {
+            position.update(orientation); // Update the current position
+            shouldMove = false;
+            modifyFlag = true;
+        }
+    }
+
+    if (atEnd) {
+        return false;
+    }
+
+    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+    return (timer == TIMEOUT);
 }
