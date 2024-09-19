@@ -35,10 +35,10 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   pos_ = translatePos(pos_, nextMove);
   nw_or = translateOrnt(nw_or, nextMove);
 
-  int32_t temp_int32 = static_cast<int32_t>(nw_or);
+  int32_t new_nw_or = static_cast<int32_t>(nw_or);
 
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  return studentMoveTurtle(pos_, nw_or);
+  return studentMoveTurtle(pos_, new_nw_or);
 }
 
 /*
