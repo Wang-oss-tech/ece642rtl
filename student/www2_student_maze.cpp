@@ -10,7 +10,7 @@
  * and updates the location when the turtle is moved. It shall not
  * contain the maze solving logic/algorithm.
  *
- * This file is used along with student_turtle.cpp. student_turtle.cpp shall
+ * This file is used along with student_turtle.cpp. e_turtle.cpp shall
  * contain the maze solving logic/algorithm and shall not make use of the
  * absolute coordinates or orientation of the turtle.
  *
@@ -36,7 +36,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   nw_or = translateOrnt(nw_or, nextMove);
 
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  return studentMoveTurtle(pos_, nw_or);
+  return studentMoveTurtle(pos_, (int32_t&)nw_or);
 }
 
 /*
