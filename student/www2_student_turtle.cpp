@@ -33,7 +33,6 @@ const int32_t TIME_DECREMENT = 1;
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
-typedef int32_t PositionCoord; // Changed to int32_t for position coordinates
 
 // Enum to represent directions
 enum Direction {
@@ -42,6 +41,13 @@ enum Direction {
     SOUTH = 2,
     WEST = 3
 };
+
+
+// Define Struct for Position
+typedef struct {
+    int32_t X;
+    int32_t Y;
+} Position;
 
 /**
  * @brief Checks the turtle's direction and updates its orientation and state.
@@ -127,7 +133,7 @@ void updatePosition(QPointF& position, int32_t orientation) {
 bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     static int32_t timer = TIMEOUT;        // Timer for managing movement
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
-    PositionCoord futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
+    Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
     Flag shouldMove = false;            // Flag to determine if turtle should move
     Flag atEnd = false;                 // Flag to check if turtle has reached the end
     Flag modifyFlag = true;             // Flag to check if movement needs modification
