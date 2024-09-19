@@ -22,5 +22,5 @@ int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
 
 // OK to change below this line
-bool studentMoveTurtle(QPointF& pos_, int32_t& nw_or);
+bool studentMoveTurtle(QPointF& pos_, int& nw_or);
 
