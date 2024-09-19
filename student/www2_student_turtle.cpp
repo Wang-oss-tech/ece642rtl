@@ -33,7 +33,6 @@ const int32_t TIME_DECREMENT = 1;
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
-typedef int32_t PositionCoord; // Changed to int32_t for position coordinates
 
 // Enum to represent directions
 enum Direction {
@@ -43,50 +42,84 @@ enum Direction {
     WEST = 3
 };
 
+// Define Position struct to represent (x, y) coordinates as pairs
+typedef struct {
+    int32_t x;
+    int32_t y;
+
+    // Method to update position based on orientation
+    void update(int32_t orientation) {
+        switch (orientation) {
+            case Direction::NORTH:  // Corrected usage of enum value
+                x += MOVE_DECREMENT;
+                break;
+            case Direction::EAST:   // Corrected usage of enum value
+                y += MOVE_DECREMENT;
+                break;
+            case Direction::SOUTH:  // Corrected usage of enum value
+                x += MOVE_INCREMENT;
+                break;
+            case Direction::WEST:   // Corrected usage of enum value
+                y += MOVE_INCREMENT;
+                break;
+            default:
+                ROS_ERROR("Invalid orientation for position update");
+        }
+    }
+
+    // Method to set position directly
+    void set(int32_t newX, int32_t newY) {
+        x = newX;
+        y = newY;
+    }
+
+} Position;
+
+
 /**
  * @brief Checks the turtle's direction and updates its orientation and state.
  */
 void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) {
     switch (orientation) {
-        case NORTH:
+        case Direction::NORTH:  // Corrected usage of enum value
             if (currentState == STATE_MOVE_FORWARD) {
-                orientation = EAST;  // Turn right to face East
+                orientation = Direction::EAST;  // Turn right to face East
                 currentState = STATE_TURN_RIGHT;
             } else if (bumpedFlag) {
-                orientation = WEST;  // Turn left to face West if bumped
+                orientation = Direction::WEST;  // Turn left to face West if bumped
                 currentState = STATE_TURN_LEFT;
             } else {
                 currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
             }
             break;
-        case EAST:
+        case Direction::EAST:   // Corrected usage of enum value
             if (currentState == STATE_MOVE_FORWARD) {
-                orientation = SOUTH; // Turn right to face South
+                orientation = Direction::SOUTH; // Turn right to face South
                 currentState = STATE_TURN_RIGHT;
             } else if (bumpedFlag) {
-                orientation = NORTH; // Turn left to face North if bumped
+                orientation = Direction::NORTH; // Turn left to face North if bumped
                 currentState = STATE_TURN_LEFT;
             } else {
                 currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
             }
             break;
-        case SOUTH:
+        case Direction::SOUTH:  // Corrected usage of enum value
             if (currentState == STATE_MOVE_FORWARD) {
-                orientation = WEST;  // Turn right to face West
+                orientation = Direction::WEST;  // Turn right to face West
                 currentState = STATE_TURN_RIGHT;
             } else if (bumpedFlag) {
-                orientation = EAST;  // Turn left to face East if bumped
+                orientation = Direction::EAST;  // Turn left to face East if bumped
                 currentState = STATE_TURN_LEFT;
             } else {
                 currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
             }
             break;
-        case WEST:
+        case Direction::WEST:   // Corrected usage of enum value
             if (currentState == STATE_MOVE_FORWARD) {
-                orientation = NORTH; // Turn right to face North
+                orientation = Direction::NORTH; // Turn right to face North
                 currentState = STATE_TURN_RIGHT;
             } else if (bumpedFlag) {
-                orientation = SOUTH; // Turn left to face South if bumped
+                orientation = Direction::SOUTH; // Turn left to face South if bumped
                 currentState = STATE_TURN_LEFT;
             } else {
                 currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
@@ -101,33 +134,18 @@ void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) 
 /**
  * @brief Updates the position of the turtle based on its current orientation.
  */
-void updatePosition(QPointF& position, int32_t orientation) {
-    switch (orientation) {
-        case EAST:
-            position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
-            break;
-        case SOUTH:
-            position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
-            break;
-        case WEST:
-            position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
-            break;
-        case NORTH:
-            position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
-            break;
-        default:
-            ROS_ERROR("Invalid orientation value: %d", orientation);
-            break;
-    }
+void updatePosition(Position& position, int32_t orientation) {
+    position.update(orientation);  // Call update method of the Position struct
 }
 
 /**
  * @brief Determines whether the turtle should move and updates its position accordingly.
  */
-bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
+bool studentMoveTurtle(Position& position, int32_t& orientation) {
     static int32_t timer = TIMEOUT;        // Timer for managing movement
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
-    PositionCoord futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
+    Position futurePos1 = position;  // Future positions based on orientation
+    Position futurePos2 = position;
     Flag shouldMove = false;            // Flag to determine if turtle should move
     Flag atEnd = false;                 // Flag to check if turtle has reached the end
     Flag modifyFlag = true;             // Flag to check if movement needs modification
@@ -136,35 +154,10 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     ROS_INFO("Turtle update called - timer=%d", timer);
 
     if (timer == TIMER_EXPIRED) {
-        futureX1 = position.x();
-        futureY1 = position.y();
-        futureX2 = position.x();
-        futureY2 = position.y();
+        futurePos2.update(orientation);  // Update future position based on orientation
 
-        switch (orientation) {
-            case NORTH:
-                futureY2 += MOVE_INCREMENT; // Moving North increases Y
-                break;
-            case EAST:
-                futureX2 += MOVE_INCREMENT; // Moving East increases X
-                break;
-            case SOUTH:
-                futureX2 += MOVE_INCREMENT;
-                futureY2 += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
-                futureX1 += MOVE_INCREMENT;
-                break;
-            case WEST:
-                futureX2 += MOVE_INCREMENT;
-                futureY2 += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
-                futureY1 += MOVE_INCREMENT;
-                break;
-            default:
-                ROS_ERROR("Invalid orientation value: %d", orientation);
-                break;
-        }
-
-        bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
-        atEnd = atend(position.x(), position.y());
+        bumpedFlag = bumped(futurePos1.x, futurePos1.y, futurePos2.x, futurePos2.y);
+        atEnd = atend(position.x, position.y);
 
         checkDirection(orientation, bumpedFlag, currentState);
 
