@@ -33,6 +33,14 @@ const int32_t MOVE_DECREMENT = -1;
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
 
+// Enum to represent directions
+enum Direction {
+    NORTH = 0,
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3
+};
+
 // Struct to couple position (x, y)
 typedef struct {
     int32_t x;
@@ -66,13 +74,6 @@ typedef struct {
 
 } Position;
 
-// Enum to represent directions
-enum Direction {
-    NORTH = 0,
-    EAST = 1,
-    SOUTH = 2,
-    WEST = 3
-};
 
 /**
  * @brief Checks the turtle's direction and updates its orientation and state.
