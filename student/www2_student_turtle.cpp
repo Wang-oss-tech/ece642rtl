@@ -203,7 +203,7 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
             incrementVisits(position.x + START_POS, position.y + START_POS);
 
             // Call displayVisits to visualize the visit count
-            displayVisits(getVisits(position.x + START_POS, position.y + START_POS));
+            displayVisits(getVisits((position.x + START_POS), (position.y + START_POS)));
 
             shouldMove = false;
             modifyFlag = true;
