@@ -4,7 +4,7 @@
  *
  * STUDENT NAME: William Wang
  * ANDREW ID: www2    
- * LAST UPDATE: 9/18/2024
+ * LAST UPDATE: 9/8/2024
  *
  * This file is an algorithm to solve the ece642rtle maze
  * using the right-hand rule.
@@ -33,6 +33,7 @@ const int32_t TIME_DECREMENT = 1;
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
+typedef int32_t PositionCoord; // Changed to int32_t for position coordinates
 
 // Enum to represent directions
 enum Direction {
@@ -41,39 +42,6 @@ enum Direction {
     SOUTH = 2,
     WEST = 3
 };
-
-// Struct to couple position (x, y)
-typedef struct {
-    int32_t x;
-    int32_t y;
-
-    // Method to update position based on orientation
-    void update(int32_t orientation) {
-        switch (orientation) {
-            case NORTH:
-                x += MOVE_DECREMENT;
-                break;
-            case EAST:
-                y += MOVE_DECREMENT;
-                break;
-            case SOUTH:
-                x += MOVE_INCREMENT;
-                break;
-            case WEST:
-                y += MOVE_INCREMENT;
-                break;
-            default:
-                ROS_ERROR("Invalid orientation for position update");
-        }
-    }
-
-    // Method to set position directly
-    void set(int32_t newX, int32_t newY) {
-        x = newX;
-        y = newY;
-    }
-
-} Position;
 
 /**
  * @brief Checks the turtle's direction and updates its orientation and state.
@@ -131,11 +99,35 @@ void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) 
 }
 
 /**
+ * @brief Updates the position of the turtle based on its current orientation.
+ */
+void updatePosition(QPointF& position, int32_t orientation) {
+    switch (orientation) {
+        case EAST:
+            position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
+            break;
+        case SOUTH:
+            position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
+            break;
+        case WEST:
+            position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
+            break;
+        case NORTH:
+            position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
+            break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
+    }
+}
+
+/**
  * @brief Determines whether the turtle should move and updates its position accordingly.
  */
-bool studentMoveTurtle(Position& position, int32_t& orientation) {
+bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     static int32_t timer = TIMEOUT;        // Timer for managing movement
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
+    PositionCoord futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
     Flag shouldMove = false;            // Flag to determine if turtle should move
     Flag atEnd = false;                 // Flag to check if turtle has reached the end
     Flag modifyFlag = true;             // Flag to check if movement needs modification
@@ -144,13 +136,35 @@ bool studentMoveTurtle(Position& position, int32_t& orientation) {
     ROS_INFO("Turtle update called - timer=%d", timer);
 
     if (timer == TIMER_EXPIRED) {
-        Position futurePos1 = position;
-        Position futurePos2 = position;
+        futureX1 = position.x();
+        futureY1 = position.y();
+        futureX2 = position.x();
+        futureY2 = position.y();
 
-        futurePos2.update(orientation); // Update future position based on orientation
+        switch (orientation) {
+            case NORTH:
+                futureY2 += MOVE_INCREMENT; // Moving North increases Y
+                break;
+            case EAST:
+                futureX2 += MOVE_INCREMENT; // Moving East increases X
+                break;
+            case SOUTH:
+                futureX2 += MOVE_INCREMENT;
+                futureY2 += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
+                futureX1 += MOVE_INCREMENT;
+                break;
+            case WEST:
+                futureX2 += MOVE_INCREMENT;
+                futureY2 += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
+                futureY1 += MOVE_INCREMENT;
+                break;
+            default:
+                ROS_ERROR("Invalid orientation value: %d", orientation);
+                break;
+        }
 
-        bumpedFlag = bumped(futurePos1.x, futurePos1.y, futurePos2.x, futurePos2.y);
-        atEnd = atend(position.x, position.y);
+        bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
+        atEnd = atend(position.x(), position.y());
 
         checkDirection(orientation, bumpedFlag, currentState);
 
@@ -158,7 +172,7 @@ bool studentMoveTurtle(Position& position, int32_t& orientation) {
         modifyFlag = true;
 
         if (shouldMove && !atEnd) {
-            position.update(orientation); // Update the current position
+            updatePosition(position, orientation);
             shouldMove = false;
             modifyFlag = true;
         }
