@@ -169,7 +169,7 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
                 break;
         }
 
-        bumpedFlag = bumped(futureX1, futureY1, futureX2, futureY2);
+        bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
         atEnd = atend(position.x(), position.y());
 
         checkDirection(orientation, bumpedFlag, currentState);
