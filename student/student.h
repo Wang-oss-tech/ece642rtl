@@ -10,13 +10,19 @@
 #include <QPointF>
 
 // Functions to interface with ROS. Don't change these lines!
-bool bumped(int x1,int y1,int x2,int y2);
+bool bumped(int x1, int y1, int x2, int y2);
 bool atend(int x, int y);
 void displayVisits(int visits);
 bool moveTurtle(QPointF& pos_, int& nw_or);
 
 // Scope-preserving changes to these lines permitted (see p5 writeup)
-enum turtleMove {MOVE};
+enum turtleMove {
+    MOVE_FORWARD,  // Added MOVE_FORWARD
+    TURN_LEFT,     // Added TURN_LEFT
+    TURN_RIGHT     // Added TURN_RIGHT
+};
+
+// Function to translate the turtle's position and orientation
 QPointF translatePos(QPointF pos_, turtleMove nextMove);
 int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
@@ -24,3 +30,6 @@ turtleMove studentTurtleStep(bool bumped);
 // OK to change below this line
 bool studentMoveTurtle(QPointF& pos_, int& nw_or);
 
+// Declaration for the visit tracking functions
+void incrementVisits(int32_t x, int32_t y);  // Increment visit count
+int32_t getVisits(int32_t x, int32_t y);     // Get visit count
