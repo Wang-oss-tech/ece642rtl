@@ -1,25 +1,56 @@
-#include <ros/ros.h>
-#include <boost/bind.hpp>
-#include <ece642rtle/timeInt8.h>
-#include <std_msgs/Empty.h>
-#include <ece642rtle/RTIbump.h>
-#include <ece642rtle/RTIatend.h>
-#include <ece642rtle/PoseOrntBundle.h>
-#include <ece642rtle/bumpEcho.h>
-#include <ece642rtle/aendEcho.h>
-#include <QPointF>
+/* 
+ * Originally by Philip Koopman (koopman@cmu.edu)
+ * and Milda Zizyte (milda@cmu.edu)
+ *
+ * STUDENT NAME: William Wang 
+ * ANDREW ID: www2  
+ * LAST UPDATE: 9/8/2024
+ *
+ * This file keeps track of where the turtle is in the maze
+ * and updates the location when the turtle is moved. It shall not
+ * contain the maze solving logic/algorithm.
+ *
+ * This file is used along with student_turtle.cpp. student_turtle.cpp shall
+ * contain the maze solving logic/algorithm and shall not make use of the
+ * absolute coordinates or orientation of the turtle.
+ *
+ * This file shall call studentTurtleStep(..) in student_turtle.cpp to determine
+ * the next move the turtle will make, and shall use translatePos(..) and
+ * translateOrnt(..) to translate this move into absolute coordinates
+ * to display the turtle.
+ *
+ */
 
-// Functions to interface with ROS. Don't change these lines!
-bool bumped(int x1,int y1,int x2,int y2);
-bool atend(int x, int y);
-void displayVisits(int visits);
-bool moveTurtle(QPointF& pos_, int& nw_or);
+#include "student.h"
 
-// Scope-preserving changes to these lines permitted (see p5 writeup)
-enum turtleMove {MOVE};
-QPointF translatePos(QPointF pos_, turtleMove nextMove);
-int translateOrnt(int orientation, turtleMove nextMove);
-turtleMove studentTurtleStep(bool bumped);
+/*
+ * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
+ * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
+ * This file interfaces with functions in student_turtle.cpp
+ */
+bool moveTurtle(QPointF& pos_, int& nw_or)
+{
+  bool bumped = true; // Replace with your own procedure
+  turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
+  pos_ = translatePos(pos_, nextMove);
+  nw_or = translateOrnt(nw_or, nextMove);
 
-// OK to change below this line
-bool studentMoveTurtle(QPointF& pos_, int& nw_or);
+  // REPLACE THE FOLLOWING LINE IN PROJECT 5
+  return studentMoveTurtle(pos_, nw_or);
+}
+
+/*
+ * Takes a position and a turtleMove and returns a new position
+ * based on the move
+ */
+QPointF translatePos(QPointF pos_, turtleMove nextMove) {
+  return pos_;
+}
+
+/*
+ * Takes an orientation and a turtleMove and returns a new orienation
+ * based on the move
+ */
+int translateOrnt(int orientation, turtleMove nextMove) {
+  return orientation;
+}
