@@ -39,8 +39,15 @@ enum Direction {
  * and returns true=accept changes, false=do not accept changes
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
-    bool bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());  // Check if bumped into something
+    // Check if there's a wall directly in front of the turtle
+    bool bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
+
+    // If bumpedFlag is true, the turtle should not move forward
+    if (nextMove == MOVE_FORWARD && bumpedFlag) {
+        // Don't update position, just return false to indicate failure
+        return false;
+    }
 
     // Update position and orientation based on nextMove
     pos_ = translatePos(pos_, nw_or, nextMove);
