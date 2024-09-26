@@ -1,35 +1,36 @@
+#ifndef STUDENT_H
+#define STUDENT_H
+
 #include <ros/ros.h>
-#include <boost/bind.hpp>
-#include <ece642rtle/timeInt8.h>
-#include <std_msgs/Empty.h>
-#include <ece642rtle/RTIbump.h>
-#include <ece642rtle/RTIatend.h>
-#include <ece642rtle/PoseOrntBundle.h>
-#include <ece642rtle/bumpEcho.h>
-#include <ece642rtle/aendEcho.h>
-#include <QPointF>
+#include <QPointF>  // Assuming you're using Qt for handling coordinates
 
-// Functions to interface with ROS. Don't change these lines!
-bool bumped(int x1, int y1, int x2, int y2);
-bool atend(int x, int y);
-void displayVisits(int visits);
-bool moveTurtle(QPointF& pos_, int& nw_or);
+// ROS interaction functions. Do not change these lines.
+bool bumped(int x1, int y1, int x2, int y2);   // Check if there's a bump
+bool atend(int x, int y);                      // Check if the turtle is at the end of the maze
+void displayVisits(int visits);                // Display number of visits to a location in the GUI
+bool moveTurtle(QPointF& pos_, int& nw_or);    // Move the turtle in the maze
 
-// Scope-preserving changes to these lines permitted (see p5 writeup)
+// Turtle movement enumeration
 enum turtleMove {
-    MOVE_FORWARD,  // Move forward command
-    TURN_LEFT,     // Turn left command
-    TURN_RIGHT     // Turn right command
+    MOVE_FORWARD,  // Command to move forward
+    TURN_LEFT,     // Command to turn left
+    TURN_RIGHT     // Command to turn right
 };
 
-// Function declarations
-QPointF translatePos(QPointF pos_, int orientation, turtleMove nextMove);
-int translateOrnt(int orientation, turtleMove nextMove);
+// Function to handle the decision-making in student_turtle.cpp.
+// Determines the next turtle move based on whether a bump has occurred.
 turtleMove studentTurtleStep(bool bumped);
 
-// OK to change below this line
-bool studentMoveTurtle(QPointF& pos_, int& nw_or);
+// Position translation functions for converting relative movements into absolute coordinates.
+// Implemented in student_maze.cpp
+QPointF translatePos(QPointF pos_, int orientation, turtleMove nextMove); // Translate relative movement to absolute position
+int translateOrnt(int orientation, turtleMove nextMove);                  // Translate relative orientation to absolute orientation
 
-// Declaration for the visit tracking functions
-void incrementVisits(int32_t x, int32_t y);  // Increment visit count
-int32_t getVisits(int32_t x, int32_t y);     // Get visit count
+// Declaration for visit tracking functions in student_maze.cpp
+void incrementVisits(int32_t x, int32_t y);  // Increment the number of visits to a particular cell
+int32_t getVisits(int32_t x, int32_t y);     // Get the number of visits to a particular cell
+
+// Function to check if the right-hand side is clear, implemented in student_maze.cpp
+bool rightIsClear(QPointF pos_, int orientation);  // Check if the turtle's right-hand side is clear
+
+#endif  // STUDENT_H

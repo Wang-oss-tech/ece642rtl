@@ -39,15 +39,11 @@ enum Direction {
  * and returns true=accept changes, false=do not accept changes
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
-    // Check if there's a wall directly in front of the turtle
+    // Check if there's a wall directly in front of the turtle based on its orientation
     bool bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());
+    
+    // Call to studentTurtleStep() to determine the next move based on whether a bump occurred
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
-
-    // If bumpedFlag is true, the turtle should not move forward
-    if (nextMove == MOVE_FORWARD && bumpedFlag) {
-        // Don't update position, just return false to indicate failure
-        return false;
-    }
 
     // Update position and orientation based on nextMove
     pos_ = translatePos(pos_, nw_or, nextMove);
@@ -59,8 +55,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
     incrementVisits(x, y);
     displayVisits(getVisits(x, y));
 
-    // Return true/false based on whether movement succeeded
-    return true;
+    return !bumpedFlag;  // Return true if no bump occurred, false otherwise
 }
 
 /*
@@ -112,7 +107,6 @@ QPointF translatePos(QPointF pos_, int orientation, turtleMove nextMove) {
             ROS_ERROR("Invalid orientation value: %d", orientation);
             break;
     }
-    // If TURN_LEFT or TURN_RIGHT, no position change
     return pos_;
 }
 
@@ -154,7 +148,7 @@ int translateOrnt(int orientation, turtleMove nextMove) {
             ROS_ERROR("Invalid orientation value: %d", orientation);
             break;
     }
-    return orientation;  // If no turn, return the same orientation
+    return orientation;
 }
 
 /**
