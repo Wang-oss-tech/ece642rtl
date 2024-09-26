@@ -17,13 +17,13 @@ bool moveTurtle(QPointF& pos_, int& nw_or);
 
 // Scope-preserving changes to these lines permitted (see p5 writeup)
 enum turtleMove {
-    MOVE_FORWARD,  // Added MOVE_FORWARD
-    TURN_LEFT,     // Added TURN_LEFT
-    TURN_RIGHT     // Added TURN_RIGHT
+    MOVE_FORWARD,  // Move forward command
+    TURN_LEFT,     // Turn left command
+    TURN_RIGHT     // Turn right command
 };
 
-// Function to translate the turtle's position and orientation
-QPointF translatePos(QPointF pos_, turtleMove nextMove);
+// Function declarations
+QPointF translatePos(QPointF pos_, int orientation, turtleMove nextMove);
 int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
 

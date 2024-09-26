@@ -49,7 +49,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   turtleMove nextMove = studentTurtleStep(bumped); 
 
   // update position & orientation based on nextMove
-  pos_ = translatePos(pos_, nextMove);
+  pos_ = translatePos(pos_, nw_or, nextMove);
   nw_or = translateOrnt(nw_or, nextMove);
 
   // after translating the position, update visits & call displayVisits()
@@ -66,28 +66,34 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  * Takes a position and a turtleMove and returns a new position
  * based on the move
  */
-QPointF translatePos(QPointF pos_, turtleMove nextMove) {
-  switch (nextMove){
-    case MOVE_FORWARD:
-      if (orientation == NORTH){
-        pos_.setY(pos_.y() - 1);
-      }
-      if (orientation == EAST){
-        pos_.setX(pos_.x() - 1);
-      }
-      if (orientation == SOUTH){
-        pos_.setY(pos_.y() - 1);
-      }
-      if (orientation == WEST){
-        pos_.setX(pos_.x() - 1);
-      }
-      break;
-  }
-  case TURN_LEFT:
-  case TURN_RIGHT:
-    // No position change on turn
-    break;
-  return pos_;
+QPointF translatePos(QPointF pos_, int orientation, turtleMove nextMove) {
+    switch (orientation) {
+        case NORTH:
+            if (nextMove == MOVE_FORWARD) {
+                pos_.setY(pos_.y() - 1);  // Moving north decreases the Y coordinate
+            }
+            break;
+        case EAST:
+            if (nextMove == MOVE_FORWARD) {
+                pos_.setX(pos_.x() + 1);  // Moving east increases the X coordinate
+            }
+            break;
+        case SOUTH:
+            if (nextMove == MOVE_FORWARD) {
+                pos_.setY(pos_.y() + 1);  // Moving south increases the Y coordinate
+            }
+            break;
+        case WEST:
+            if (nextMove == MOVE_FORWARD) {
+                pos_.setX(pos_.x() - 1);  // Moving west decreases the X coordinate
+            }
+            break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
+    }
+    // If TURN_LEFT or TURN_RIGHT, no position change
+    return pos_;
 }
 
 /*
