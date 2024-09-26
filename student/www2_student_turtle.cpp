@@ -8,18 +8,37 @@
  *
  * This file is an algorithm to solve the ece642rtle maze
  * using the right-hand rule.
- * 
- * The turtle is responsible for its own relative understanding of the world,
- * while its absolute position and orientation are handled by the maze file.
  */
 
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
+// Ignoring this line until project 5
+turtleMove studentTurtleStep(bool bumped) {
+    return MOVE;
+}
+
+// Define size of the maze array
+
 // Constants for various states and timeout values
+const int32_t TIMEOUT = 40;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t STATE_MOVE_FORWARD = 2;
 const int32_t STATE_TURN_LEFT = 0;
 const int32_t STATE_TURN_RIGHT = 1;
+const int32_t MOVE_INCREMENT = 1;
+const int32_t MOVE_DECREMENT = -1;
+const int32_t TIME_DECREMENT = 1;
+const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
+const int32_t START_POS = 11;         // starting position in center of 23x23 array
+
+
+// Typedefs for readability and future flexibility
+typedef int32_t State;       // Typedef for state representation
+typedef bool Flag;           // Typedef for boolean flags
+
+// Static array to keep track of visits to each cell
+static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
 // Enum to represent directions
 enum Direction {
@@ -29,52 +48,176 @@ enum Direction {
     WEST = 3
 };
 
-// Static variables to store the turtle's orientation and current state
-static int32_t orientation = NORTH;  // Turtle's initial orientation
-static int32_t currentState = STATE_MOVE_FORWARD;  // Turtle's initial state (moving forward)
+// Define Struct for Position
+typedef struct {
+    int32_t X;
+    int32_t Y;
+} Position;
 
-/*
- * This function is called to decide the next move the turtle should make.
- * `bumpedFlag` tells us whether the turtle hit a wall in front.
+/**
+ * @brief Function to get the number of visits to a specific cell.
  */
-turtleMove studentTurtleStep(bool bumpedFlag) {
-    if (bumpedFlag) {
-        // If we bumped into a wall, we must turn left
-        currentState = STATE_TURN_LEFT;
-    } else if (rightIsClear()) {
-        // If the right side is clear, turn right (right-hand rule)
-        currentState = STATE_TURN_RIGHT;
-    } else {
-        // If no bump and right is blocked, move forward
-        currentState = STATE_MOVE_FORWARD;
-    }
+int32_t getVisits(int32_t x, int32_t y) {
+    return visitMap[x][y];
+}
 
-    // Decide what to do based on the current state
-    switch (currentState) {
-        case STATE_MOVE_FORWARD:
-            return MOVE_FORWARD;
-        case STATE_TURN_LEFT:
-            // Update orientation to reflect the left turn
-            orientation = (orientation + 3) % 4;  // Turn left (counter-clockwise)
-            return TURN_LEFT;
-        case STATE_TURN_RIGHT:
-            // Update orientation to reflect the right turn
-            orientation = (orientation + 1) % 4;  // Turn right (clockwise)
-            return TURN_RIGHT;
+/**
+ * @brief Function to increment the number of visits to a specific cell.
+ */
+void incrementVisits(int32_t x, int32_t y) {
+    visitMap[x][y]++;
+}
+
+/**
+ * @brief Checks the turtle's direction and updates its orientation and state.
+ */
+void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) {
+    switch (orientation) {
+        case NORTH:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = EAST;  // Turn right to face East
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = WEST;  // Turn left to face West if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case EAST:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = SOUTH; // Turn right to face South
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = NORTH; // Turn left to face North if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case SOUTH:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = WEST;  // Turn right to face West
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = EAST;  // Turn left to face East if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
+        case WEST:
+            if (currentState == STATE_MOVE_FORWARD) {
+                orientation = NORTH; // Turn right to face North
+                currentState = STATE_TURN_RIGHT;
+            } else if (bumpedFlag) {
+                orientation = SOUTH; // Turn left to face South if bumped
+                currentState = STATE_TURN_LEFT;
+            } else {
+                currentState = STATE_MOVE_FORWARD;  // Move forward if no bump
+            }
+            break;
         default:
-            return MOVE_FORWARD;
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
     }
 }
 
-/*
- * Function to check if the right side is clear based on the turtle's relative orientation.
- * This should be implemented based on relative knowledge, not absolute coordinates.
- * We simulate the result using information passed to `student_maze.cpp`.
+/**
+ * @brief Updates the position of the turtle based on its current orientation.
  */
-bool rightIsClear() {
-    // This function should call the equivalent of `rightIsClear()` in student_maze.cpp
-    // to check whether there is a wall on the turtle's right.
-    // Since `student_turtle.cpp` doesn't know absolute coordinates, the actual check
-    // happens in `student_maze.cpp` via the simulation.
-    return false;  // This should be implemented properly in `student_maze.cpp`
+void updatePosition(QPointF& position, int32_t orientation) {
+    switch (orientation) {
+        case EAST:
+            position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
+            break;
+        case SOUTH:
+            position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
+            break;
+        case WEST:
+            position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
+            break;
+        case NORTH:
+            position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
+            break;
+        default:
+            ROS_ERROR("Invalid orientation value: %d", orientation);
+            break;
+    }
+}
+
+/**
+ * @brief Determines whether the turtle should move and updates its position accordingly.
+ */
+bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
+    static int32_t timer = TIMEOUT;        // Timer for managing movement
+    static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
+    Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
+    Flag shouldMove = false;            // Flag to determine if turtle should move
+    Flag atEnd = false;                 // Flag to check if turtle has reached the end
+    Flag modifyFlag = true;             // Flag to check if movement needs modification
+    Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
+
+    ROS_INFO("Turtle update called - timer=%d", timer);
+
+    if (timer == TIMER_EXPIRED) {
+        futureX1.X = position.x();
+        futureY1.Y = position.y();
+        futureX2.X = position.x();
+        futureY2.Y = position.y();
+
+        switch (orientation) {
+            case NORTH:
+                futureY2.Y += MOVE_INCREMENT; // Moving North increases Y
+                break;
+            case EAST:
+                futureX2.X += MOVE_INCREMENT; // Moving East increases X
+                break;
+            case SOUTH:
+                futureX2.X += MOVE_INCREMENT;
+                futureY2.Y += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
+                futureX1.X += MOVE_INCREMENT;
+                break;
+            case WEST:
+                futureX2.X += MOVE_INCREMENT;
+                futureY2.Y += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
+                futureY1.Y += MOVE_INCREMENT;
+                break;
+            default:
+                ROS_ERROR("Invalid orientation value: %d", orientation);
+                break;
+        }
+
+        bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
+        atEnd = atend(position.x(), position.y());
+
+        checkDirection(orientation, bumpedFlag, currentState);
+
+        shouldMove = (currentState == STATE_MOVE_FORWARD);
+        modifyFlag = true;
+
+        if (shouldMove && !atEnd) {
+            updatePosition(position, orientation);
+
+            // Update the visit count in the internal map
+            // Update the visit count in the internal map
+            incrementVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS));
+
+            // Call displayVisits to visualize the visit count
+            // displayVisits(getVisits((position.x + START_POS), (position.y + START_POS)));
+            // Corrected version
+            displayVisits(getVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS)));
+
+
+            shouldMove = false;
+            modifyFlag = true;
+        }
+    }
+
+    if (atEnd) {
+        return false;
+    }
+
+    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+    return (timer == TIMEOUT);
 }
