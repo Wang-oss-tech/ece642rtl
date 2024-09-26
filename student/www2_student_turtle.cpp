@@ -54,19 +54,19 @@ enum Direction {
 //     int32_t Y;
 // } Position;
 
-/**
- * @brief Function to get the number of visits to a specific cell.
- */
-int32_t getVisits(int32_t x, int32_t y) {
-    return visitMap[x][y];
-}
+// /**
+//  * @brief Function to get the number of visits to a specific cell.
+//  */
+// int32_t getVisits(int32_t x, int32_t y) {
+//     return visitMap[x][y];
+// }
 
-/**
- * @brief Function to increment the number of visits to a specific cell.
- */
-void incrementVisits(int32_t x, int32_t y) {
-    visitMap[x][y]++;
-}
+// /**
+//  * @brief Function to increment the number of visits to a specific cell.
+//  */
+// void incrementVisits(int32_t x, int32_t y) {
+//     visitMap[x][y]++;
+// }
 
 /**
  * @brief Checks the turtle's direction and updates its orientation and state.
