@@ -39,8 +39,8 @@ enum Direction {
  * and returns true=accept changes, false=do not accept changes
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
-    bool bumped = false;  // Logic to determine if the turtle bumped should be added here
-    turtleMove nextMove = studentTurtleStep(bumped);
+    bool bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());  // Check if bumped into something
+    turtleMove nextMove = studentTurtleStep(bumpedFlag);
 
     // Update position and orientation based on nextMove
     pos_ = translatePos(pos_, nw_or, nextMove);
