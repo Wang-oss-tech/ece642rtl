@@ -23,7 +23,6 @@
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
-// Move this to the global scope so it can be accessed by all functions
 // Static array to keep track of visits to each cell
 static int32_t visitMap[23][23] = {0};  // All cells initialized to zero
 
@@ -41,8 +40,6 @@ enum Direction {
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
     bool bumped = false;  // Logic to determine if the turtle bumped should be added here
-
-    // Call to get the next turtle move from student_turtle.cpp
     turtleMove nextMove = studentTurtleStep(bumped);
 
     // Update position and orientation based on nextMove
@@ -57,6 +54,25 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 
     // Return true/false based on whether movement succeeded
     return true;
+}
+
+/*
+ * Function to check if the right-hand side is clear for movement
+ * It checks based on the current orientation
+ */
+bool rightIsClear(QPointF pos_, int orientation) {
+    switch (orientation) {
+        case NORTH:
+            return !bumped(pos_.x() + 1, pos_.y(), pos_.x() + 1, pos_.y()); // Check EAST (right of NORTH)
+        case EAST:
+            return !bumped(pos_.x(), pos_.y() + 1, pos_.x(), pos_.y() + 1); // Check SOUTH (right of EAST)
+        case SOUTH:
+            return !bumped(pos_.x() - 1, pos_.y(), pos_.x() - 1, pos_.y()); // Check WEST (right of SOUTH)
+        case WEST:
+            return !bumped(pos_.x(), pos_.y() - 1, pos_.x(), pos_.y() - 1); // Check NORTH (right of WEST)
+        default:
+            return false;
+    }
 }
 
 /*
