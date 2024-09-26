@@ -14,9 +14,9 @@
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
 // Ignoring this line until project 5
-turtleMove studentTurtleStep(bool bumped) {
-    return MOVE;
-}
+// turtleMove studentTurtleStep(bool bumped) {
+//     return MOVE;
+// }
 
 // Define size of the maze array
 
@@ -49,10 +49,10 @@ enum Direction {
 };
 
 // Define Struct for Position
-typedef struct {
-    int32_t X;
-    int32_t Y;
-} Position;
+// typedef struct {
+//     int32_t X;
+//     int32_t Y;
+// } Position;
 
 /**
  * @brief Function to get the number of visits to a specific cell.
@@ -126,23 +126,41 @@ void checkDirection(int32_t& orientation, Flag bumpedFlag, State& currentState) 
 /**
  * @brief Updates the position of the turtle based on its current orientation.
  */
-void updatePosition(QPointF& position, int32_t orientation) {
-    switch (orientation) {
-        case EAST:
-            position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
-            break;
-        case SOUTH:
-            position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
-            break;
-        case WEST:
-            position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
-            break;
-        case NORTH:
-            position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
-            break;
+// void updatePosition(QPointF& position, int32_t orientation) {
+//     switch (orientation) {
+//         case EAST:
+//             position.setY(position.y() + MOVE_DECREMENT); // Move East (right)
+//             break;
+//         case SOUTH:
+//             position.setX(position.x() + MOVE_INCREMENT); // Move South (down)
+//             break;
+//         case WEST:
+//             position.setY(position.y() + MOVE_INCREMENT); // Move West (left)
+//             break;
+//         case NORTH:
+//             position.setX(position.x() + MOVE_DECREMENT); // Move North (up)
+//             break;
+//         default:
+//             ROS_ERROR("Invalid orientation value: %d", orientation);
+//             break;
+//     }
+// }
+
+turtleMove studentTurtleStep(bool bumped){
+    static int32_t orientation = NORTH;
+    static State currentState = STATE_MOVE_FORWARD;
+
+    checkDirection(orientation, bumped, currentState);
+
+    switch (currentState){
+        case STATE_MOVE_FORWARD:
+            return MOVE_FORWARD;
+        case STATE_TURN_LEFT:
+            return TURN_LEFT;
+        case STATE_TURN_RIGHT:
+            return TURN_RIGHT;
         default:
-            ROS_ERROR("Invalid orientation value: %d", orientation);
-            break;
+            return MOVE_FORWARD;
     }
 }
 
@@ -150,74 +168,72 @@ void updatePosition(QPointF& position, int32_t orientation) {
  * @brief Determines whether the turtle should move and updates its position accordingly.
  */
 bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
-    static int32_t timer = TIMEOUT;        // Timer for managing movement
-    static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
-    Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
-    Flag shouldMove = false;            // Flag to determine if turtle should move
-    Flag atEnd = false;                 // Flag to check if turtle has reached the end
-    Flag modifyFlag = true;             // Flag to check if movement needs modification
-    Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
+    return false;  // no longer handles the absolute position or orientation
+    // static int32_t timer = TIMEOUT;        // Timer for managing movement
+    // static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
+    // Position futureX1, futureY1, futureX2, futureY2; // Future positions based on orientation
+    // Flag shouldMove = false;            // Flag to determine if turtle should move
+    // Flag atEnd = false;                 // Flag to check if turtle has reached the end
+    // Flag modifyFlag = true;             // Flag to check if movement needs modification
+    // Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
 
-    ROS_INFO("Turtle update called - timer=%d", timer);
+    // ROS_INFO("Turtle update called - timer=%d", timer);
 
-    if (timer == TIMER_EXPIRED) {
-        futureX1.X = position.x();
-        futureY1.Y = position.y();
-        futureX2.X = position.x();
-        futureY2.Y = position.y();
+    // if (timer == TIMER_EXPIRED) {
+    //     futureX1.X = position.x();
+    //     futureY1.Y = position.y();
+    //     futureX2.X = position.x();
+    //     futureY2.Y = position.y();
 
-        switch (orientation) {
-            case NORTH:
-                futureY2.Y += MOVE_INCREMENT; // Moving North increases Y
-                break;
-            case EAST:
-                futureX2.X += MOVE_INCREMENT; // Moving East increases X
-                break;
-            case SOUTH:
-                futureX2.X += MOVE_INCREMENT;
-                futureY2.Y += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
-                futureX1.X += MOVE_INCREMENT;
-                break;
-            case WEST:
-                futureX2.X += MOVE_INCREMENT;
-                futureY2.Y += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
-                futureY1.Y += MOVE_INCREMENT;
-                break;
-            default:
-                ROS_ERROR("Invalid orientation value: %d", orientation);
-                break;
-        }
+    //     switch (orientation) {
+    //         case NORTH:
+    //             futureY2.Y += MOVE_INCREMENT; // Moving North increases Y
+    //             break;
+    //         case EAST:
+    //             futureX2.X += MOVE_INCREMENT; // Moving East increases X
+    //             break;
+    //         case SOUTH:
+    //             futureX2.X += MOVE_INCREMENT;
+    //             futureY2.Y += MOVE_INCREMENT; // Moving South increases both X and Y (diagonal)
+    //             futureX1.X += MOVE_INCREMENT;
+    //             break;
+    //         case WEST:
+    //             futureX2.X += MOVE_INCREMENT;
+    //             futureY2.Y += MOVE_INCREMENT; // Moving West increases both X and Y (diagonal)
+    //             futureY1.Y += MOVE_INCREMENT;
+    //             break;
+    //         default:
+    //             ROS_ERROR("Invalid orientation value: %d", orientation);
+    //             break;
+    //     }
 
-        bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-        atEnd = atend(position.x(), position.y());
+    //     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
+    //     atEnd = atend(position.x(), position.y());
 
-        checkDirection(orientation, bumpedFlag, currentState);
+    //     checkDirection(orientation, bumpedFlag, currentState);
 
-        shouldMove = (currentState == STATE_MOVE_FORWARD);
-        modifyFlag = true;
+    //     shouldMove = (currentState == STATE_MOVE_FORWARD);
+    //     modifyFlag = true;
 
-        if (shouldMove && !atEnd) {
-            updatePosition(position, orientation);
+    //     if (shouldMove && !atEnd) {
+    //         updatePosition(position, orientation);
 
-            // Update the visit count in the internal map
-            // Update the visit count in the internal map
-            incrementVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS));
+    //         // Update the visit count in the internal map
+    //         incrementVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS));
 
-            // Call displayVisits to visualize the visit count
-            // displayVisits(getVisits((position.x + START_POS), (position.y + START_POS)));
-            // Corrected version
-            displayVisits(getVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS)));
+    //         // Call displayVisits to visualize the visit count
+    //         displayVisits(getVisits(static_cast<int32_t>(position.x() + START_POS), static_cast<int32_t>(position.y() + START_POS)));
 
 
-            shouldMove = false;
-            modifyFlag = true;
-        }
-    }
+    //         shouldMove = false;
+    //         modifyFlag = true;
+    //     }
+    // }
 
-    if (atEnd) {
-        return false;
-    }
+    // if (atEnd) {
+    //     return false;
+    // }
 
-    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
-    return (timer == TIMEOUT);
+    // timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+    // return (timer == TIMEOUT);
 }
