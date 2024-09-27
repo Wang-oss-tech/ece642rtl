@@ -78,10 +78,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
-    ROS_INFO("futureX1_X: %d", futureX1.X);
-    ROS_INFO("futureX1_Y: %d", futureX1.Y);
-    ROS_INFO("futureX2_X: %d", futureX2.X);
-    ROS_INFO("futureX2_Y: %d", futureX2.Y);
 
     switch (nw_or){
       case NORTH:
@@ -104,6 +100,11 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         ROS_ERROR("Invalid orientation value: %d", nw_or);
         break;
     }
+
+    ROS_INFO("futureX1_X: %d", futureX1.X);
+    ROS_INFO("futureX1_Y: %d", futureX1.Y);
+    ROS_INFO("futureX2_X: %d", futureX2.X);
+    ROS_INFO("futureX2_Y: %d", futureX2.Y);
 
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
     ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
