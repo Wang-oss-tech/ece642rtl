@@ -23,7 +23,6 @@ enum turtleMove{
 };
 
 // Scope-preserving changes to these lines permitted (see p5 writeup)
-enum turtleMove {MOVE};
 QPointF translatePos(QPointF pos_, turtleMove nextMove);
 int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
