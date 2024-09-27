@@ -163,7 +163,7 @@ turtleMove studentTurtleStep(bool bumped) {
         case STATE_TURN_RIGHT:
             return TURN_RIGHT;
         default:
-            return MOVE_FORWARD
+            return MOVE_FORWARD;
     }
 }
 
