@@ -72,9 +72,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
   ROS_INFO("MOVE TURTLE CALLED");
 
-
-  shouldMove = (nextMove == MOVE_FORWARD);
-
   if (timer == TIMER_EXPIRED){
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
