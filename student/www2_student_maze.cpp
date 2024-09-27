@@ -75,15 +75,15 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
   if (timer == TIMER_EXPIRED){
     ROS_INFO("TIMER_EXPIRED START MOVE TURTLE: %d", timer);
-    ROS_INFO("Before Updating Position (X, Y) 1: %d, %d", pos_.x(), pos_.y());
+    ROS_INFO("Before Updating Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
 
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
 
-    ROS_INFO("future (X1, Y1): %d, %d", futureX1.X, futureY1.Y);
-    ROS_INFO("future (X2, Y2): %d, %d", futureX2.X, futureY2.Y);
+    ROS_INFO("future (X1, Y1): %f, %f", futureX1.X, futureY1.Y);
+    ROS_INFO("future (X2, Y2): %f, %f", futureX2.X, futureY2.Y);
 
     switch (nw_or){
       case NORTH:
