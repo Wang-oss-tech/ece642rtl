@@ -81,6 +81,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
+    ROS_INFO("Before Updating Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
     ROS_INFO("future (X1, Y1) 1: %d", futureX1.X, futureY1.Y);
     ROS_INFO("future (X2, Y2) 1: %d", futureX2.X, futureY2.Y);
 
