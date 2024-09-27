@@ -117,7 +117,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
 
     if ((nextMove == MOVE_FORWARD) && !atEnd) {
-      for (int32_t i = 0; i < TIMEOUT; i ++){ROS_INFO("LOOP HERE");};
+      for (int32_t i = 0; i < TIMEOUT; i ++){ROS_INFO("LOOP HERE");}
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
     }
