@@ -158,7 +158,6 @@ bool studentMoveTurtle(QPointF& position, int32_t& orientation) {
     Flag modifyFlag = true;             // Flag to check if movement needs modification
     Flag bumpedFlag = false;            // Flag to check if turtle bumped into something
 
-    ROS_INFO("Turtle update called - timer=%d", timer);
 
     if (timer == TIMER_EXPIRED) {
         futureX1.X = position.x();
