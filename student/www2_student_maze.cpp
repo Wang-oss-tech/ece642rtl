@@ -119,7 +119,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     }
 
     if ((nextMove == MOVE_FORWARD) && !atEnd) {
-      pos_ = translatePos(pos_, nextMove);            // updates Position
+      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
@@ -137,7 +137,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  * Takes a position and a turtleMove and returns a new position
  * based on the move
  */
-QPointF translatePos(QPointF pos_, turtleMove nextMove) {
+QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
   // return pos_;
   switch (nw_or){
     case EAST:
