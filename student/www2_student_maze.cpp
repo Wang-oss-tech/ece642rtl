@@ -117,7 +117,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
 
     if ((nextMove == MOVE_FORWARD) && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
+      pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
@@ -177,7 +177,7 @@ int translateOrnt(int orientation, turtleMove nextMove) {
         orientation = EAST;  // Turn right to face East
       } else if (nextMove == TURN_LEFT) { 
         orientation = WEST;  // Turn left to face West if bumped
-      } else {
+      } else { // move forward case
         orientation = NORTH;
       } break;
     case EAST:
