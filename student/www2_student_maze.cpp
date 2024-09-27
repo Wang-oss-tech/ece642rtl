@@ -81,11 +81,15 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
+    ROS_INFO("future (X1, Y1) 1: %d", futureX1.X, futureY1.Y);
+    ROS_INFO("future (X2, Y2) 1: %d", futureX2.X, futureY2.Y);
 
     switch (nw_or){
       case NORTH:
         futureY2.Y += MOVE_INCREMENT; // moving north increases Y
         ROS_INFO("ENTERS NORTH CASE");
+        ROS_INFO("future (X1, Y1) 2 : %d", futureX1.X, futureY1.Y);
+        ROS_INFO("future (X2, Y2) 2: %d", futureX2.X, futureY2.Y);
         break;
       case EAST:
         futureX2.X += MOVE_INCREMENT; // moving east increases x
@@ -109,8 +113,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     }
 
 
-    ROS_INFO("future (X1, Y1): %d", futureX1.X, futureY1.Y);
-    ROS_INFO("future (X2, Y2): %d", futureX2.X, futureY2.Y);
+    ROS_INFO("future (X1, Y1) 3: %d", futureX1.X, futureY1.Y);
+    ROS_INFO("future (X2, Y2) 3: %d", futureX2.X, futureY2.Y);
 
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
     ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
