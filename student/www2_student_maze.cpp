@@ -159,29 +159,37 @@ int translateOrnt(int orientation, turtleMove nextMove) {
         orientation = EAST;           // Turn right to face East
       } else if (nextMove == TURN_LEFT){ 
         orientation = WEST;         // Turn left to face West if bumped
+      } else {
+        orientation = NORTH;
       }
       break;
-    // case EAST:
-    //   if (nextMove == MOVE_FORWARD){
-    //     orientation = SOUTH;           // Turn right to face East
-    //   } else if (nextMove == TURN_LEFT){ 
-    //     orientation = NORTH;         // Turn left to face West if bumped
-    //   }
-    //   break;
-    // case SOUTH:
-    //   if (nextMove == MOVE_FORWARD){
-    //     orientation = WEST;           // Turn right to face East
-    //   } else if (nextMove == TURN_LEFT){ 
-    //     orientation = EAST;         // Turn left to face West if bumped
-    //   }
-    //   break;
-    // case WEST:
-    //   if (nextMove == MOVE_FORWARD){
-    //     orientation = NORTH;           // Turn right to face East
-    //   } else if (nextMove == TURN_LEFT){ 
-    //     orientation = SOUTH;         // Turn left to face West if bumped
-    //   }
-    //   break;
+    case EAST:
+      if (nextMove == MOVE_FORWARD){
+        orientation = SOUTH;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = NORTH;         // Turn left to face West if bumped
+      } else {
+        orientation = NORTH;
+      }
+      break;
+    case SOUTH:
+      if (nextMove == MOVE_FORWARD){
+        orientation = WEST;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = EAST;         // Turn left to face West if bumped
+      } else {
+        orientation = NORTH;
+      }
+      break;
+    case WEST:
+      if (nextMove == MOVE_FORWARD){
+        orientation = NORTH;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = SOUTH;         // Turn left to face West if bumped
+      } else {
+        orientation = NORTH;
+      }
+      break;
     default:
       ROS_ERROR("Invalid orientation value: %d", orientation);
   }
