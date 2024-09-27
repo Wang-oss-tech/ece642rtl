@@ -137,32 +137,36 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  */
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
   // return pos_;
-  switch (nw_or){
-    case EAST:
-      ROS_INFO("BEFORE EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      pos_.setY(pos_.y() + MOVE_DECREMENT); // Move East (right)
-      ROS_INFO("AFTER EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      break;
-    case SOUTH:
-      ROS_INFO("BEFORE SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      pos_.setX(pos_.x() + MOVE_INCREMENT); // Move South (down)
-      ROS_INFO("AFTER SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      break;
-    case WEST:
-      ROS_INFO("BEFORE WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      pos_.setY(pos_.y() + MOVE_INCREMENT); // Move West (left)
-      ROS_INFO("AFTER WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      break;
-    case NORTH:
-      ROS_INFO("BEFORE NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      pos_.setX(pos_.x() + MOVE_DECREMENT); // Move North (up)
-      ROS_INFO("AFTER NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
-      break;
-    default:
-      ROS_ERROR("Invalid orientation value 2: %d", nw_or);
-      break;
+  if (nextMove == MOVE_FORWARD){
+    switch (nw_or){
+      case EAST:
+        ROS_INFO("BEFORE EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        pos_.setY(pos_.y() + MOVE_DECREMENT); // Move East (right)
+        ROS_INFO("AFTER EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        break;
+      case SOUTH:
+        ROS_INFO("BEFORE SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        pos_.setX(pos_.x() + MOVE_INCREMENT); // Move South (down)
+        ROS_INFO("AFTER SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        break;
+      case WEST:
+        ROS_INFO("BEFORE WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        pos_.setY(pos_.y() + MOVE_INCREMENT); // Move West (left)
+        ROS_INFO("AFTER WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        break;
+      case NORTH:
+        ROS_INFO("BEFORE NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        pos_.setX(pos_.x() + MOVE_DECREMENT); // Move North (up)
+        ROS_INFO("AFTER NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
+        break;
+      default:
+        ROS_ERROR("Invalid orientation value 2: %d", nw_or);
+        break;
+    }
+    return pos_;
+  } else {
+    ROS_INFO("Next move is not MOVE_FORWARD, no position update");
   }
-  return pos_;
 }
 
 /*
@@ -170,7 +174,6 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
  * based on the move
  */
 int translateOrnt(int orientation, turtleMove nextMove) {
-  // return orientation;
   switch (orientation){
     case NORTH:
       if (nextMove == MOVE_FORWARD) {
