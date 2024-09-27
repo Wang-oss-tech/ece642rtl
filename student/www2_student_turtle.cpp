@@ -144,7 +144,7 @@ void incrementVisits(int32_t x, int32_t y) {
 turtleMove studentTurtleStep(bool bumped) {
     static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
     
-
+    ROS_INFO("Student turtle step called Orig State: %d", currentState);
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState = STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
@@ -153,7 +153,7 @@ turtleMove studentTurtleStep(bool bumped) {
     } else {
         currentState = STATE_MOVE_FORWARD;
     }
-    ROS_INFO("Current State: %d", currentState);
+    ROS_INFO("New Current State: %d", currentState);
 
     // return turtleMove based on defined current state
     switch (currentState){
