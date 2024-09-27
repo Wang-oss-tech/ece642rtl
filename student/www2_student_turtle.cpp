@@ -76,20 +76,29 @@ void incrementVisits(int32_t x, int32_t y) {
 // }
 turtleMove studentTurtleStep(bool bumped) {
     static State currentState = STATE_TURN_LEFT;  // Initial state: turn left
+    static Flag movePending = false;             // Flag to track if a move is pending after a turn
 
     ROS_INFO("Student turtle step called. Current State: %d", currentState);
+    ROS_INFO("Move pending: %d", movePending);
 
     // If the turtle bumps into something, it should turn left
     if (bumped) {
         currentState = STATE_TURN_LEFT;
+        movePending = false;  // Reset the pending move since we're turning after a bump
     }
-    // If not bumped and the current state is turning, move forward next
-    else if (currentState == STATE_TURN_RIGHT || currentState == STATE_TURN_LEFT) {
+    // If a move is pending after a turn, execute the move
+    else if (movePending) {
         currentState = STATE_MOVE_FORWARD;
+        movePending = false;  // Reset the pending flag after the move
+    }
+    // If not bumped and the current state is turning, move forward next tick
+    else if (currentState == STATE_TURN_RIGHT || currentState == STATE_TURN_LEFT) {
+        movePending = true;   // Set the move to happen in the next tick
     }
     // After moving forward, turn right to follow the right-hand rule
     else if (currentState == STATE_MOVE_FORWARD) {
         currentState = STATE_TURN_RIGHT;
+        movePending = false;  // Ensure no move is pending after a turn
     }
 
     ROS_INFO("New Current State: %d", currentState);
@@ -106,3 +115,4 @@ turtleMove studentTurtleStep(bool bumped) {
             return MOVE_FORWARD;
     }
 }
+
