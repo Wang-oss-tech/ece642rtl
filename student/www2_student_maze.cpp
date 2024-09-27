@@ -70,9 +70,10 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   Flag shouldMove = false;
   Flag atEnd = false;
 
-  ROS_INFO("MOVE TURTLE CALLED - TIMER VALUE: %d", timer);
+  // ROS_INFO("MOVE TURTLE CALLED - TIMER VALUE: %d", timer);
 
   if (timer == TIMER_EXPIRED){
+    ROS_INFO("TIMER_EXPIRED START MOVE TURTLE: %d", timer)
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
