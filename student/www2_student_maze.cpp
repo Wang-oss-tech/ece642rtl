@@ -117,7 +117,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
 
     if ((nextMove == MOVE_FORWARD) && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
+      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
@@ -173,31 +173,40 @@ int translateOrnt(int orientation, turtleMove nextMove) {
   // return orientation;
   switch (orientation){
     case NORTH:
-      if (nextMove == MOVE_FORWARD) {
+      if (nextMove == TURN_RIGHT) {
         orientation = EAST;  // Turn right to face East
       } else if (nextMove == TURN_LEFT) { 
         orientation = WEST;  // Turn left to face West if bumped
-      } break;
+      } else {
+        orientation = NORTH;
+      } 
+      break;
     case EAST:
-      if (nextMove == MOVE_FORWARD) {
+      if (nextMove == TURN_RIGHT) {
         orientation = SOUTH;  // Turn right to face South
       } else if (nextMove == TURN_LEFT) { 
         orientation = NORTH;  // Turn left to face North if bumped
+      } else {
+        orientation = EAST;
       } 
       break;
     case SOUTH:
-      if (nextMove == MOVE_FORWARD) {
+      if (nextMove == TURN_RIGHT) {
         orientation = WEST;  // Turn right to face West
       } else if (nextMove == TURN_LEFT) { 
         orientation = EAST;  // Turn left to face East if bumped
-      } 
+      } else {
+        orientation = SOUTH;
+      }
       break;
     case WEST:
       if (nextMove == TURN_RIGHT) {
         orientation = NORTH;  // Turn right to face North
       } else if (nextMove == TURN_LEFT) { 
         orientation = SOUTH;  // Turn left to face South if bumped
-      } 
+      } else {
+        orientation = WEST;
+      }
       break;
     default:
       ROS_ERROR("Invalid orientation value 3: %d", orientation);
