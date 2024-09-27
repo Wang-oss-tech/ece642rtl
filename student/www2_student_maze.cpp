@@ -77,7 +77,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
     ROS_INFO("Orientation: %d", nw_or);
     ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
-    int old_nw_or = nw_or;
 
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
@@ -120,15 +119,16 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
 
     ROS_INFO("nextMove: %d", nextMove);
-    nw_or = translateOrnt (nw_or, nextMove);        // update orientation
+    nw_or = translateOrnt(nw_or, nextMove);        // update orientation
     ROS_INFO("Updates Orientation!: %d", nw_or);
     shouldMove = (nextMove == MOVE_FORWARD);
-
-    if (shouldMove && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
+    
+    if(nextMove == MOVE_FORWARD && !atEnd){
+      pos_ = translatePos(pos_, nextMove, nw_or); // moving forward
+    } else{
+      nw_or = translateOrnt(nw_or, nextMove); // change direction
     }
     ROS_INFO("Updated Position (X, Y): %f, %f", pos_.x(), pos_.y());
-
   }
 
   if (atEnd){
