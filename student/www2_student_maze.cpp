@@ -23,28 +23,132 @@
 
 #include "student.h"
 
+// Constants
+const int32_t TIMEOUT = 40;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMER_EXPIRED = 0;      // Timer expired value
+const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
+const int32_t MOVE_INCREMENT = 1;
+const int32_t MOVE_DECREMENT = -1;
+
+// Typedefs for future flexibility
+typedef int32_t State;    // typedef for state representation
+typedef bool Flag;        // typedef for boolean flag
+
+// Defining struct for Position
+typedef struct{
+  int32_t X;
+  int32_t Y;
+} Position;
+
+// Enum to represent direction/orientation
+enum Direction {
+  NORTH = 0,
+  EAST = 1,
+  SOUTH = 2,
+  WEST = 3
+};
+
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
  * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
  * This file interfaces with functions in student_turtle.cpp
+ * 
+ * nw_or = orientation pos_ = position
  */
-bool moveTurtle(QPointF& pos_, int& nw_or)
+bool moveTurtle(QPointF& pos_, int& nw_or) 
 {
-  bool bumped = true; // Replace with your own procedure
-  turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
-  pos_ = translatePos(pos_, nextMove);
-  nw_or = translateOrnt(nw_or, nextMove);
+  // bool bumped = true; // Replace with your own procedure
+  // turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
+  // pos_ = translatePos(pos_, nextMove);
+  // nw_or = translateOrnt(nw_or, nextMove);
 
-  // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  return studentMoveTurtle(pos_, nw_or);
+  // // REPLACE THE FOLLOWING LINE IN PROJECT 5
+  // return studentMoveTurtle(pos_, nw_or);
+  static int32_t timer = TIMEOUT;                   // timer for managing movement
+  static State currentState = STATE_TURN_LEFT;      // current state of turtle's movement
+  Position futureX1, futureY1, futureX2, futureY2;  // future posistions based on orientation
+  Flag bumpedFlag = false;
+  Flag shouldMove = false;
+  Flag atEnd = false;
+
+  ROS_INFO("MOVE TURTLE CALLED")
+
+
+  shouldMove = (nextMove == MOVE_FORWARD);
+
+  if (timer == TIMER_EXPIRED){
+    futureX1.X = pos_.x();
+    futureY1.Y = pos_.y();
+    futureX2.X = pos_.x();
+    futureY2.Y = pos_.y();
+
+    switch (nw_or){
+      case NORTH:
+        futureY2.Y += MOVE_INCREMENT; // moving north increases Y
+        break;
+      case EAST:
+        futureX2.X += MOVE_INCREMENT; // moving east increases x
+        break;
+      case SOUTH:
+        futureX2.X += MOVE_INCREMENT;
+        futureY2.Y += MOVE_INCREMENT; // moving south increases both X and Y (diagonal)
+        futureX1.X += MOVE_INCREMENT;
+        break;
+      case WEST:
+        futureX2.X += MOVE_INCREMENT;
+        futureY2.Y += MOVE_INCREMENT; // moving west increases both X and Y (diagonal)
+        futureY1.Y += MOVE_INCREMENT;
+        break;
+      default: 
+        ROS_ERROR("Invalid orientation value: %d", orientation);
+        break;
+    }
+
+    bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
+    atEnd = atend(pos_.x(), pos_.y());
+
+    // Call to studentTurtleStep() to determine next step based on whether a bump occurred
+    turtleMove nextMove = studentTurtleStep(bumpedFlag);
+
+    nw_or = translateOrnt (nw_or, nextMove);        // update orientation
+    shouldMove = (nextMove == MOVE_FORWARD)
+
+    if (shouldMove && !atEnd) {
+      pos_ = translatePos(pos_, nextMove);            // updates Position
+    }
+
+  }
+
+  if (atEnd){
+    return false;
+  }
+
+  timer = (timer === TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+  return (timer == TIMEOUT);
 }
 
 /*
  * Takes a position and a turtleMove and returns a new position
  * based on the move
  */
-QPointF translatePos(QPointF pos_, turtleMove nextMove) {
-  return pos_;
+QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
+  // return pos_;
+  switch (orientation){
+    case EAST:
+      pos_.setY(pos_.y() + MOVE_DECREMENT); // Move East (right)
+      break;
+    case SOUTH:
+      pos_.setX(pos_.x() + MOVE_INCREMENT); // Move South (down)
+      break;
+    case WEST:
+      pos_.setY(pos_.y() + MOVE_INCREMENT); // Move West (left)
+      break;
+    case NORTH:
+      pos_.setY(pos_.x() + MOVE_DECREMENT); // Move North (up)
+    default:
+      ROS_ERROR("Invalid orientation value: %d", orientation);
+      break;
+  }
 }
 
 /*
@@ -52,5 +156,37 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove) {
  * based on the move
  */
 int translateOrnt(int orientation, turtleMove nextMove) {
-  return orientation;
+  // return orientation;
+  switch (orientation){
+    case NORTH:
+      if (nextMove == MOVE_FORWARD){
+        orientation = EAST;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = WEST;         // Turn left to face West if bumped
+      }
+      break;
+    case EAST:
+      if (nextMove == MOVE_FORWARD){
+        orientation = SOUTH;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = NORTH;         // Turn left to face West if bumped
+      }
+      break;
+    case SOUTH:
+      if (nextMove == MOVE_FORWARD){
+        orientation = WEST;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = EAST;         // Turn left to face West if bumped
+      }
+      break;
+    case WEST:
+      if (nextMove == MOVE_FORWARD){
+        orientation = NORTH;           // Turn right to face East
+      } else if (nextMove == TURN_LEFT){ 
+        orientation = SOUTH;         // Turn left to face West if bumped
+      }
+      break;
+    default:
+      ROS_ERROR("Invalid orientation value: %d", orientation);
+  }
 }
