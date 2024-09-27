@@ -173,40 +173,32 @@ int translateOrnt(int orientation, turtleMove nextMove) {
   // return orientation;
   switch (orientation){
     case NORTH:
-      if (nextMove == TURN_RIGHT) {
+      if (nextMove == MOVE_FORWARD) {
         orientation = EAST;  // Turn right to face East
       } else if (nextMove == TURN_LEFT) { 
         orientation = WEST;  // Turn left to face West if bumped
-      } else {
-        orientation = NORTH;
       } 
       break;
     case EAST:
-      if (nextMove == TURN_RIGHT) {
+      if (nextMove == MOVE_FORWARD) {
         orientation = SOUTH;  // Turn right to face South
       } else if (nextMove == TURN_LEFT) { 
         orientation = NORTH;  // Turn left to face North if bumped
-      } else {
-        orientation = EAST;
       } 
       break;
     case SOUTH:
-      if (nextMove == TURN_RIGHT) {
+      if (nextMove == MOVE_FORWARD) {
         orientation = WEST;  // Turn right to face West
       } else if (nextMove == TURN_LEFT) { 
         orientation = EAST;  // Turn left to face East if bumped
-      } else {
-        orientation = SOUTH;
       }
       break;
     case WEST:
-      if (nextMove == TURN_RIGHT) {
+      if (nextMove == MOVE_FORWARD) {
         orientation = NORTH;  // Turn right to face North
       } else if (nextMove == TURN_LEFT) { 
         orientation = SOUTH;  // Turn left to face South if bumped
-      } else {
-        orientation = WEST;
-      }
+      } 
       break;
     default:
       ROS_ERROR("Invalid orientation value 3: %d", orientation);
