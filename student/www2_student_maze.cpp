@@ -133,7 +133,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  */
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
   // return pos_;
-  switch (orientation){
+  switch (nw_or){
     case EAST:
       pos_.setY(pos_.y() + MOVE_DECREMENT); // Move East (right)
       break;
