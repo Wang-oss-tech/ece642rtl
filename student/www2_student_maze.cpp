@@ -57,12 +57,6 @@ enum Direction {
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) 
 {
-  // bool bumped = true; // Replace with your own procedure
-  // turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
-  // pos_ = translatePos(pos_, nextMove);
-  // nw_or = translateOrnt(nw_or, nextMove);
-
-  // // REPLACE THE FOLLOWING LINE IN PROJECT 5
   // return studentMoveTurtle(pos_, nw_or);
   static int32_t timer = TIMEOUT;                   // timer for managing movement
   
@@ -77,6 +71,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
     ROS_INFO("Orientation: %d", nw_or);
     ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
+    int old_nw_or = nw_or;
 
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
@@ -119,14 +114,12 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
 
     ROS_INFO("nextMove: %d", nextMove);
-    nw_or = translateOrnt(nw_or, nextMove);        // update orientation
+    nw_or = translateOrnt (nw_or, nextMove);        // update orientation
     ROS_INFO("Updates Orientation!: %d", nw_or);
     shouldMove = (nextMove == MOVE_FORWARD);
-    
-    if(nextMove == MOVE_FORWARD && !atEnd){
-      pos_ = translatePos(pos_, nextMove, nw_or); // moving forward
-    } else{
-      nw_or = translateOrnt(nw_or, nextMove); // change direction
+
+    if (shouldMove && !atEnd) {
+      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
     }
     ROS_INFO("Updated Position (X, Y): %f, %f", pos_.x(), pos_.y());
   }
