@@ -48,22 +48,54 @@ void incrementVisits(int32_t x, int32_t y) {
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
-turtleMove studentTurtleStep(bool bumped) {
-    static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
+// turtleMove studentTurtleStep(bool bumped) {
+//     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     
-    ROS_INFO("Student turtle step called Orig State: %d", currentState);
-    // returns the move back to maze on what to do (depends on current state & whether it has bumped)
-    if (currentState == STATE_MOVE_FORWARD){
-        currentState = STATE_TURN_RIGHT;
-    } else if (bumped){
+//     ROS_INFO("Student turtle step called Orig State: %d", currentState);
+//     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
+//     if (currentState == STATE_MOVE_FORWARD){
+//         currentState = STATE_TURN_RIGHT;
+//     } else if (bumped){
+//         currentState = STATE_TURN_LEFT;
+//     } else {
+//         currentState = STATE_MOVE_FORWARD;
+//     }
+//     ROS_INFO("New Current State: %d", currentState);
+
+//     // return turtleMove based on defined current state
+//     switch (currentState){
+//         case STATE_MOVE_FORWARD:
+//             return MOVE_FORWARD;
+//         case STATE_TURN_LEFT:
+//             return TURN_LEFT;
+//         case STATE_TURN_RIGHT:
+//             return TURN_RIGHT;
+//         default:
+//             return MOVE_FORWARD;
+//     }
+// }
+turtleMove studentTurtleStep(bool bumped) {
+    static State currentState = STATE_TURN_LEFT;  // Initial state: turn left
+
+    ROS_INFO("Student turtle step called. Current State: %d", currentState);
+
+    // If the turtle bumps into something, it should turn left
+    if (bumped) {
         currentState = STATE_TURN_LEFT;
-    } else {
+    }
+    // If not bumped and the current state is turning, move forward next
+    else if (currentState == STATE_TURN_RIGHT || currentState == STATE_TURN_LEFT) {
         currentState = STATE_MOVE_FORWARD;
     }
+    // After moving forward, turn right to follow the right-hand rule
+    else if (currentState == STATE_MOVE_FORWARD) {
+        currentState = STATE_TURN_RIGHT;
+    }
+
     ROS_INFO("New Current State: %d", currentState);
 
-    // return turtleMove based on defined current state
-    switch (currentState){
+    // Return the turtle's next move based on its state
+    switch (currentState) {
         case STATE_MOVE_FORWARD:
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
