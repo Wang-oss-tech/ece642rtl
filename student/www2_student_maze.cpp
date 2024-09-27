@@ -100,7 +100,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         futureY1.Y += MOVE_INCREMENT;
         break;
       default: 
-        ROS_ERROR("Invalid orientation value: %d", orientation);
+        ROS_ERROR("Invalid orientation value: %d", nw_or);
         break;
     }
 
@@ -111,7 +111,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
 
     nw_or = translateOrnt (nw_or, nextMove);        // update orientation
-    shouldMove = (nextMove == MOVE_FORWARD)
+    shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
       pos_ = translatePos(pos_, nextMove);            // updates Position
@@ -123,7 +123,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     return false;
   }
 
-  timer = (timer === TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+  timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
   return (timer == TIMEOUT);
 }
 
