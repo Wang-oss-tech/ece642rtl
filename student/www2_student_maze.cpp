@@ -113,10 +113,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
     ROS_INFO("nextMove: %d", nextMove);
     ROS_INFO("Orientation: %d", nw_or);
-    if (nextMove == TURN_LEFT || nextMove == TURN_RIGHT){
-      nw_or = translateOrnt(nw_or, nextMove); // update orientation
-      ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
-    }
+    nw_or = translateOrnt(nw_or, nextMove); // update orientation
+    ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
 
     if ((nextMove == MOVE_FORWARD) && !atEnd) {
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
