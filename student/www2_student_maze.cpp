@@ -146,7 +146,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
     case NORTH:
       pos_.setY(pos_.x() + MOVE_DECREMENT); // Move North (up)
     default:
-      ROS_ERROR("Invalid orientation value: %d", orientation);
+      ROS_ERROR("Invalid orientation value: %d", nw_or);
       break;
   }
 }
