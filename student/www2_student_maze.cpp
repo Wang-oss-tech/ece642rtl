@@ -74,8 +74,9 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   // ROS_INFO("MOVE TURTLE CALLED - TIMER VALUE: %d", timer);
 
   if (timer == TIMER_EXPIRED){
-    ROS_INFO("TIMER_EXPIRED START MOVE TURTLE: %d", timer);
-    ROS_INFO("Before Updating Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
+    ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
+    ROS_INFO("Orientation: %d", nw_or);
+    ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
 
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
@@ -113,9 +114,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
     ROS_INFO("atEnd: %d", atEnd);
-
-
-
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     turtleMove nextMove = studentTurtleStep(bumpedFlag);
