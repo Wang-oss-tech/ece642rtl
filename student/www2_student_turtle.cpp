@@ -77,7 +77,7 @@ void incrementVisits(int32_t x, int32_t y) {
 turtleMove studentTurtleStep(bool bumped) {
     static State currentState = STATE_TURN_LEFT;  // Initial state: turn left
 
-    State old_currentState = currentState
+    State old_currentState = currentState;
 
     ROS_INFO("Student turtle step called. Current State: %d", currentState);
 
