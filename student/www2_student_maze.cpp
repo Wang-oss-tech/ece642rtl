@@ -85,23 +85,27 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("BEFORE future (X1, Y1): %d, %d - (X2, Y2): %d, %d", futureX1.X, futureY1.Y,futureX2.X, futureY2.Y);
     switch (nw_or){
       case NORTH:
-        futureY2.Y += MOVE_INCREMENT; // moving north increases Y
+        // futureY2.Y += MOVE_INCREMENT; // moving north increases Y
+        futureX2.X += MOVE_DECREMENT;
         ROS_INFO("ENTERS NORTH CASE");
         break;
       case EAST:
-        futureX2.X += MOVE_INCREMENT; // moving east increases x
+        // futureX2.X += MOVE_INCREMENT; // moving east increases x
+        futureY2.Y += MOVE_DECREMENT;
         ROS_INFO("ENTERS EAST CASE");
         break;
       case SOUTH:
+        // futureX2.X += MOVE_INCREMENT;
+        // futureY2.Y += MOVE_INCREMENT; // moving south increases both X and Y (diagonal)
+        // futureX1.X += MOVE_INCREMENT;
         futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; // moving south increases both X and Y (diagonal)
-        futureX1.X += MOVE_INCREMENT;
         ROS_INFO("ENTERS SOUTH CASE");
         break;
       case WEST:
-        futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; // moving west increases both X and Y (diagonal)
-        futureY1.Y += MOVE_INCREMENT;
+        // futureX2.X += MOVE_INCREMENT;
+        // futureY2.Y += MOVE_INCREMENT; // moving west increases both X and Y (diagonal)
+        // futureY1.Y += MOVE_INCREMENT;
+        futureY1.Y += MOVE_DECREMENT;
         ROS_INFO("ENTERS WEST CASE");
         break;
       default: 
