@@ -146,7 +146,7 @@ turtleMove studentTurtleStep(bool bumped) {
     
     ROS_INFO("Student turtle step called Orig State: %d", currentState);
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
-    if (currentState = STATE_MOVE_FORWARD){
+    if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
     } else if (bumped){
         currentState = STATE_TURN_LEFT;
