@@ -153,6 +153,7 @@ turtleMove studentTurtleStep(bool bumped) {
     } else {
         currentState = STATE_MOVE_FORWARD;
     }
+    ROS_INFO("Current State: %d", currentState);
 
     // return turtleMove based on defined current state
     switch (currentState){
