@@ -186,7 +186,7 @@ int translateOrnt(int orientation, turtleMove nextMove) {
       } 
       break;
     case SOUTH:
-      if (nextMove == MOEV_FORWARD) {
+      if (nextMove == MOVE_FORWARD) {
         orientation = WEST;  // Turn right to face West
       } else if (nextMove == TURN_LEFT) { 
         orientation = EAST;  // Turn left to face East if bumped
