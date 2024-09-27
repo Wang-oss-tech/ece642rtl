@@ -83,7 +83,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("futureX2_X: %d", futureX2.X);
     ROS_INFO("futureX2_Y: %d", futureX2.Y);
 
-
     switch (nw_or){
       case NORTH:
         futureY2.Y += MOVE_INCREMENT; // moving north increases Y
@@ -107,6 +106,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     }
 
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
+    ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
