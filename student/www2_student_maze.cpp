@@ -110,7 +110,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
-      pos_ = translatePos(pos_, nextMove);            // updates Position
+      pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
     }
 
   }
