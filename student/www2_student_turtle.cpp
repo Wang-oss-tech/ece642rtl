@@ -142,8 +142,6 @@ void incrementVisits(int32_t x, int32_t y) {
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
 turtleMove studentTurtleStep(bool bumped) {
-    static State currentState = STATE_TURN_LEFT; // Current state of the turtle's movement
-    
     ROS_INFO("Student turtle step called Orig State: %d", currentState);
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState = STATE_MOVE_FORWARD){
