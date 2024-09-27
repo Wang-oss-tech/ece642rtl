@@ -77,6 +77,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
     ROS_INFO("Orientation: %d", nw_or);
     ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
+    int old_nw_or = nw_or;
 
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
@@ -104,7 +105,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         futureY1.Y += MOVE_INCREMENT;
         ROS_INFO("ENTERS WEST CASE");
         break;
-      default: 
+      default:
         ROS_ERROR("Invalid orientation value: %d", nw_or);
         break;
     }
@@ -124,7 +125,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
+      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
     }
     ROS_INFO("Updated Position (X, Y): %f, %f", pos_.x(), pos_.y());
 
