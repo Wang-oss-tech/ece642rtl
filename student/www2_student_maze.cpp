@@ -106,10 +106,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         break;
     }
 
-    ROS_INFO("futureX1_X: %d", futureX1.X);
-    ROS_INFO("futureX1_Y: %d", futureY1.Y);
-    ROS_INFO("futureX2_X: %d", futureX2.X);
-    ROS_INFO("futureX2_Y: %d", futureY2.Y);
+    ROS_INFO("future (X1, Y1): %d", futureX1.X, futureY1.Y);
+    ROS_INFO("future (X2, Y2): %d", futureX2.X, futureY2.Y);
 
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
     ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
@@ -126,6 +124,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     if (shouldMove && !atEnd) {
       pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
     }
+    ROS_INFO("Updated Position (X, Y): %d, %d", pos_.x(), pos_.y());
 
   }
 
