@@ -165,7 +165,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
       ROS_ERROR("Invalid orientation value: %d", nw_or);
       break;
   }
-  return pos_
+  return pos_;
 }
 
 /*
