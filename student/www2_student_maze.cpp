@@ -100,7 +100,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("atEnd: %d", atEnd);
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
-    turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_ora);
+    turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or);
 
     ROS_INFO("nextMove: %d", nextMove);
     ROS_INFO("Orientation: %d", nw_or);
