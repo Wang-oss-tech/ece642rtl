@@ -114,8 +114,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       pos_ = translatePos(pos_, nextMove, old_nw_or);                   // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
 
-      int32_t diff_x = static_cast<int32_t>(old_pos_.x()) - static_cast<int32_t>(pos_.x());
-      int32_t diff_y = static_cast<int32_t>(old_pos_.y()) - static_cast<int32_t>(pos_.y());
+      int32_t diff_x = static_cast<int32_t>(pos_.x()) - static_cast<int32_t>(old_pos_.x());
+      int32_t diff_y = static_cast<int32_t>(pos_.y()) - static_cast<int32_t>(old_pos_.y());
 
       int relativeX = START_POS + diff_x;  // Translate absolute position to the internal 23x23 grid
       int relativeY = START_POS + diff_y;
