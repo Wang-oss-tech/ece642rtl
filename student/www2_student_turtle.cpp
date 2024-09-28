@@ -57,16 +57,16 @@ void incrementVisits(int32_t x, int32_t y) {
 void updatePosition() {
     switch (currentDirection) {
         case NORTH:
-            currentY += 1;  // Move north (up in Y axis)
+            currentX -= 1;  // Move north (up in Y axis)
             break;
         case EAST:
-            currentX += 1;  // Move east (right in X axis)
+            currentY -= 1;  // Move east (right in X axis)
             break;
         case SOUTH:
-            currentY -= 1;  // Move south (down in Y axis)
+            currentX += 1;  // Move south (down in Y axis)
             break;
         case WEST:
-            currentX -= 1;  // Move west (left in X axis)
+            currentY += 1;  // Move west (left in X axis)
             break;
     }
 }
