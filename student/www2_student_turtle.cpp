@@ -20,6 +20,8 @@ const int32_t STATE_MOVE_FORWARD = 2;
 const int32_t STATE_TURN_LEFT = 0;
 const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
+static int32_t relativeX = START_POS;
+static int32_t relativeY = START_POS;
 
 
 // Typedefs for readability and future flexibility
@@ -41,6 +43,27 @@ int32_t getVisits(int32_t x, int32_t y) {
  */
 void incrementVisits(int32_t x, int32_t y) {
     visitMap[x][y]++;
+}
+
+/**
+ * @brief Updates the current turtle's position based on its direction.
+ * The turtle moves forward by 1 unit based on the current direction.
+ */
+void updatePosition() {
+    switch (currentDirection) {
+        case NORTH:
+            currentX -= 1;  // Move north (up in Y axis)
+            break;
+        case EAST:
+            currentY -= 1;  // Move east (right in X axis)
+            break;
+        case SOUTH:
+            currentX += 1;  // Move south (down in Y axis)
+            break;
+        case WEST:
+            currentY += 1;  // Move west (left in X axis)
+            break;
+    }
 }
 
 /**
