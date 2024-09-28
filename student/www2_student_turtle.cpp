@@ -20,7 +20,6 @@ const int32_t STATE_MOVE_FORWARD = 2;
 const int32_t STATE_TURN_LEFT = 0;
 const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
-const int32_t START_POS = 11;         // starting position in center of 23x23 array
 
 
 // Typedefs for readability and future flexibility
