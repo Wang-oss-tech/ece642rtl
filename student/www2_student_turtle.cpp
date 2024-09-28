@@ -87,8 +87,6 @@ void updatePosition_turtle(int nw_or) {
 turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     
-    ROS_INFO("Student turtle step called Orig State: %d", currentState);
-    
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
@@ -97,15 +95,12 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     } else {
         currentState = STATE_MOVE_FORWARD;
     }
-    ROS_INFO("New Current State: %d", currentState);
 
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
-            ROS_INFO("ORIENT. FOR RELATIVE: %d", nw_or);
             updatePosition_turtle(nw_or); 
             incrementVisits(currentX, currentY); 
-            ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
             return TURN_LEFT;

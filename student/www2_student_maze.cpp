@@ -49,8 +49,6 @@ static int32_t relativeY = START_POS;
  * The turtle moves forward by 1 unit based on the current direction.
  */
 void updatePosition(int nw_or) {
-    ROS_INFO("UPDATE POSITION CALLED");
-    ROS_INFO("BEFORE: (X,Y) %d, %d", relativeX, relativeY);
     switch (nw_or) {
         case NORTH:
             relativeX -= 1;  // Move north (up in Y axis)
@@ -65,7 +63,6 @@ void updatePosition(int nw_or) {
             relativeY += 1;  // Move west (left in X axis)
             break;
     }
-    ROS_INFO("AFTER: (X,Y) %d, %d", relativeX, relativeY);
 }
 
 
@@ -86,72 +83,53 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   Flag atEnd = false;
 
   if (timer == TIMER_EXPIRED){
-    ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
-    ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
     int old_nw_or = nw_or;
     Flag shouldMove = false;            // Flag to determine if turtle should move
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
-    ROS_INFO("BEFORE future (X1, Y1): %d, %d - (X2, Y2): %d, %d", futureX1.X, futureY1.Y,futureX2.X, futureY2.Y);
     switch (nw_or){
       case NORTH:
         futureY2.Y += MOVE_INCREMENT; // moving north increases Y
-        ROS_INFO("ENTERS NORTH CASE");
         break;
       case EAST:
         futureX2.X += MOVE_INCREMENT; // moving east increases x
-        ROS_INFO("ENTERS EAST CASE");
         break;
       case SOUTH:
         futureX2.X += MOVE_INCREMENT;
         futureY2.Y += MOVE_INCREMENT; // moving south increases both X and Y (diagonal)
         futureX1.X += MOVE_INCREMENT;
-        ROS_INFO("ENTERS SOUTH CASE");
         break;
       case WEST:
         futureX2.X += MOVE_INCREMENT;
         futureY2.Y += MOVE_INCREMENT; // moving west increases both X and Y (diagonal)
         futureY1.Y += MOVE_INCREMENT;
-        ROS_INFO("ENTERS WEST CASE");
         break;
       default:
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
         break;
     }
-    ROS_INFO("BEFORE future (X1, Y1): %d, %d - (X2, Y2): %d, %d", futureX1.X, futureY1.Y,futureX2.X, futureY2.Y);
 
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-    ROS_INFO("BUMPEDFLAG: %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
-    ROS_INFO("atEnd: %d", atEnd);
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or);
 
-    ROS_INFO("nextMove: %d", nextMove);
-    ROS_INFO("Orientation: %d", nw_or);
 
     nw_or = translateOrnt(nw_or, nextMove); // update orientation
-    ROS_INFO("UPDATE ORIENTATION AT THIS TICK: %d", nw_or);
     shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
       QPointF old_pos_ = pos_;
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
-      ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
-      ROS_INFO("PREVIOUS POSITION (X, Y): %f, %f", old_pos_.x(), old_pos_.y());
 
       updatePosition(nw_or);
-      ROS_INFO("RELATIVE POSITION (X, Y): %d, %d", relativeX, relativeY);
-
-
       int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
       displayVisits(visits);  // Update the display with the visit count
       shouldMove = false;
     }
-    ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
   }
 
   if (atEnd){
@@ -171,24 +149,16 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
   if (nextMove == MOVE_FORWARD){
     switch (nw_or){
       case EAST:
-        ROS_INFO("BEFORE EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
         pos_.setY(pos_.y() + MOVE_DECREMENT); // Move East (right)
-        ROS_INFO("AFTER EAST Position (X, Y): %f, %f", pos_.x(), pos_.y());
         break;
       case SOUTH:
-        ROS_INFO("BEFORE SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
         pos_.setX(pos_.x() + MOVE_INCREMENT); // Move South (down)
-        ROS_INFO("AFTER SOUTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
         break;
       case WEST:
-        ROS_INFO("BEFORE WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
         pos_.setY(pos_.y() + MOVE_INCREMENT); // Move West (left)
-        ROS_INFO("AFTER WEST Position (X, Y): %f, %f", pos_.x(), pos_.y());
         break;
       case NORTH:
-        ROS_INFO("BEFORE NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
         pos_.setX(pos_.x() + MOVE_DECREMENT); // Move North (up)
-        ROS_INFO("AFTER NORTH Position (X, Y): %f, %f", pos_.x(), pos_.y());
         break;
       default:
         ROS_ERROR("Invalid orientation value 2: %d", nw_or);
