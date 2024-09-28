@@ -123,6 +123,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
 
       int visits = getVisits(static_cast<int32_t>(pos_.x() + START_POS), static_cast<int32_t>(pos_.y() + START_POS));
+      displayVisits(visits);
       shouldMove = false;
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
