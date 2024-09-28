@@ -24,7 +24,7 @@
 #include "student.h"
 
 // Constants
-const int32_t TIMEOUT = 40;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMEOUT = 1;           // Timer value to slow down the simulation for better visibility
 const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
 const int32_t MOVE_INCREMENT = 1;
@@ -84,26 +84,26 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
   if (timer == TIMER_EXPIRED){
     int old_nw_or = nw_or;
-    Flag shouldMove = false;            // Flag to determine if turtle should move
+    Flag shouldMove = false; // Flag to determine if turtle should move
     futureX1.X = pos_.x();
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
     switch (nw_or){
-      case NORTH:
-        futureY2.Y += MOVE_INCREMENT; // moving north increases Y
+      case NORTH: // moving north increases Y
+        futureY2.Y += MOVE_INCREMENT; 
         break;
-      case EAST:
-        futureX2.X += MOVE_INCREMENT; // moving east increases x
+      case EAST: // moving east increases x
+        futureX2.X += MOVE_INCREMENT; 
         break;
-      case SOUTH:
+      case SOUTH: // moving south increases both X and Y (diagonal)
         futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; // moving south increases both X and Y (diagonal)
+        futureY2.Y += MOVE_INCREMENT; 
         futureX1.X += MOVE_INCREMENT;
         break;
-      case WEST:
+      case WEST: // moving west increases both X and Y (diagonal)
         futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; // moving west increases both X and Y (diagonal)
+        futureY2.Y += MOVE_INCREMENT; 
         futureY1.Y += MOVE_INCREMENT;
         break;
       default:
@@ -145,7 +145,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  * based on the move
  */
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
-  // return pos_;
   if (nextMove == MOVE_FORWARD){
     switch (nw_or){
       case EAST:
