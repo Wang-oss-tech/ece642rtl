@@ -40,13 +40,6 @@ typedef struct{
   int32_t Y;
 } Position;
 
-// Enum to represent direction/orientation
-enum Direction {
-  NORTH = 0,
-  EAST = 1,
-  SOUTH = 2,
-  WEST = 3
-};
 
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
@@ -119,6 +112,12 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     if (shouldMove && !atEnd) {
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
+
+      int relativeX = static_cast<int32_t>(pos_.x()) + START_POS;  // Translate absolute position to the internal 23x23 grid
+      int relativeY = static_cast<int32_t>(pos_.y()) + START_POS;
+            
+      int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
+      displayVisits(visits);  // Update the display with the visit count
       shouldMove = false;
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());

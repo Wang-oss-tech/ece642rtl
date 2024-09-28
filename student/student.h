@@ -22,10 +22,21 @@ enum turtleMove{
     TURN_RIGHT
 };
 
+// Enum to represent direction/orientation
+enum Direction {
+  NORTH = 0,
+  EAST = 1,
+  SOUTH = 2,
+  WEST = 3
+};
+
 // Scope-preserving changes to these lines permitted (see p5 writeup)
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
+
+int32_t getVisits(int32_t x, int32_t y) 
+void incrementVisits(int32_t x, int32_t y)
 
 // OK to change below this line
 // bool studentMoveTurtle(QPointF& pos_, int& nw_or);

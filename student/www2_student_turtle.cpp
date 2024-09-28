@@ -30,6 +30,12 @@ typedef bool Flag;           // Typedef for boolean flags
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
+// Static variables to track turtle's current & previous positions
+static int32_t currentX = START_POS;  // Current relative X position of the turtle
+static int32_t currentY = START_POS;  // Current relative Y position of the turtle
+static int32_t prevX = START_POS;     // Previous relative X position
+static int32_t prevY = START_POS;     // Previous relative Y position
+
 /**
  * @brief Function to get the number of visits to a specific cell.
  */
@@ -42,6 +48,41 @@ int32_t getVisits(int32_t x, int32_t y) {
  */
 void incrementVisits(int32_t x, int32_t y) {
     visitMap[x][y]++;
+}
+
+/**
+ * @brief Updates the current turtle's position based on its direction.
+ * The turtle moves forward by 1 unit based on the current direction.
+ */
+void updatePosition() {
+    switch (currentDirection) {
+        case NORTH:
+            currentY += 1;  // Move north (up in Y axis)
+            break;
+        case EAST:
+            currentX += 1;  // Move east (right in X axis)
+            break;
+        case SOUTH:
+            currentY -= 1;  // Move south (down in Y axis)
+            break;
+        case WEST:
+            currentX -= 1;  // Move west (left in X axis)
+            break;
+    }
+}
+
+/**
+ * @brief Updates the current direction based on the next move.
+ * Turns the turtle left or right by adjusting the internal direction.
+ */
+void updateDirection(turtleMove nextMove) {
+    if (nextMove == TURN_LEFT) {
+        // Turn left (counterclockwise)
+        currentDirection = static_cast<Direction>((currentDirection + 3) % 4);  // Equivalent to subtracting 1 mod 4
+    } else if (nextMove == TURN_RIGHT) {
+        // Turn right (clockwise)
+        currentDirection = static_cast<Direction>((currentDirection + 1) % 4);  // Equivalent to adding 1 mod 4
+    }
 }
 
 /**
@@ -65,10 +106,13 @@ turtleMove studentTurtleStep(bool bumped) {
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
+            updatePosition();  // Move forward (adjust relative coordinates)
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
+            updateDirection(TURN_LEFT);  // Turn left (adjust internal direction)
             return TURN_LEFT;
         case STATE_TURN_RIGHT:
+            updateDirection(TURN_RIGHT);  // Turn right (adjust internal direction)
             return TURN_RIGHT;
         default:
             return MOVE_FORWARD;
