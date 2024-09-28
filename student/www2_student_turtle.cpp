@@ -1,15 +1,3 @@
-/*
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
- *
- * STUDENT NAME: William Wang
- * ANDREW ID: www2    
- * LAST UPDATE: 9/8/2024
- *
- * This file is an algorithm to solve the ece642rtle maze
- * using the right-hand rule.
- */
-
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
@@ -21,48 +9,56 @@ const int32_t START_POS = 11;         // starting position in center of 23x23 ar
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
 
-// Static array to keep track of visits to each cell (relative to turtle’s starting position)
+// Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
+// Variables to track the turtle's current and previous positions
+static int32_t currentX = START_POS;  // Current relative X position of the turtle
+static int32_t currentY = START_POS;  // Current relative Y position of the turtle
+static int32_t prevX = START_POS;     // Previous relative X position
+static int32_t prevY = START_POS;     // Previous relative Y position
+
 /**
- * @brief Function to get the number of visits to a specific cell.
+ * @brief Function to get the number of visits to the current cell.
  */
-int32_t getVisits(int32_t x, int32_t y) {
-    return visitMap[x][y];
+int32_t getVisitCount() {
+    return visitMap[currentX][currentY];
 }
 
 /**
- * @brief Function to increment the number of visits to a specific cell.
+ * @brief Function to increment the number of visits to the current cell.
  */
-void incrementVisits(int32_t x, int32_t y) {
-    visitMap[x][y]++;
+void incrementVisits() {
+    visitMap[currentX][currentY]++;
 }
 
 /**
- * @brief Function decided the next move the turtle should make.
- * `bumpedFlag` tells us whether the turtle hit a wall in front.
+ * @brief Function to handle the turtle's movement and track visits.
+ * @param bumped - boolean flag indicating if the turtle hit a wall
+ * @return turtleMove - the next move the turtle should make
  */
-turtleMove studentTurtleStep(bool bumped, int32_t& visitCount, int32_t x, int32_t y) {
-    static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
-
-    // Update visit count in turtle's local map
-    incrementVisits(x, y);
-    visitCount = getVisits(x, y);  // Send the visit count back to the maze
-
-    ROS_INFO("Student turtle step called Orig State: %d", currentState);
+turtleMove studentTurtleStep(bool bumped) {
+    static State currentState = STATE_MOVE_FORWARD;  // Current state of the turtle's movement
     
-    // Determine the next move based on the turtle's current state
-    if (currentState == STATE_MOVE_FORWARD){
-        currentState = STATE_TURN_RIGHT;
-    } else if (bumped){
+    ROS_INFO("Student turtle step called. Current State: %d", currentState);
+
+    // If the turtle has moved to a new cell, increment the visit count
+    if (currentX != prevX || currentY != prevY) {
+        incrementVisits();  // Increment the visit count for the new cell
+        prevX = currentX;   // Update previous position
+        prevY = currentY;
+    }
+
+    // Determine the next move
+    if (bumped) {
         currentState = STATE_TURN_LEFT;
+    } else if (currentState == STATE_MOVE_FORWARD) {
+        currentState = STATE_TURN_RIGHT;
     } else {
         currentState = STATE_MOVE_FORWARD;
     }
 
-    ROS_INFO("New Current State: %d", currentState);
-
-    // Return the turtleMove based on the current state
+    // Return the turtle's next move
     switch (currentState) {
         case STATE_MOVE_FORWARD:
             return MOVE_FORWARD;
