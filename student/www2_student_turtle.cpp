@@ -104,7 +104,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         case STATE_MOVE_FORWARD:
             updatePosition(); 
-            // incrementVisits(currentX, currentY); 
+            incrementVisits(currentX, currentY); 
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
             return TURN_LEFT;
