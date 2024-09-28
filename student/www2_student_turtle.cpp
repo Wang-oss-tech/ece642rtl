@@ -14,20 +14,14 @@
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
 // Define size of the maze array
-
-// Constants for various states and timeout values
-const int32_t STATE_MOVE_FORWARD = 2;
-const int32_t STATE_TURN_LEFT = 0;
-const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
 const int32_t START_POS = 11;         // starting position in center of 23x23 array
-
 
 // Typedefs for readability and future flexibility
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
 
-// Static array to keep track of visits to each cell
+// Static array to keep track of visits to each cell (relative to turtle’s starting position)
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
 /**
@@ -48,11 +42,16 @@ void incrementVisits(int32_t x, int32_t y) {
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
-turtleMove studentTurtleStep(bool bumped) {
+turtleMove studentTurtleStep(bool bumped, int32_t& visitCount, int32_t x, int32_t y) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
-    
+
+    // Update visit count in turtle's local map
+    incrementVisits(x, y);
+    visitCount = getVisits(x, y);  // Send the visit count back to the maze
+
     ROS_INFO("Student turtle step called Orig State: %d", currentState);
-    // returns the move back to maze on what to do (depends on current state & whether it has bumped)
+    
+    // Determine the next move based on the turtle's current state
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
     } else if (bumped){
@@ -60,10 +59,11 @@ turtleMove studentTurtleStep(bool bumped) {
     } else {
         currentState = STATE_MOVE_FORWARD;
     }
+
     ROS_INFO("New Current State: %d", currentState);
 
-    // return turtleMove based on defined current state
-    switch (currentState){
+    // Return the turtleMove based on the current state
+    switch (currentState) {
         case STATE_MOVE_FORWARD:
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
