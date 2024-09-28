@@ -24,7 +24,7 @@
 #include "student.h"
 
 // Constants
-const int32_t TIMEOUT = 2;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMEOUT = 1;           // Timer value to slow down the simulation for better visibility
 const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
 const int32_t MOVE_INCREMENT = 1;
@@ -39,6 +39,31 @@ typedef struct{
   int32_t X;
   int32_t Y;
 } Position;
+
+// Position Count
+static int32_t relativeX = START_POS;
+static int32_t relativeY = START_POS;
+
+/**
+ * @brief Updates the current turtle's position based on its direction.
+ * The turtle moves forward by 1 unit based on the current direction.
+ */
+void updatePosition(int nw_or) {
+    switch (nw_or) {
+        case NORTH:
+            relativeX -= 1;  // Move north (up in Y axis)
+            break;
+        case EAST:
+            relativeY -= 1;  // Move east (right in X axis)
+            break;
+        case SOUTH:
+            relativeX += 1;  // Move south (down in Y axis)
+            break;
+        case WEST:
+            relativeY += 1;  // Move west (left in X axis)
+            break;
+    }
+}
 
 
 /*
@@ -113,6 +138,14 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       QPointF old_pos_ = pos_;
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
+      ROS_INFO("PREVIOUS POSITION (X, Y): %f, %f", old_pos_.x(), old_pos_.y());
+
+      updatePosition(old_nw_or);
+      ROS_INFO("RELATIVE POSITION (X, Y): %d, %d", relativeX, relativeY);
+
+
+      int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
+      displayVisits(visits);  // Update the display with the visit count
       shouldMove = false;
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());
