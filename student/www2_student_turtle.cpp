@@ -22,7 +22,6 @@ const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MAZE_SIZE = 100;         // size of internal tracking array (23x23)
 static int32_t relativeX = START_POS;
 static int32_t relativeY = START_POS;
-static Direction currentDirection = NORTH;  // Initial orientation of the turtle
 static int32_t currentX = START_POS;  // Current relative X position of the turtle
 static int32_t currentY = START_POS;  // Current relative Y position of the turtle
 static int32_t prevX = START_POS;     // Previous relative X position
@@ -64,8 +63,8 @@ void incrementVisits(int32_t x, int32_t y) {
  * @brief Updates the current turtle's position based on its direction.
  * The turtle moves forward by 1 unit based on the current direction.
  */
-void updatePosition() {
-    switch (currentDirection) {
+void updatePosition(int nw_or) {
+    switch (nw_or) {
         case NORTH:
             currentX -= 1;  // Move north (up in Y axis)
             break;
@@ -104,7 +103,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         case STATE_MOVE_FORWARD:
             ROS_INFO("ORIENT. FOR RELATIVE: %d", nw_or);
-            updatePosition(); 
+            updatePosition(nw_or); 
             incrementVisits(currentX, currentY); 
             ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
             return MOVE_FORWARD;
