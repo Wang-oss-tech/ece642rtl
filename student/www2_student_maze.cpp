@@ -140,7 +140,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
       ROS_INFO("PREVIOUS POSITION (X, Y): %f, %f", old_pos_.x(), old_pos_.y());
 
-      updatePosition(old_nw_or);
+      updatePosition(nw_or);
       ROS_INFO("RELATIVE POSITION (X, Y): %d, %d", relativeX, relativeY);
 
 
