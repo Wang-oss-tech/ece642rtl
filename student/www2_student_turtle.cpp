@@ -1,72 +1,31 @@
-#include "student.h"
-#include <stdint.h>  // Include stdint.h for fixed-width integer types
+#include <ros/ros.h>
+#include <boost/bind.hpp>
+#include <ece642rtle/timeInt8.h>
+#include <std_msgs/Empty.h>
+#include <ece642rtle/RTIbump.h>
+#include <ece642rtle/RTIatend.h>
+#include <ece642rtle/PoseOrntBundle.h>
+#include <ece642rtle/bumpEcho.h>
+#include <ece642rtle/aendEcho.h>
+#include <QPointF>
 
-// Define size of the maze array
-const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
-const int32_t START_POS = 11;         // starting position in center of 23x23 array
+// Functions to interface with ROS. Don't change these lines!
+bool bumped(int x1,int y1,int x2,int y2);
+bool atend(int x, int y);
+void displayVisits(int visits);
+bool moveTurtle(QPointF& pos_, int& nw_or);
 
-// Typedefs for readability and future flexibility
-typedef int32_t State;       // Typedef for state representation
-typedef bool Flag;           // Typedef for boolean flags
+// Turtle movement enumeration
+enum turtleMove{
+    MOVE_FORWARD,
+    TURN_LEFT,
+    TURN_RIGHT
+};
 
-// Static array to keep track of visits to each cell
-static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
+// Scope-preserving changes to these lines permitted (see p5 writeup)
+QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
+int translateOrnt(int orientation, turtleMove nextMove);
+turtleMove studentTurtleStep(bool bumped);
 
-// Variables to track the turtle's current and previous positions
-static int32_t currentX = START_POS;  // Current relative X position of the turtle
-static int32_t currentY = START_POS;  // Current relative Y position of the turtle
-static int32_t prevX = START_POS;     // Previous relative X position
-static int32_t prevY = START_POS;     // Previous relative Y position
-
-/**
- * @brief Function to get the number of visits to the current cell.
- */
-int32_t getVisitCount() {
-    return visitMap[currentX][currentY];
-}
-
-/**
- * @brief Function to increment the number of visits to the current cell.
- */
-void incrementVisits() {
-    visitMap[currentX][currentY]++;
-}
-
-/**
- * @brief Function to handle the turtle's movement and track visits.
- * @param bumped - boolean flag indicating if the turtle hit a wall
- * @return turtleMove - the next move the turtle should make
- */
-turtleMove studentTurtleStep(bool bumped) {
-    static State currentState = STATE_MOVE_FORWARD;  // Current state of the turtle's movement
-    
-    ROS_INFO("Student turtle step called. Current State: %d", currentState);
-
-    // If the turtle has moved to a new cell, increment the visit count
-    if (currentX != prevX || currentY != prevY) {
-        incrementVisits();  // Increment the visit count for the new cell
-        prevX = currentX;   // Update previous position
-        prevY = currentY;
-    }
-
-    // Determine the next move
-    if (bumped) {
-        currentState = STATE_TURN_LEFT;
-    } else if (currentState == STATE_MOVE_FORWARD) {
-        currentState = STATE_TURN_RIGHT;
-    } else {
-        currentState = STATE_MOVE_FORWARD;
-    }
-
-    // Return the turtle's next move
-    switch (currentState) {
-        case STATE_MOVE_FORWARD:
-            return MOVE_FORWARD;
-        case STATE_TURN_LEFT:
-            return TURN_LEFT;
-        case STATE_TURN_RIGHT:
-            return TURN_RIGHT;
-        default:
-            return MOVE_FORWARD;
-    }
-}
+// OK to change below this line
+// bool studentMoveTurtle(QPointF& pos_, int& nw_or);
