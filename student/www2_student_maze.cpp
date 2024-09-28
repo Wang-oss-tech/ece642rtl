@@ -119,7 +119,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, nw_or);            // updates Position
+      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
       shouldMove = false;
     }
