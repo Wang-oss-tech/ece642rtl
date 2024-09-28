@@ -110,13 +110,15 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     shouldMove = (nextMove == MOVE_FORWARD);
 
     if (shouldMove && !atEnd) {
-      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
+      QPointF old_pos_ = pos_;
+      pos_ = translatePos(pos_, nextMove, old_nw_or);                   // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
 
-      
+      int32_t diff_x = static_cast<int32_t>(old_pos_.x()) - static_cast<int32_t>(pos_.x());
+      int32_t diff_y = static_cast<int32_t>(old_pos_.y()) - static_cast<int32_t>(pos_.y());
 
-      int relativeX = static_cast<int32_t>(pos_.x()) + START_POS;  // Translate absolute position to the internal 23x23 grid
-      int relativeY = static_cast<int32_t>(pos_.y()) + START_POS;
+      int relativeX = START_POS + diff_x;  // Translate absolute position to the internal 23x23 grid
+      int relativeY = START_POS + diff_y;
 
       ROS_INFO("Absolute Position (X, Y): %f, %f", pos_.x(), pos_.y());
       ROS_INFO("Translated Position (Relative X, Y): %d, %d", relativeX, relativeY);
