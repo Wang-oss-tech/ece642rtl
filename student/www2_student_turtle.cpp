@@ -36,7 +36,6 @@ static int32_t prevX = START_POS;     // Previous relative X position
 static int32_t prevY = START_POS;     // Previous relative Y position
 static Direction currentDirection = NORTH;  // Initial orientation of the turtle
 
-
 /**
  * @brief Function to get the number of visits to a specific cell.
  */
@@ -73,24 +72,10 @@ void updatePosition() {
 }
 
 /**
- * @brief Updates the current direction based on the next move.
- * Turns the turtle left or right by adjusting the internal direction.
- */
-void updateDirection(turtleMove nextMove) {
-    if (nextMove == TURN_LEFT) {
-        // Turn left (counterclockwise)
-        currentDirection = static_cast<Direction>((currentDirection + 3) % 4);  // Equivalent to subtracting 1 mod 4
-    } else if (nextMove == TURN_RIGHT) {
-        // Turn right (clockwise)
-        currentDirection = static_cast<Direction>((currentDirection + 1) % 4);  // Equivalent to adding 1 mod 4
-    }
-}
-
-/**
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
-turtleMove studentTurtleStep(bool bumped) {
+turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     
     ROS_INFO("Student turtle step called Orig State: %d", currentState);
@@ -99,7 +84,7 @@ turtleMove studentTurtleStep(bool bumped) {
         prevX = currentX;   // Update previous position
         prevY = currentY;
     }
-    
+
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
@@ -113,13 +98,11 @@ turtleMove studentTurtleStep(bool bumped) {
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
-            updatePosition();  // Move forward (adjust relative coordinates)
+            updatePosition();  
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
-            updateDirection(TURN_LEFT);  // Turn left (adjust internal direction)
             return TURN_LEFT;
         case STATE_TURN_RIGHT:
-            updateDirection(TURN_RIGHT);  // Turn right (adjust internal direction)
             return TURN_RIGHT;
         default:
             return MOVE_FORWARD;

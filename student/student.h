@@ -35,7 +35,7 @@ enum Direction {
 // Scope-preserving changes to these lines permitted (see p5 writeup)
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
-turtleMove studentTurtleStep(bool bumped);
+turtleMove studentTurtleStep(bool bumped, int nw_or);
 
 int32_t getVisits(int32_t x, int32_t y);
 void incrementVisits(int32_t x, int32_t y);
