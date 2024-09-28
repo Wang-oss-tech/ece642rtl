@@ -63,7 +63,7 @@ void incrementVisits(int32_t x, int32_t y) {
  * @brief Updates the current turtle's position based on its direction.
  * The turtle moves forward by 1 unit based on the current direction.
  */
-void updatePosition(int nw_or) {
+void updatePosition_turtle(int nw_or) {
     switch (nw_or) {
         case NORTH:
             currentX -= 1;  // Move north (up in Y axis)
@@ -103,7 +103,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         case STATE_MOVE_FORWARD:
             ROS_INFO("ORIENT. FOR RELATIVE: %d", nw_or);
-            updatePosition(nw_or); 
+            updatePosition_turtle(nw_or); 
             incrementVisits(currentX, currentY); 
             ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
             return MOVE_FORWARD;
