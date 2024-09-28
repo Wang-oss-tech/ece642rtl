@@ -22,6 +22,8 @@ const int32_t STATE_TURN_RIGHT = 1;
 const int32_t MAZE_SIZE = 23;         // size of internal tracking array (23x23)
 static int32_t relativeX = START_POS;
 static int32_t relativeY = START_POS;
+static Direction currentDirection = NORTH;  // Initial orientation of the turtle
+
 
 
 // Typedefs for readability and future flexibility
