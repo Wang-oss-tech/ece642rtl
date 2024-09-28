@@ -85,7 +85,6 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         prevY = currentY;
     }
 
-    ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
 
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
@@ -101,6 +100,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         case STATE_MOVE_FORWARD:
             updatePosition();  
+            ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
             return TURN_LEFT;
