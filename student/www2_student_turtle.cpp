@@ -103,6 +103,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
+            ROS_INFO("ORIENT. FOR RELATIVE: %d", nw_or);
             updatePosition(); 
             incrementVisits(currentX, currentY); 
             ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
