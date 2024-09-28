@@ -125,8 +125,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       ROS_INFO("DIFFERECE Y: %d", diff_y);
 
 
-      static int32_t relativeX += diff_x;  // Translate absolute position to the internal 23x23 grid
-      static int32_t relativeY += diff_y;
+      relativeX += diff_x;  // Translate absolute position to the internal 23x23 grid
+      relativeY += diff_y;
 
       ROS_INFO("Absolute Position (X, Y): %f, %f", pos_.x(), pos_.y());
       ROS_INFO("Translated Position (Relative X, Y): %d, %d", relativeX, relativeY);
