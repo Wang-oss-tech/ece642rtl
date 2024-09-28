@@ -85,6 +85,8 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         prevY = currentY;
     }
 
+    ROS_INFO("TURTLE (Relative X, Y): %d, %d", currentX, currentY);
+
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
