@@ -6,6 +6,7 @@ const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
 const int32_t MOVE_INCREMENT = 1;
 const int32_t MOVE_DECREMENT = -1;
+const int32_t START_POS = 11;
 
 // Typedefs for future flexibility
 typedef int32_t State;    // typedef for state representation
