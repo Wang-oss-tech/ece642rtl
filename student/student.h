@@ -35,8 +35,8 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
 turtleMove studentTurtleStep(bool bumped);
 
-int32_t getVisits(int32_t x, int32_t y) 
-void incrementVisits(int32_t x, int32_t y)
+int32_t getVisits(int32_t x, int32_t y);
+void incrementVisits(int32_t x, int32_t y);
 
 // OK to change below this line
 // bool studentMoveTurtle(QPointF& pos_, int& nw_or);
