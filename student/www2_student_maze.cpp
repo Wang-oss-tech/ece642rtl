@@ -64,8 +64,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   Flag bumpedFlag = false;
   Flag atEnd = false;
 
-  // ROS_INFO("MOVE TURTLE CALLED - TIMER VALUE: %d", timer);
-
   if (timer == TIMER_EXPIRED){
     ROS_INFO("\n\nTIMER_EXPIRED START MOVE TURTLE: %d", timer);
     ROS_INFO("Inputted Position (X, Y) 1: %f, %f", pos_.x(), pos_.y());
