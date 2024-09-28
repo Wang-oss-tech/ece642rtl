@@ -29,8 +29,6 @@ const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
 const int32_t MOVE_INCREMENT = 1;
 const int32_t MOVE_DECREMENT = -1;
-const int32_t START_POS = 11;         // starting position in center of 23x23 array
-
 
 // Typedefs for future flexibility
 typedef int32_t State;    // typedef for state representation
@@ -121,9 +119,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     if (shouldMove && !atEnd) {
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       ROS_INFO("UPDATE POSITION (X, Y): %f, %f", pos_.x(), pos_.y());
-
-      int visits = getVisits(static_cast<int32_t>(pos_.x() + START_POS), static_cast<int32_t>(pos_.y() + START_POS));
-      displayVisits(visits);
       shouldMove = false;
     }
     ROS_INFO("Position at this tick (X, Y): %f, %f", pos_.x(), pos_.y());

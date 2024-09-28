@@ -1,15 +1,3 @@
-/*
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
- *
- * STUDENT NAME: William Wang
- * ANDREW ID: www2    
- * LAST UPDATE: 9/8/2024
- *
- * This file is an algorithm to solve the ece642rtle maze
- * using the right-hand rule.
- */
-
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
