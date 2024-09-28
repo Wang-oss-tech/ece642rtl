@@ -34,12 +34,15 @@ const int32_t MOVE_DECREMENT = -1;
 typedef int32_t State;    // typedef for state representation
 typedef bool Flag;        // typedef for boolean flag
 
+// Position Count
+static int32_t relativeX = START_POS;
+static int32_t relativeY = START_POS;
+
 // Defining struct for Position
 typedef struct{
   int32_t X;
   int32_t Y;
 } Position;
-
 
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
@@ -122,8 +125,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       ROS_INFO("DIFFERECE Y: %d", diff_y);
 
 
-      int relativeX = START_POS + diff_x;  // Translate absolute position to the internal 23x23 grid
-      int relativeY = START_POS + diff_y;
+      static int32_t relativeX += diff_x;  // Translate absolute position to the internal 23x23 grid
+      static int32_t relativeY += diff_y;
 
       ROS_INFO("Absolute Position (X, Y): %f, %f", pos_.x(), pos_.y());
       ROS_INFO("Translated Position (Relative X, Y): %d, %d", relativeX, relativeY);
