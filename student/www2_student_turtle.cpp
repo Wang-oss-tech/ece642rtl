@@ -63,12 +63,12 @@ turtleMove studentTurtleStep(bool bumped) {
 
     // If the turtle has moved to a new cell, increment the visit count
     if (currentX != prevX || currentY != prevY) {
-        incrementVisits();  // Increment the visit count for the new cell
+        incrementVisits(currentX, currentY);  // Increment the visit count for the new cell
         prevX = currentX;   // Update previous position
         prevY = currentY;
     }
 
-    
+
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
