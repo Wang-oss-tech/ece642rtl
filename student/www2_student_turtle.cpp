@@ -24,8 +24,6 @@ static int32_t relativeX = START_POS;
 static int32_t relativeY = START_POS;
 static int32_t currentX = START_POS;  // Current relative X position of the turtle
 static int32_t currentY = START_POS;  // Current relative Y position of the turtle
-static int32_t prevX = START_POS;     // Previous relative X position
-static int32_t prevY = START_POS;     // Previous relative Y position
 
 
 // Typedefs for readability and future flexibility
