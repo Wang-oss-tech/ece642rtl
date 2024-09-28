@@ -32,7 +32,7 @@ turtleMove studentTurtleStep(bool bumped);
 // Visit tracking functions to be used between turtle and maze
 // You can declare them here or let them be fully managed in student_turtle.cpp if you prefer encapsulation there.
 int32_t getVisits(int32_t x, int32_t y);       // Get the current visit count
-void incrementVisits();         // Increment the visit count when a new cell is entered
+void incrementVisits(int32_t x, int32_t y);         // Increment the visit count when a new cell is entered
 
 // You might want to expose these functions only in student_turtle.cpp
 // OK to change below this line
