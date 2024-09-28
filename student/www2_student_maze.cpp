@@ -40,13 +40,6 @@ typedef struct{
   int32_t Y;
 } Position;
 
-// Enum to represent direction/orientation
-enum Direction {
-  NORTH = 0,
-  EAST = 1,
-  SOUTH = 2,
-  WEST = 3
-};
 
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
