@@ -80,11 +80,11 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     
     ROS_INFO("Student turtle step called Orig State: %d", currentState);
     
-    if (currentX != prevX || currentY != prevY) {
-        incrementVisits(currentX, currentY);  // Increment the visit count for the new cell
-        prevX = currentX;   // Update previous position
-        prevY = currentY;
-    }
+    // if (currentX != prevX || currentY != prevY) {
+    //     incrementVisits(currentX, currentY);  // Increment the visit count for the new cell
+    //     prevX = currentX;   // Update previous position
+    //     prevY = currentY;
+    // }
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
