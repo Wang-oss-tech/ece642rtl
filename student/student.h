@@ -15,8 +15,6 @@ bool atend(int x, int y);
 void displayVisits(int visits);
 bool moveTurtle(QPointF& pos_, int& nw_or);
 
-const int32_t START_POS = 11;         // starting position in center of 23x23 array
-
 // Turtle movement enumeration
 enum turtleMove{
     MOVE_FORWARD,
@@ -24,21 +22,10 @@ enum turtleMove{
     TURN_RIGHT
 };
 
-// Enum to represent direction/orientation
-enum Direction {
-  NORTH = 0,
-  EAST = 1,
-  SOUTH = 2,
-  WEST = 3
-};
-
 // Scope-preserving changes to these lines permitted (see p5 writeup)
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
-turtleMove studentTurtleStep(bool bumped, int nw_or);
-
-int32_t getVisits(int32_t x, int32_t y);
-void incrementVisits(int32_t x, int32_t y);
+turtleMove studentTurtleStep(bool bumped);
 
 // OK to change below this line
 // bool studentMoveTurtle(QPointF& pos_, int& nw_or);
