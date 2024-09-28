@@ -68,6 +68,18 @@ turtleMove studentTurtleStep(bool bumped) {
         prevY = currentY;
     }
 
+    // Move forward: Update the currentX, currentY based on direction when moving forward
+    if (currentState == STATE_MOVE_FORWARD && !bumped) {
+        switch (currentState) {
+            case STATE_MOVE_FORWARD:
+                currentX += (nw_or == EAST) ? 1 : (nw_or == WEST) ? -1 : 0;
+                currentY += (nw_or == NORTH) ? 1 : (nw_or == SOUTH) ? -1 : 0;
+                break;
+            default:
+                break;
+        }
+    }
+
 
     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
     if (currentState == STATE_MOVE_FORWARD){
