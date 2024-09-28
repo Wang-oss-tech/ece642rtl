@@ -36,19 +36,29 @@ typedef bool Flag;           // Typedef for boolean flags
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
-/**
- * @brief Function to get the number of visits to a specific cell.
- */
 int32_t getVisits(int32_t x, int32_t y) {
-    return visitMap[x][y];
+    // Check if the x and y coordinates are within the valid range of the visitMap array
+    if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
+        return visitMap[x][y];  // Return the visit count if coordinates are valid
+    } else {
+        ROS_ERROR("Invalid coordinates (%d, %d) accessed in visitMap.", x, y);
+        return 0;  // Return 0 or an appropriate default value for out-of-bounds coordinates
+    }
 }
+
 
 /**
  * @brief Function to increment the number of visits to a specific cell.
  */
 void incrementVisits(int32_t x, int32_t y) {
-    visitMap[x][y]++;
+    // Check if the x and y coordinates are within the valid range of the visitMap array
+    if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
+        visitMap[x][y]++;  // Increment the visit count if coordinates are valid
+    } else {
+        ROS_ERROR("Invalid coordinates (%d, %d) accessed in visitMap during increment.", x, y);
+    }
 }
+
 
 /**
  * @brief Updates the current turtle's position based on its direction.
