@@ -34,6 +34,8 @@ static int32_t currentX = START_POS;  // Current relative X position of the turt
 static int32_t currentY = START_POS;  // Current relative Y position of the turtle
 static int32_t prevX = START_POS;     // Previous relative X position
 static int32_t prevY = START_POS;     // Previous relative Y position
+static Direction currentDirection = NORTH;  // Initial orientation of the turtle
+
 
 /**
  * @brief Function to get the number of visits to a specific cell.
