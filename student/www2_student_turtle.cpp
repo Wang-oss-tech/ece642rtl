@@ -13,8 +13,6 @@
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
-// Define size of the maze array
-
 // Constants for various states and timeout values
 const int32_t STATE_MOVE_FORWARD = 2;
 const int32_t STATE_TURN_LEFT = 0;
@@ -33,7 +31,6 @@ typedef bool Flag;           // Typedef for boolean flags
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
-
 /**
  *  @brief Retrieve visits at specific (x,y) coordinate
  * 
@@ -47,7 +44,6 @@ int32_t getVisits(int32_t x, int32_t y) {
         return 0;  // Return 0 or an appropriate default value for out-of-bounds coordinates
     }
 }
-
 
 /**
  * @brief Function to increment the number of visits to a specific cell.

@@ -47,6 +47,7 @@ static int32_t relativeY = START_POS;
  * The turtle moves forward by 1 unit based on the current direction.
  */
 void updatePosition(int nw_or) {
+    ROS_INFO("Update Position Called w/ Direction %d", nw_or);
     switch (nw_or) {
         case NORTH:
             relativeX -= 1;  // Move north (up in Y axis)
