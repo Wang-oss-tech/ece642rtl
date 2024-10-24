@@ -14,9 +14,9 @@
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 
 // Constants for various states and timeout values
-const int32_t STATE_MOVE_FORWARD = 2;
-const int32_t STATE_TURN_LEFT = 0;
-const int32_t STATE_TURN_RIGHT = 1;
+const int32_t STATE_MOVE_FORWARD = 0;
+const int32_t STATE_TURN_LEFT = 1;
+const int32_t STATE_TURN_RIGHT = 2;
 const int32_t MAZE_SIZE = 100;         // size of internal tracking array (23x23)
 static int32_t relativeX = START_POS;
 static int32_t relativeY = START_POS;
