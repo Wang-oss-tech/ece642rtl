@@ -65,7 +65,6 @@ void updatePosition(int nw_or) {
     }
 }
 
-
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
  * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
