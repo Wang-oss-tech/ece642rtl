@@ -1,10 +1,8 @@
 /* 
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
  *
  * STUDENT NAME: William Wang 
  * ANDREW ID: www2  
- * LAST UPDATE: 9/8/2024
+ * LAST UPDATE: 10/24/2024
  *
  * This file keeps track of where the turtle is in the maze
  * and updates the location when the turtle is moved. It shall not
@@ -65,79 +63,107 @@ void updatePosition(int nw_or) {
     }
 }
 
-/*
- * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
- * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
- * This file interfaces with functions in student_turtle.cpp
- * 
- * nw_or = orientation pos_ = position
- */
-bool moveTurtle(QPointF& pos_, int& nw_or) 
-{
-  // return studentMoveTurtle(pos_, nw_or);
-  static int32_t timer = TIMEOUT;                   // timer for managing movement
-  
-  Position futureX1, futureY1, futureX2, futureY2;  // future posistions based on orientation
-  Flag bumpedFlag = false;
-  Flag atEnd = false;
+bool moveTurtle(QPointF& pos_, int& nw_or) {
+    static int32_t timer = TIMEOUT;
+    Flag bumpedFlag = false;
+    Flag atEnd = false;
 
-  if (timer == TIMER_EXPIRED){
-    int old_nw_or = nw_or;
-    Flag shouldMove = false; // Flag to determine if turtle should move
-    futureX1.X = pos_.x();
-    futureY1.Y = pos_.y();
-    futureX2.X = pos_.x();
-    futureY2.Y = pos_.y();
-    switch (nw_or){
-      case NORTH: // moving north increases Y
-        futureY2.Y += MOVE_INCREMENT; 
-        break;
-      case EAST: // moving east increases x
-        futureX2.X += MOVE_INCREMENT; 
-        break;
-      case SOUTH: // moving south increases both X and Y (diagonal)
-        futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; 
-        futureX1.X += MOVE_INCREMENT;
-        break;
-      case WEST: // moving west increases both X and Y (diagonal)
-        futureX2.X += MOVE_INCREMENT;
-        futureY2.Y += MOVE_INCREMENT; 
-        futureY1.Y += MOVE_INCREMENT;
-        break;
-      default:
-        ROS_ERROR("Invalid orientation value 1: %d", nw_or);
-        break;
+    if (timer == TIMER_EXPIRED) {
+        bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());
+        atEnd = atend(pos_.x(), pos_.y());
+
+        if (atEnd) {
+            return false;  // Stop the turtle if it reaches the goal
+        }
+
+        turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or);
+        nw_or = translateOrnt(nw_or, nextMove);  // Update orientation
+
+        if (nextMove == MOVE_FORWARD) {
+            pos_ = translatePos(pos_, nextMove, nw_or);
+            int visits = getVisits(relativeX, relativeY);  // Get visit count
+            displayVisits(visits);  // Update display with visit count
+        }
     }
 
-    bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-    atEnd = atend(pos_.x(), pos_.y());
-
-    // Call to studentTurtleStep() to determine next step based on whether a bump occurred
-    turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or);
-
-
-    nw_or = translateOrnt(nw_or, nextMove); // update orientation
-    shouldMove = (nextMove == MOVE_FORWARD);
-
-    if (shouldMove && !atEnd) {
-      QPointF old_pos_ = pos_;
-      pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
-
-      updatePosition(nw_or);
-      int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
-      displayVisits(visits);  // Update the display with the visit count
-      shouldMove = false;
-    }
-  }
-
-  if (atEnd){
-    return false;
-  }
-
-  timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
-  return (timer == TIMEOUT);
+    timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+    return (timer == TIMEOUT);
 }
+
+
+// /*
+//  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
+//  * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
+//  * This file interfaces with functions in student_turtle.cpp
+//  * 
+//  * nw_or = orientation pos_ = position
+//  */
+// bool moveTurtle(QPointF& pos_, int& nw_or) 
+// {
+//   // return studentMoveTurtle(pos_, nw_or);
+//   static int32_t timer = TIMEOUT;                   // timer for managing movement
+  
+//   Position futureX1, futureY1, futureX2, futureY2;  // future posistions based on orientation
+//   Flag bumpedFlag = false;
+//   Flag atEnd = false;
+
+//   if (timer == TIMER_EXPIRED){
+//     int old_nw_or = nw_or;
+//     Flag shouldMove = false; // Flag to determine if turtle should move
+//     futureX1.X = pos_.x();
+//     futureY1.Y = pos_.y();
+//     futureX2.X = pos_.x();
+//     futureY2.Y = pos_.y();
+//     switch (nw_or){
+//       case NORTH: // moving north increases Y
+//         futureY2.Y += MOVE_INCREMENT; 
+//         break;
+//       case EAST: // moving east increases x
+//         futureX2.X += MOVE_INCREMENT; 
+//         break;
+//       case SOUTH: // moving south increases both X and Y (diagonal)
+//         futureX2.X += MOVE_INCREMENT;
+//         futureY2.Y += MOVE_INCREMENT; 
+//         futureX1.X += MOVE_INCREMENT;
+//         break;
+//       case WEST: // moving west increases both X and Y (diagonal)
+//         futureX2.X += MOVE_INCREMENT;
+//         futureY2.Y += MOVE_INCREMENT; 
+//         futureY1.Y += MOVE_INCREMENT;
+//         break;
+//       default:
+//         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
+//         break;
+//     }
+
+//     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
+//     atEnd = atend(pos_.x(), pos_.y());
+
+//     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
+//     turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or);
+
+
+//     nw_or = translateOrnt(nw_or, nextMove); // update orientation
+//     shouldMove = (nextMove == MOVE_FORWARD);
+
+//     if (shouldMove && !atEnd) {
+//       QPointF old_pos_ = pos_;
+//       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
+
+//       updatePosition(nw_or);
+//       int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
+//       displayVisits(visits);  // Update the display with the visit count
+//       shouldMove = false;
+//     }
+//   }
+
+//   if (atEnd){
+//     return false;
+//   }
+
+//   timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
+//   return (timer == TIMEOUT);
+// }
 
 /*
  * Takes a position and a turtleMove and returns a new position
