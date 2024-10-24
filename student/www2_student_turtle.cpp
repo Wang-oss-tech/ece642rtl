@@ -146,6 +146,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // Execute the appropriate move
     switch (currentState) {
         case STATE_MOVE_FORWARD:
+            ROS_INFO("ENTERS THIS CASE");
             updatePosition_turtle(targetDirection);
             incrementVisits(currentX, currentY);
             return MOVE_FORWARD;
