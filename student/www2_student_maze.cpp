@@ -82,6 +82,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
         if (nextMove == MOVE_FORWARD) {
             pos_ = translatePos(pos_, nextMove, nw_or);
             int visits = getVisits(relativeX, relativeY);  // Get visit count
+            ROS_INFO("X = %d, Y = %d, visits = %d", relativeX, relativeY, visits);
             displayVisits(visits);  // Update display with visit count
         }
     }
@@ -89,8 +90,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
     timer = (timer == TIMER_EXPIRED) ? TIMEOUT : timer - TIME_DECREMENT;
     return (timer == TIMEOUT);
 }
-
-
 
 /*
  * Takes a position and a turtleMove and returns a new position
@@ -158,6 +157,5 @@ int translateOrnt(int orientation, turtleMove nextMove) {
     default:
       ROS_ERROR("Invalid orientation value 3: %d", orientation);
   }
-
   return orientation;  // Make sure to return the updated orientation
 }

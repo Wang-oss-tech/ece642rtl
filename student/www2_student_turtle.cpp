@@ -111,7 +111,9 @@ int calculateTurns(int currentDirection, int targetDirection) {
     return (turns > 2) ? (4 - turns) : turns;
 }
 
-
+/**
+ * @brief turtle's next action based orientation nw_or and bumped status
+ */
 turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD;
     static int numTurns = 0;
