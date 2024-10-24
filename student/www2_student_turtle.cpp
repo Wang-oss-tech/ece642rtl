@@ -26,13 +26,18 @@ static int32_t currentX = START_POS;  // Current relative X position of the turt
 static int32_t currentY = START_POS;  // Current relative Y position of the turtle
 
 
-// Typedefs for readability and future flexibility
+// Typedefs of state and flag
 typedef int32_t State;       // Typedef for state representation
 typedef bool Flag;           // Typedef for boolean flags
 
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
+
+/**
+ *  @brief Retrieve visits at specific (x,y) coordinate
+ * 
+ * */ 
 int32_t getVisits(int32_t x, int32_t y) {
     // Check if the x and y coordinates are within the valid range of the visitMap array
     if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
@@ -57,24 +62,6 @@ void incrementVisits(int32_t x, int32_t y) {
 }
 
 /**
- * @brief determine if the turtle can move in a certain direction and return the number of visits to that square
- */
-int checkDirection(int direction) {
-    switch (direction) {
-        case NORTH:
-            return (currentX > 0) ? getVisits(currentX - 1, currentY) : -1;
-        case EAST:
-            return (currentY < MAZE_SIZE - 1) ? getVisits(currentX, currentY + 1) : -1;
-        case SOUTH:
-            return (currentX < MAZE_SIZE - 1) ? getVisits(currentX + 1, currentY) : -1;
-        case WEST:
-            return (currentY > 0) ? getVisits(currentX, currentY - 1) : -1;
-        default:
-            return -1;
-    }
-}
-
-/**
  * @brief Updates the current turtle's position based on its direction.
  * The turtle moves forward by 1 unit based on the current direction.
  */
@@ -95,6 +82,27 @@ void updatePosition_turtle(int nw_or) {
     }
 }
 
+/**
+ * @brief Determine if the turtle can move in a certain direction and return the number of visits to that square
+ */
+int checkDirection(int direction) {
+    switch (direction) {
+        case NORTH:
+            return (currentX > 0) ? getVisits(currentX - 1, currentY) : -1;
+        case EAST:
+            return (currentY < MAZE_SIZE - 1) ? getVisits(currentX, currentY + 1) : -1;
+        case SOUTH:
+            return (currentX < MAZE_SIZE - 1) ? getVisits(currentX + 1, currentY) : -1;
+        case WEST:
+            return (currentY > 0) ? getVisits(currentX, currentY - 1) : -1;
+        default:
+            return -1;
+    }
+}
+
+/**
+ * @brief Calculating turns based on direction
+ */
 int calculateTurns(int currentDirection, int targetDirection) {
     // Calculate the difference in direction mod 4
     int turns = (targetDirection - currentDirection + 4) % 4;
@@ -108,9 +116,13 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD;
     static int numTurns = 0;
 
+    ROS_INFO("studentTurtleStep called. \ncurrentState = %d", currentState);
+
     // Default to the current direction
     int targetDirection = nw_or;
     int minVisits = INT32_MAX;
+
+    ROS_INFO("Target Direction: %d", targetDirection);
 
     // Check all four directions and find the optimal target direction
     for (int i = 0; i < 4; ++i) {
@@ -139,46 +151,12 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
             updatePosition_turtle(targetDirection);
             incrementVisits(currentX, currentY);
             return MOVE_FORWARD;
-
         case STATE_TURN_LEFT:
             numTurns--;
             return TURN_LEFT;
-
         case STATE_TURN_RIGHT:
             return TURN_RIGHT;
-
         default:
             return MOVE_FORWARD;
     }
 }
-
-// /**
-//  * @brief Function decided the next move the turtle should make.
-//  * `bumpedFlag` tells us whether the turtle hit a wall in front.
-//  */
-// turtleMove studentTurtleStep(bool bumped, int nw_or) {
-//     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
-    
-//     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
-//     if (currentState == STATE_MOVE_FORWARD){
-//         currentState = STATE_TURN_RIGHT;
-//     } else if (bumped){
-//         currentState = STATE_TURN_LEFT;
-//     } else {
-//         currentState = STATE_MOVE_FORWARD;
-//     }
-
-//     // return turtleMove based on defined current state
-//     switch (currentState){
-//         case STATE_MOVE_FORWARD:
-//             updatePosition_turtle(nw_or); 
-//             incrementVisits(currentX, currentY); 
-//             return MOVE_FORWARD;
-//         case STATE_TURN_LEFT:
-//             return TURN_LEFT;
-//         case STATE_TURN_RIGHT:
-//             return TURN_RIGHT;
-//         default:
-//             return MOVE_FORWARD;
-//     }
-// }
