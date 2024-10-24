@@ -116,7 +116,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD;
     static int numTurns = 0;
 
-    ROS_INFO("studentTurtleStep called. \ncurrentState = %d", currentState);
+    ROS_INFO("currentState = %d", currentState);
 
     // Default to the current direction
     int targetDirection = nw_or;
