@@ -51,6 +51,7 @@ int32_t getVisits(int32_t x, int32_t y) {
 void incrementVisits(int32_t x, int32_t y) {
     // Check if the x and y coordinates are within the valid range of the visitMap array
     if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
+        ROS_INFO("GOES HERE AND INCREMENTS")
         visitMap[x][y]++;  // Increment the visit count if coordinates are valid
     } else {
         ROS_ERROR("Invalid coordinates (%d, %d) accessed in visitMap during increment.", x, y);
