@@ -78,30 +78,143 @@ void updatePosition_turtle(int nw_or) {
     }
 }
 
+int checkDirection(int direction){
+    int nextX = currentX;
+    int nextY = currentY;
+
+
+    // Calculate the next position based on the direction
+    switch (direction) {
+        case NORTH:
+            nextX -= 1;
+            break;
+        case EAST:
+            nextY += 1;
+            break;
+        case SOUTH:
+            nextX += 1;
+            break;
+        case WEST:
+            nextY -= 1;
+            break;
+        default:
+            return -1;  // Invalid direction
+    }
+
+    ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
+    ROS_INFO("NextX: %d, NextY: %d", nextX, nextY);
+
+    // Return the number of visits for this square if valid
+    return getVisits(nextX, nextY);
+}
+
+/**
+ * @brief Calculating turns based on direction
+ */
+int calculateTurns(int currentDirection, int targetDirection) {
+    switch (currentDirection) {
+        case NORTH:
+            switch (targetDirection) {
+                case NORTH: return 0;   // Already facing the right direction
+                case EAST:  return 3;   // One left turn needed
+                case SOUTH: return 2;   // Two left turns needed
+                case WEST:  return 1;   // Three left turns needed
+            }
+            break;
+
+        case EAST:
+            switch (targetDirection) {
+                case NORTH: return 1;   // Three left turns needed
+                case EAST:  return 0;   // Already aligned
+                case SOUTH: return 3;   // One left turn needed
+                case WEST:  return 2;   // Two left turns needed
+            }
+            break;
+
+        case SOUTH:
+            switch (targetDirection) {
+                case NORTH: return 2;   // Two left turns needed
+                case EAST:  return 1;   // Three left turns needed
+                case SOUTH: return 0;   // Already aligned
+                case WEST:  return 3;   // One left turn needed
+            }
+            break;
+
+        case WEST:
+            switch (targetDirection) {
+                case NORTH: return 3;   // One left turn needed
+                case EAST:  return 2;   // Two left turns needed
+                case SOUTH: return 1;   // Three left turns needed
+                case WEST:  return 0;   // Already aligned
+            }
+            break;
+
+        default:
+            ROS_ERROR("Invalid direction: %d", currentDirection);
+            return 0;  // Default case to prevent undefined behavior
+    }
+    return 0;  // This should never be reached
+}
+
+
+
 /**
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
 turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
-    
-    // returns the move back to maze on what to do (depends on current state & whether it has bumped)
-    if (currentState == STATE_MOVE_FORWARD){
-        currentState = STATE_TURN_RIGHT;
-    } else if (bumped){
-        ROS_INFO("Bump occurred, turning left");
-        currentState = STATE_TURN_LEFT;
+    static int numTurns = 0;  // Tracks the number of required turns
+    static int currentVisitIndex = 0;  // Tracks which direction to try next on a bump
+
+
+    // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
+    std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
+
+    // Populate the visit array with the number of visits for each direction
+    for (int i = 0; i < 4; i++) {
+        int visits = checkDirection(i);  // Get the number of visits for each direction
+        visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
+        ROS_INFO("Direction: %d, Visits: %d", i, visits);
+    }
+
+    // Sort the visit array in ascending order based on the visit count
+    ROS_INFO("Sorting Array Based On Visit Count");
+    std::sort(visitArray, visitArray + 4);  // Sort by visit count
+
+    // Declare targetDirection and initialize var. w/ current orientation
+    int targetDirection = nw_or;
+
+    // State transition logic: If bumped, go to the next direction in the array
+    if (bumped) {
+        ROS_INFO("Bumped into a wall. Trying the next direction.");
+        currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
+        targetDirection = visitArray[currentVisitIndex].second;
     } else {
-        currentState = STATE_MOVE_FORWARD;
+        currentVisitIndex = 0;  // Reset index if not bumped
+        targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
+    }
+
+    ROS_INFO("Target Direction: %d", targetDirection);
+
+    // Calculate the number of turns required to align with the target direction
+    numTurns = calculateTurns(nw_or, targetDirection);
+
+    // State transition logic based on the number of turns
+    if (numTurns > 0) {
+        currentState = STATE_TURN_LEFT;  // Turn towards the target direction
+    } else {
+        currentState = STATE_MOVE_FORWARD;  // Move forward if aligned to target direction
     }
 
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
-            updatePosition_turtle(nw_or); 
-            incrementVisits(currentX, currentY); 
+            updatePosition_turtle(nw_or);  // move forward
+            incrementVisits(currentX, currentY); // update visit count
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
+            numTurns --; // decrement turns counter
             return TURN_LEFT;
         case STATE_TURN_RIGHT:
             return TURN_RIGHT;
@@ -109,3 +222,35 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
             return MOVE_FORWARD;
     }
 }
+
+// /**
+//  * @brief Function decided the next move the turtle should make.
+//  * `bumpedFlag` tells us whether the turtle hit a wall in front.
+//  */
+// turtleMove studentTurtleStep(bool bumped, int nw_or) {
+//     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
+    
+//     // returns the move back to maze on what to do (depends on current state & whether it has bumped)
+//     if (currentState == STATE_MOVE_FORWARD){
+//         currentState = STATE_TURN_RIGHT;
+//     } else if (bumped){
+//         ROS_INFO("Bump occurred, turning left");
+//         currentState = STATE_TURN_LEFT;
+//     } else {
+//         currentState = STATE_MOVE_FORWARD;
+//     }
+
+//     // return turtleMove based on defined current state
+//     switch (currentState){
+//         case STATE_MOVE_FORWARD:
+//             updatePosition_turtle(nw_or); 
+//             incrementVisits(currentX, currentY); 
+//             return MOVE_FORWARD;
+//         case STATE_TURN_LEFT:
+//             return TURN_LEFT;
+//         case STATE_TURN_RIGHT:
+//             return TURN_RIGHT;
+//         default:
+//             return MOVE_FORWARD;
+//     }
+// }
