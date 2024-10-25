@@ -156,7 +156,6 @@ int calculateTurns(int currentDirection, int targetDirection) {
 }
 
 
-
 /**
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
@@ -218,7 +217,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         case STATE_MOVE_FORWARD:
             updatePosition_turtle(nw_or);  // move forward
             incrementVisits(currentX, currentY); // update visit count
-            ROS_INFO("Moving Forward\n-----------------------------------------")
+            ROS_INFO("Moving Forward\n-----------------------------------------");
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
             numTurns --; // decrement turns counter
