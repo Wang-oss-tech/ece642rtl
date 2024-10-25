@@ -89,6 +89,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     if (currentState == STATE_MOVE_FORWARD){
         currentState = STATE_TURN_RIGHT;
     } else if (bumped){
+        ROS_INFO("Bump occurred, turning left");
         currentState = STATE_TURN_LEFT;
     } else {
         currentState = STATE_MOVE_FORWARD;
