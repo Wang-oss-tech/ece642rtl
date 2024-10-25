@@ -159,7 +159,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // State transition logic
     if (bumped) {
         ROS_INFO("Bumped into a wall. Turning left.");
-        return TURN_LEFT;
+        currentState = STATE_TURN_LEFT;  // Keep turning left if bumped
     } else if (numTurns > 0) {
         currentState = STATE_TURN_LEFT;  // Turn towards the target direction
     } else {
