@@ -85,7 +85,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
             updatePosition(nw_or);
             int visits = getVisits(relativeX, relativeY);  // Get visit count
             ROS_INFO("X = %d, Y = %d, visits = %d", relativeX, relativeY, visits);
-            ROS_INFO("Moving Forward");
+            ROS_INFO("Moving Forward\n\n");
             displayVisits(visits);  // Update display with visit count
         }
     }
