@@ -128,6 +128,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     for (int i = 0; i < 4; ++i) {
         ROS_INFO("check direction: %d", i);
         int visits = checkDirection(i);
+        ROS_INFO("visits: %d minVisits: %d\n", visits, minVisits);
         if (visits != -1 && visits < minVisits) {
             minVisits = visits;
             targetDirection = i;
