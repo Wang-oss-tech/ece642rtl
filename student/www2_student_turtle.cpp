@@ -212,11 +212,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
                 currentState = STATE_MOVE_FORWARD;  // Transition to moving forward after turning
             }
             return TURN_LEFT;
-
-        case STATE_TURN_RIGHT:
-            ROS_INFO("Turning right.");
-            return TURN_RIGHT;
-
+            
         default:
             ROS_ERROR("Invalid state: %d", currentState);
             return MOVE_FORWARD;
