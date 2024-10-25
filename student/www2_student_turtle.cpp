@@ -189,6 +189,9 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     ROS_INFO("Sorting Array Based On Visit Count");
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
+    // Declare targetDirection and initialize it with the current direction
+    int targetDirection = nw_or;
+
     // State transition logic: If bumped, go to the next direction in the array
     if (bumped) {
         ROS_INFO("Bumped into a wall. Trying the next direction.");
