@@ -26,10 +26,10 @@ enum turtleMove{
 
 // Enum to represent direction/orientation
 enum Direction {
-  NORTH = 0,
-  EAST = 1,
-  SOUTH = 2,
-  WEST = 3
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST
 };
 
 

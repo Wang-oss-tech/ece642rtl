@@ -99,8 +99,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 
         bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
         atEnd = atend(pos_.x(), pos_.y());
-        // bumpedFlag = bumped(pos_.x(), pos_.y(), pos_.x(), pos_.y());
-        // atEnd = atend(pos_.x(), pos_.y());
 
         if (atEnd) {
             return false;  // Stop the turtle if it reaches the goal
