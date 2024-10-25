@@ -101,7 +101,6 @@ int checkDirection(int direction){
             return -1;  // Invalid direction
     }
 
-    ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
     ROS_INFO("NextX: %d, NextY: %d", nextX, nextY);
 
     // Return the number of visits for this square if valid
@@ -172,7 +171,8 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
     // Populate the visit array with the number of visits for each direction
-    ROS_INFO("\nChecking Direction");
+    ROS_INFO("\n\nChecking Direction for");
+    ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
     for (int i = 0; i < 4; i++) {
         int visits = checkDirection(i);  // Get the number of visits for each direction
         visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
@@ -196,7 +196,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
     }
 
-    ROS_INFO("Target Direction: %d", targetDirection);
+    ROS_INFO("Target Direction Chosen: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
