@@ -65,6 +65,7 @@ void updatePosition(int nw_or) {
 }
 
 bool moveTurtle(QPointF& pos_, int& nw_or) {
+    Position futureX1, futureY1, futureX2, futureY2;  // future posistions based on orientation
     static int32_t timer = TIMEOUT;
     Flag bumpedFlag = false;
     Flag atEnd = false;
