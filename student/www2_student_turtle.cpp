@@ -172,6 +172,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
     // Populate the visit array with the number of visits for each direction
+    ROS_INFO("\nChecking Direction");
     for (int i = 0; i < 4; i++) {
         int visits = checkDirection(i);  // Get the number of visits for each direction
         visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
