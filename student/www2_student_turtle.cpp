@@ -204,7 +204,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
-    ROS_INFO("numTurns: %d", numTurns)
+    ROS_INFO("numTurns: %d", numTurns);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
