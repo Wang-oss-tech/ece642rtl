@@ -110,6 +110,7 @@ int checkDirection(int direction) {
         return -1;  // Out of bounds, not a valid move
     }
 
+    ROS_INFO("CHECKS BUMPED CASE");
     // Use bumped() to check if there is a wall blocking the way
     if (bumped(currentX, currentY, nextX, nextY)) {
         return -1;  // Blocked, not a valid move
