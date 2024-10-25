@@ -162,7 +162,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
-std::pair<int, int> studentTurtleStep(bool bumped, int nw_or) {
+std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     static int numTurns = 0;  // Tracks the number of required turns
     static int currentVisitIndex = 0;  // Tracks which direction to try next on a bump
