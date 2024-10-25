@@ -120,7 +120,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
     if (numTurns != 0){
       for (int i = 0; i < numTurns; i++){
-        ROS_INFO("Left turn called: %d", i)
+        ROS_INFO("Left turn called: %d", i);
         nw_or = translateOrnt(nw_or, nextMove); // update orientation
       }
     }
