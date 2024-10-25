@@ -204,6 +204,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
+    ROS_INFO("numTurns: %d", numTurns)
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
@@ -220,7 +221,8 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
             ROS_INFO("Moving Forward\n-----------------------------------------");
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
-            numTurns --; // decrement turns counter
+            numTurns = numTurns - 1; // decrement turns counter
+            ROS_INFO("numTurns decremented to: %d", numTurns);
             return TURN_LEFT;
         case STATE_TURN_RIGHT:
             return TURN_RIGHT;
