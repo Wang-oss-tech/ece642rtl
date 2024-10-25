@@ -113,12 +113,6 @@ int checkDirection(int direction) {
     ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
     ROS_INFO("NextX: %d, NextY: %d", nextX, nextY);
 
-    // Use bumped() to check if there is a wall blocking the way
-    if (bumped(currentX, currentY, nextX, nextY)) {
-        ROS_INFO("BUMP OCCURS");
-        return -1;  // Blocked, not a valid move
-    }
-
     // Return the number of visits for this square if valid
     return getVisits(nextX, nextY);
 }
@@ -146,7 +140,6 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // Default to the current direction
     int targetDirection = nw_or;
     int minVisits = INT32_MAX;
-    bool validMoveFound = false;
 
     // Check all four directions and find the optimal target direction
     for (int i = 0; i < 4; ++i) {
@@ -157,15 +150,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         if (visits != -1 && visits < minVisits) {
             minVisits = visits;
             targetDirection = i;
-            validMoveFound = true;
         }
-    }
-
-    // If no valid moves are found, turn to explore new options
-    if (!validMoveFound) {
-        ROS_WARN("No valid moves found. Turning left.");
-        currentState = STATE_TURN_LEFT;
-        return TURN_LEFT;
     }
 
     // Calculate the number of turns required to align with the target direction
@@ -174,7 +159,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // State transition logic
     if (bumped) {
         ROS_INFO("Bumped into a wall. Turning left.");
-        currentState = STATE_TURN_LEFT;  // Keep turning left if bumped
+        return TURN_LEFT;
     } else if (numTurns > 0) {
         currentState = STATE_TURN_LEFT;  // Turn towards the target direction
     } else {
@@ -193,7 +178,6 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
             ROS_INFO("Turning left. Remaining turns: %d", numTurns);
             numTurns--;  // Decrement the turn counter
             if (numTurns <= 0) {
-
                 currentState = STATE_MOVE_FORWARD;  // Transition to moving forward after turning
             }
             return TURN_LEFT;
