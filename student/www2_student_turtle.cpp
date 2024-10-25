@@ -120,81 +120,59 @@ int checkDirection(int direction) {
 }
 
 /**
- * @brief Calculating turns based on direction
+ * @brief Calculates the number of left turns needed to align with the target direction.
  */
 int calculateTurns(int currentDirection, int targetDirection) {
-    
+    // Calculate the difference in directions mod 4
+    int turns = (targetDirection - currentDirection + 4) % 4;
+
+    // Return the number of left turns required
+    return (turns > 2) ? (4 - turns) : turns;  // Minimize the number of left turns
 }
 
-/**
- * @brief Turtle's next action based on its orientation and bump status.
- */
+
 turtleMove studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD;
     static int numTurns = 0;
 
-    ROS_INFO("Current State: %d", currentState);
-
-    // Default to the current direction
+    // Default target direction is the current direction
     int targetDirection = nw_or;
     int minVisits = INT32_MAX;
-    bool validMoveFound = false;
 
-    // Check all four directions and find the optimal target direction
+    // Check all four directions and find the optimal one with the least visits
     for (int i = 0; i < 4; ++i) {
         int visits = checkDirection(i);
-        ROS_INFO("Checking direction: %d, Visits: %d", i, visits);
-
-        // Choose the direction with the fewest visits and ensure it's valid
         if (visits != -1 && visits < minVisits) {
             minVisits = visits;
             targetDirection = i;
-            validMoveFound = true;
         }
     }
 
-    // If no valid moves are found, turn to explore new options
-    if (!validMoveFound) {
-        ROS_WARN("No valid moves found. Turning left.");
-        currentState = STATE_TURN_LEFT;
-        return TURN_LEFT;
-    }
-
-    // Calculate the number of turns required to align with the target direction
+    // Calculate the required left turns to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    // State transition logic
-    if (bumped) {
-        ROS_INFO("Bumped into a wall. Turning left.");
-        currentState = STATE_TURN_LEFT;  // Keep turning left if bumped
-    } else if (numTurns > 0) {
-        currentState = STATE_TURN_LEFT;  // Turn towards the target direction
+    // State transition logic based on the number of turns and bump status
+    if (numTurns > 0) {
+        currentState = STATE_TURN_LEFT;  // Turn left until aligned
+    } else if (bumped) {
+        currentState = STATE_TURN_LEFT;  // If blocked, keep turning left
     } else {
-        currentState = STATE_MOVE_FORWARD;  // Move forward if aligned
+        currentState = STATE_MOVE_FORWARD;
     }
 
-    // Execute the appropriate action based on the current state
+    // Execute the appropriate move
     switch (currentState) {
         case STATE_MOVE_FORWARD:
-            ROS_INFO("Moving forward to direction: %d", targetDirection);
-            updatePosition_turtle(targetDirection);  // Move forward
-            incrementVisits(currentX, currentY);     // Update visit count
+            updatePosition_turtle(targetDirection);  // Move forward to the target direction
+            incrementVisits(currentX, currentY);     // Increment visit count
             return MOVE_FORWARD;
 
         case STATE_TURN_LEFT:
-            ROS_INFO("Turning left. Remaining turns: %d", numTurns);
-            numTurns--;  // Decrement the turn counter
-            if (numTurns <= 0) {
-                currentState = STATE_MOVE_FORWARD;  // Transition to moving forward after turning
-            }
+            numTurns--;  // Decrease the number of required turns
             return TURN_LEFT;
 
-        case STATE_TURN_RIGHT:
-            ROS_INFO("Turning right.");
-            return TURN_RIGHT;
-
         default:
-            ROS_ERROR("Invalid state: %d", currentState);
             return MOVE_FORWARD;
     }
 }
+
