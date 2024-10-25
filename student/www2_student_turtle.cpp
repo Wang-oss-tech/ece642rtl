@@ -12,6 +12,8 @@
 
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
+#include <utility>  // For std::pair
+
 
 // Define size of the maze array
 
@@ -160,7 +162,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
  * @brief Function decided the next move the turtle should make.
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
-turtleMove studentTurtleStep(bool bumped, int nw_or) {
+std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     static int numTurns = 0;  // Tracks the number of required turns
     static int currentVisitIndex = 0;  // Tracks which direction to try next on a bump
@@ -190,17 +192,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
 
-    // State transition logic: If bumped, go to the next direction in the array
-    if (bumped) {
-        ROS_INFO("Bumped into a wall. Trying the next direction.");
-        currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
-        targetDirection = visitArray[currentVisitIndex].second;
-    } else {
-        currentVisitIndex = 0;  // Reset index if not bumped
-        targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
-    }
-
-    ROS_INFO("\n\nTarget Direction Chosen: %d", targetDirection);
+    // ROS_INFO("\n\nTarget Direction Chosen: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
@@ -219,18 +211,29 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
             updatePosition_turtle(nw_or);  // move forward
             incrementVisits(currentX, currentY); // update visit count
             ROS_INFO("Moving Forward\n-----------------------------------------");
-            return MOVE_FORWARD;
+            return std::make_pair(MOVE_FORWARD, numTurns);
         case STATE_TURN_LEFT:
             numTurns = numTurns - 1; // decrement turns counter
             ROS_INFO("numTurns decremented to: %d", numTurns);
-            return TURN_LEFT;
+            return std::make_pair(TURN_LEFT, numTurns);
         case STATE_TURN_RIGHT:
-            return TURN_RIGHT;
+            return std::make_pair(TURN_RIGHT, std::make_pair);
         default:
-            return MOVE_FORWARD;
+            return std::make_pair(MOVE_FORWARD, std::make_pair);
     }
 }
 
+
+
+    // // State transition logic: If bumped, go to the next direction in the array
+    // if (bumped) {
+    //     ROS_INFO("Bumped into a wall. Trying the next direction.");
+    //     currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
+    //     targetDirection = visitArray[currentVisitIndex].second;
+    // } else {
+    //     currentVisitIndex = 0;  // Reset index if not bumped
+    //     targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
+    // }
 // /**
 //  * @brief Function decided the next move the turtle should make.
 //  * `bumpedFlag` tells us whether the turtle hit a wall in front.
