@@ -12,6 +12,8 @@
 
 #include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
+#include <algorithm> // for sort function
+using namespace std;
 
 // Constants for various states and timeout values
 const int32_t MAZE_SIZE = 100;         // size of internal tracking array (23x23)
@@ -24,7 +26,6 @@ enum STATE {
   STATE_TURN_LEFT,
   STATE_MOVE_FORWARD
 };
-
 
 // Typedefs of state and flag
 typedef int State;       // Typedef for state representation
@@ -107,18 +108,6 @@ int checkDirection(int direction) {
             return -1;  // Invalid direction
     }
 
-    // Check if the move is within the bounds of the maze
-    if (nextX < 0 || nextX >= MAZE_SIZE || nextY < 0 || nextY >= MAZE_SIZE) {
-        return -1;  // Out of bounds, not a valid move
-    }
-
-    // Check if the next position is blocked by a wall (bumped)
-    bool isBlocked = bumped(currentX, currentY, nextX, nextY);
-    if (isBlocked) {
-        ROS_INFO("Direction %d is blocked by a wall.", direction);
-        return -1;  // Return -1 to indicate this direction is not valid
-    }
-
     ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
     ROS_INFO("NextX: %d, NextY: %d", nextX, nextY);
 
@@ -174,35 +163,52 @@ int calculateTurns(int currentDirection, int targetDirection) {
     return 0;  // This should never be reached
 }
 
-turtleMove studentTurtleStep(bool bumped, int nw_or){
-    // Initialize state
-    static State currentState = STATE_START;
-    static int numTurns = 0;
 
-    int minVisits = INT32_MAX;
-    int targetDirection = nw_or;
+/**
+ * @brief Turtle's next action based on its orientation and bump status.
+ * Selects the best direction to move based on the fewest visits.
+ */
+turtleMove studentTurtleStep(bool bumped, int nw_or) {
+    static State currentState = STATE_START;  // Current state of the turtle's movement
+    static int numTurns = 0;  // Tracks the number of required turns
+    static int currentVisitIndex = 0;  // Tracks which direction to try next on a bump
 
-    // Evaluate direction for all 4 cells
-    for (int i = 0; i < 4; ++i) {
-        ROS_INFO("\nChecking direction: %d", i);
-        int visits = checkDirection(i);  // Check each direction
-        ROS_INFO("visits= %d", visits);
-        if (visits != -1 && visits < minVisits) {  // If valid and fewer visits
-            minVisits = visits;
-            targetDirection = i;
-            ROS_INFO("Updating target direction to: %d", i);
-            ROS_INFO("Min Visit Value: %d", i);
-        }
+    ROS_INFO("Current State: %d", currentState);
+
+    // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
+    std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
+
+    // Populate the visit array with the number of visits for each direction
+    for (int i = 0; i < 4; i++) {
+        int visits = checkDirection(i);  // Get the number of visits for each direction
+        visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
+        ROS_INFO("Direction: %d, Visits: %d", i, visits);
     }
-    ROS_INFO("Target Direction Determined: %d", targetDirection);
 
+    // Sort the visit array in ascending order based on the visit count
+    ROS_INFO("Sorting Array Based On Visit Count");
+    std::sort(visitArray, visitArray + 4);  // Sort by visit count
+
+    // State transition logic: If bumped, go to the next direction in the array
+    if (bumped) {
+        ROS_INFO("Bumped into a wall. Trying the next direction.");
+        currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
+        targetDirection = visitArray[currentVisitIndex].second;
+    } else {
+        currentVisitIndex = 0;  // Reset index if not bumped
+        targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
+    }
+
+    ROS_INFO("Target Direction: %d", targetDirection);
+
+    // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    // Keep turning left based on numTurns
-    if (numTurns > 0){
-        currentState = STATE_TURN_LEFT;
+    // State transition logic based on the number of turns
+    if (numTurns > 0) {
+        currentState = STATE_TURN_LEFT;  // Turn towards the target direction
     } else {
-        currentState = STATE_MOVE_FORWARD;
+        currentState = STATE_MOVE_FORWARD;  // Move forward if aligned
     }
 
     // Execute the appropriate action based on the current state
@@ -210,14 +216,14 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
         case STATE_MOVE_FORWARD:
             ROS_INFO("Moving forward to direction: %d", targetDirection);
             updatePosition_turtle(targetDirection);  // Move forward
-            incrementVisits(currentX, currentY);     // Update visit count
+            incrementVisits(currentX, currentY);  // Update visit count
             return MOVE_FORWARD;
 
         case STATE_TURN_LEFT:
             ROS_INFO("Turning left. Remaining turns: %d", numTurns);
             numTurns--;  // Decrement the turn counter
             if (numTurns <= 0) {
-                currentState = STATE_MOVE_FORWARD;  // Transition to moving forward after turning
+                currentState = STATE_MOVE_FORWARD;  // Transition to moving forward
             }
             return TURN_LEFT;
 
@@ -226,6 +232,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
             return MOVE_FORWARD;
     }
 }
+
 
 
 
