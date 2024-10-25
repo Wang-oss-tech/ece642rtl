@@ -179,6 +179,9 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
     static State currentState = STATE_START;
     static int numTurns = 0;
 
+    int minVisits = INT32_MAX;
+    int targetDirection = nw_or;
+
     // Evaluate direction for all 4 cells
     for (int i = 0; i < 4; ++i) {
         int visits = checkDirection(i);  // Check each direction
@@ -212,12 +215,11 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
                 currentState = STATE_MOVE_FORWARD;  // Transition to moving forward after turning
             }
             return TURN_LEFT;
-            
+
         default:
             ROS_ERROR("Invalid state: %d", currentState);
             return MOVE_FORWARD;
     }
-
 }
 
 
