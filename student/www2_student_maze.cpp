@@ -88,6 +88,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
+    ROS_INFO("Turtle Pos (X,Y): %d, %d", pos_.x(), pos_.y());
     switch (nw_or){
       case NORTH: // moving north increases Y
         futureY2.Y += MOVE_INCREMENT; 
