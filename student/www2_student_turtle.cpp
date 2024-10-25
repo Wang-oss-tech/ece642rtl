@@ -126,12 +126,16 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
 
     // Check all four directions and find the optimal target direction
     for (int i = 0; i < 4; ++i) {
+        ROS_INFO("check direction: %d", i);
         int visits = checkDirection(i);
         if (visits != -1 && visits < minVisits) {
             minVisits = visits;
             targetDirection = i;
+            ROS_INFO("target direction updated: %d", i);
         }
     }
+
+    ROS_INFO("Target Direction Determined: %d", i);
 
     // Calculate the number of turns required to face the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
