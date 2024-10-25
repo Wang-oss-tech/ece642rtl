@@ -211,15 +211,15 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
             updatePosition_turtle(nw_or);  // move forward
             incrementVisits(currentX, currentY); // update visit count
             ROS_INFO("Moving Forward\n-----------------------------------------");
-            return std::make_pair(MOVE_FORWARD, numTurns);
+            return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:
             numTurns = numTurns - 1; // decrement turns counter
             ROS_INFO("numTurns decremented to: %d", numTurns);
             return std::make_pair(TURN_LEFT, numTurns);
         case STATE_TURN_RIGHT:
-            return std::make_pair(TURN_RIGHT, std::make_pair);
+            return std::make_pair(TURN_RIGHT, 0);
         default:
-            return std::make_pair(MOVE_FORWARD, std::make_pair);
+            return std::make_pair(MOVE_FORWARD, 0);
     }
 }
 
