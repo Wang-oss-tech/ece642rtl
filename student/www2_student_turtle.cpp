@@ -84,29 +84,46 @@ void updatePosition_turtle(int nw_or) {
  * @brief Determine if the turtle can move in a certain direction and return the number of visits to that square
  */
 int checkDirection(int direction) {
+    int nextX = currentX;
+    int nextY = currentY;
+
+    // Calculate the next position based on the direction
     switch (direction) {
         case NORTH:
-            return (currentX > 0) ? getVisits(currentX - 1, currentY) : -1;
+            nextX -= 1;
+            break;
         case EAST:
-            return (currentY < MAZE_SIZE - 1) ? getVisits(currentX, currentY + 1) : -1;
+            nextY += 1;
+            break;
         case SOUTH:
-            return (currentX < MAZE_SIZE - 1) ? getVisits(currentX + 1, currentY) : -1;
+            nextX += 1;
+            break;
         case WEST:
-            return (currentY > 0) ? getVisits(currentX, currentY - 1) : -1;
+            nextY -= 1;
+            break;
         default:
-            return -1;
+            return -1;  // Invalid direction
     }
+
+    // Check if the move is within the bounds of the maze
+    if (nextX < 0 || nextX >= MAZE_SIZE || nextY < 0 || nextY >= MAZE_SIZE) {
+        return -1;  // Out of bounds, not a valid move
+    }
+
+    // Use bumped() to check if there is a wall blocking the way
+    if (bumped(currentX, currentY, nextX, nextY)) {
+        return -1;  // Blocked, not a valid move
+    }
+
+    // Return the number of visits for this square if valid
+    return getVisits(nextX, nextY);
 }
 
 /**
  * @brief Calculating turns based on direction
  */
 int calculateTurns(int currentDirection, int targetDirection) {
-    // Calculate the difference in direction mod 4
-    int turns = (targetDirection - currentDirection + 4) % 4;
     
-    // If the number of turns is more than 2, it's faster to turn the other way
-    return (turns > 2) ? (4 - turns) : turns;
 }
 
 /**
