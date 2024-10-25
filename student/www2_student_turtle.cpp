@@ -184,8 +184,9 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
 
     // Evaluate direction for all 4 cells
     for (int i = 0; i < 4; ++i) {
-        ROS_INFO("Checking direction: %d", i);
+        ROS_INFO("\nChecking direction: %d", i);
         int visits = checkDirection(i);  // Check each direction
+        ROS_INFO("visits= %d", visits);
         if (visits != -1 && visits < minVisits) {  // If valid and fewer visits
             minVisits = visits;
             targetDirection = i;
@@ -193,6 +194,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or){
             ROS_INFO("Min Visit Value: %d", i);
         }
     }
+    ROS_INFO("Target Direction Determined: %d", targetDirection);
 
     numTurns = calculateTurns(nw_or, targetDirection);
 
