@@ -115,6 +115,7 @@ int checkDirection(int direction) {
 
     // Use bumped() to check if there is a wall blocking the way
     if (bumped(currentX, currentY, nextX, nextY)) {
+        ROS_INFO("BUMP OCCURS")
         return -1;  // Blocked, not a valid move
     }
 
