@@ -201,7 +201,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         targetDirection = visitArray[0].second;  // Pick the best (least visited) direction
     }
 
-    ROS_INFO("Target Direction Chosen: %d", targetDirection);
+    ROS_INFO("\n\nTarget Direction Chosen: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
@@ -218,6 +218,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         case STATE_MOVE_FORWARD:
             updatePosition_turtle(nw_or);  // move forward
             incrementVisits(currentX, currentY); // update visit count
+            ROS_INFO("Moving Forward\n-----------------------------------------")
             return MOVE_FORWARD;
         case STATE_TURN_LEFT:
             numTurns --; // decrement turns counter
