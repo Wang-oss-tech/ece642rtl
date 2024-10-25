@@ -53,6 +53,7 @@ void incrementVisits(int32_t x, int32_t y) {
     if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
         ROS_INFO("GOES HERE AND INCREMENTS X: %d, Y: %d", x, y);
         visitMap[x][y]++;  // Increment the visit count if coordinates are valid
+        ROS_INFO("visit count at location", visitMap[x][y]);
     } else {
         ROS_ERROR("Invalid coordinates (%d, %d) accessed in visitMap during increment.", x, y);
     }
