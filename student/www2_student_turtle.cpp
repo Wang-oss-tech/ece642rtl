@@ -135,7 +135,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
         }
     }
 
-    ROS_INFO("Target Direction Determined: %d", i);
+    ROS_INFO("Target Direction Determined: %d", targetDirection);
 
     // Calculate the number of turns required to face the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
