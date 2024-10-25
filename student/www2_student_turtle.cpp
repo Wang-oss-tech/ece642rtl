@@ -171,8 +171,7 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
     // Populate the visit array with the number of visits for each direction
-    ROS_INFO("\n\nChecking Direction for");
-    ROS_INFO("CurrentX: %d, CurrentY: %d", currentX, currentY);
+    ROS_INFO("\n\nChecking Direction for CurrentX: %d, CurrentY: %d",currentX, currentY);
     for (int i = 0; i < 4; i++) {
         int visits = checkDirection(i);  // Get the number of visits for each direction
         visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
@@ -182,6 +181,12 @@ turtleMove studentTurtleStep(bool bumped, int nw_or) {
     // Sort the visit array in ascending order based on the visit count
     ROS_INFO("Sorting Array Based On Visit Count");
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
+
+
+    ROS_INFO("\n\nVisit Array (Sorted by Visit Count):");
+    for (int i = 0; i < 4; i++) {
+        ROS_INFO("Direction: %d, Visits: %d", visitArray[i].second, visitArray[i].first);
+    }
 
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
