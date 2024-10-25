@@ -115,7 +115,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     atEnd = atend(pos_.x(), pos_.y());
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
-    turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or).first;
+    int nextMove = studentTurtleStep(bumpedFlag, nw_or).first;
     int numTurns = studentTurtleStep(bumpedFlag, nw_or).second;
 
     for (int i = 0; i < numTurns; i++){
