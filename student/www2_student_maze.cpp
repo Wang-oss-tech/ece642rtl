@@ -127,6 +127,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
       }
     }
     shouldMove = (nextMove == MOVE_FORWARD);
+    ROS_INFO("shouldMove truth: %d", shouldMove);
+    ROS_INFO("atEnd truth: %d", atEnd);
 
     if (shouldMove && !atEnd) {
       ROS_INFO("ENTERS shouldMove !atEnd");
