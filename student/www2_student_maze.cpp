@@ -91,16 +91,20 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
     switch (nw_or){
       case NORTH: // moving north increases Y
-        futureX2.X -= MOVE_INCREMENT; 
+        futureY2.Y += MOVE_INCREMENT; 
         break;
       case EAST: // moving east increases x
-        futureY2.Y -= MOVE_INCREMENT; 
-        break;
-      case SOUTH: // moving south increases both X and Y (diagonal)
         futureX2.X += MOVE_INCREMENT; 
         break;
-      case WEST: // moving west increases both X and Y (diagonal)
+      case SOUTH: // moving south increases both X and Y (diagonal)
+        futureX2.X += MOVE_INCREMENT;
         futureY2.Y += MOVE_INCREMENT; 
+        futureX1.X += MOVE_INCREMENT;
+        break;
+      case WEST: // moving west increases both X and Y (diagonal)
+        futureX2.X += MOVE_INCREMENT;
+        futureY2.Y += MOVE_INCREMENT; 
+        futureY1.Y += MOVE_INCREMENT;
         break;
       default:
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
