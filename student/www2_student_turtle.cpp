@@ -28,7 +28,7 @@ enum STATE {
     STATE_MOVE_FORWARD,
     STATE_TURN_LEFT,
     STATE_TURN_RIGHT
-}
+};
 
 
 // Typedefs for readability and future flexibility
@@ -203,9 +203,10 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
-        ROS_INFO("Turning left")
+        ROS_INFO("Set state to state_turn_left");
         currentState = STATE_TURN_LEFT;  // Turn towards the target direction
     } else {
+        ROS_INFO("Set state to state_move_forward");
         currentState = STATE_MOVE_FORWARD;  // Move forward if aligned to target direction
     }
 
@@ -215,6 +216,10 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
         currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
+        if (numTurns > 0){
+            ROS_INFO("Turning left MUST ENTER HERE");
+            currentState = STATE_TURN_LEFT;
+        }
         ROS_INFO("numTurns: %d", numTurns);
     } 
 
@@ -225,7 +230,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
             incrementVisits(currentX, currentY); // update visit count
             return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:
-            numTurns = numTurns - 1; // decrement turns counter
             ROS_INFO("numTurns decremented to: %d", numTurns);
             return std::make_pair(TURN_LEFT, numTurns);
         case STATE_TURN_RIGHT:

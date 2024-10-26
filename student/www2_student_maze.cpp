@@ -118,7 +118,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or).first;
     int numTurns = studentTurtleStep(bumpedFlag, nw_or).second;
 
-    if (numTurns != 0){
+    if (numTurns != 0 && nextMove != MOVE_FORWARD){
       for (int i = 0; i < numTurns; i++){
         ROS_INFO("Left turn called: %d", i);
         nw_or = translateOrnt(nw_or, nextMove); // update orientation
