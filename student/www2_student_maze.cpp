@@ -24,7 +24,7 @@
 #include "student.h"
 
 // Constants
-const int32_t TIMEOUT = 500;           // Timer value to slow down the simulation for better visibility
+const int32_t TIMEOUT = 10;           // Timer value to slow down the simulation for better visibility
 const int32_t TIMER_EXPIRED = 0;      // Timer expired value
 const int32_t TIME_DECREMENT = 1;     // Constant to decrement timer by
 const int32_t MOVE_INCREMENT = 1;
