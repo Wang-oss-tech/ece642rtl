@@ -228,12 +228,12 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // return turtleMove based on defined current state
     switch (currentState){
         case STATE_MOVE_FORWARD:
-            ROS_INFO("MOVE_FORWARD SENT TO MAZE\n--------------------");
+            ROS_INFO("MOVE_FORWARD (0)SENT TO MAZE\n--------------------");
             updatePosition_turtle(nw_or);  // move forward
             incrementVisits(currentX, currentY); // update visit count
             return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:
-            ROS_INFO("TURN LEFT SENT TO MAZE\n--------------------");
+            ROS_INFO("TURN LEFT (0)SENT TO MAZE\n--------------------");
             return std::make_pair(TURN_LEFT, numTurns);
         case STATE_TURN_RIGHT:
             return std::make_pair(TURN_RIGHT, 0);

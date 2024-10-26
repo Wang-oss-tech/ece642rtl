@@ -117,6 +117,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     turtleMove nextMove = studentTurtleStep(bumpedFlag, nw_or).first;
+    ROS_INFO("Move Forward Received: %d", nextMove);
     int numTurns = studentTurtleStep(bumpedFlag, nw_or).second;
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
