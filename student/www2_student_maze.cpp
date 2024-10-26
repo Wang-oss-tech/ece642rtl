@@ -63,7 +63,7 @@ void updatePosition(int nw_or) {
             relativeY += 1;  // Move west (left in X axis)
             break;
     }
-}
+} 
 
 /*
  * This procedure takes the current turtle position and orientation and returns true=accept changes, false=do not accept changes
