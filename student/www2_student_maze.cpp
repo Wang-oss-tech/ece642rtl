@@ -110,6 +110,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
         break;
     }
+    ROS_INFO("Future Turtle Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
     ROS_INFO("Computed bumped %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
