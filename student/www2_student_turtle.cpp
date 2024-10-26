@@ -173,6 +173,8 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
+    ROS_INFO("Bumped Status: %d", bumped);
+
     // Populate the visit array with the number of visits for each direction
     ROS_INFO("\n\nChecking Direction for CurrentX: %d, CurrentY: %d",currentX, currentY);
     for (int i = 0; i < 4; i++) {
