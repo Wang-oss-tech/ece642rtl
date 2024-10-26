@@ -88,7 +88,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
-    ROS_INFO("Turtle Pos (X,Y): %d, %d", pos_.x(), pos_.y());
+    ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
     switch (nw_or){
       case NORTH: // moving north increases Y
         futureY2.Y += MOVE_INCREMENT; 
@@ -110,9 +110,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
         break;
     }
-    ROS_INFO("Turtle Future Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-    ROS_INFO("Computed bumped:", bumpedFlag);
+    ROS_INFO("Computed bumped %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
