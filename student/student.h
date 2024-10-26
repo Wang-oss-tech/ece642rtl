@@ -15,7 +15,7 @@ bool atend(int x, int y);
 void displayVisits(int visits);
 bool moveTurtle(QPointF& pos_, int& nw_or);
 
-const int32_t START_POS = 5;         // starting position in center of 23x23 array
+const int32_t START_POS = 30;         // starting position in center of 23x23 array
 
 // Turtle movement enumeration
 enum turtleMove{
