@@ -85,10 +85,10 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   if (timer == TIMER_EXPIRED){
     int old_nw_or = nw_or;
     Flag shouldMove = false; // Flag to determine if turtle should move
-    futureX1.X = pos_.x();
-    futureY1.Y = pos_.y();
-    futureX2.X = pos_.x();
-    futureY2.Y = pos_.y();
+    futureX1.X = static_cast<int32_t>(pos_.x());
+    futureY1.Y = static_cast<int32_t>(pos_.y());
+    futureX2.X = static_cast<int32_t>(pos_.x());
+    futureY2.Y = static_cast<int32_t>(pos_.y());
     // ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
     switch (nw_or){
       case NORTH: // moving north increases Y
@@ -114,7 +114,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     // ROS_INFO("Future Turtle Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
     // ROS_INFO("Computed bumped %d", bumpedFlag);
-    atEnd = atend(pos_.x(), pos_.y());
+    atEnd = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
