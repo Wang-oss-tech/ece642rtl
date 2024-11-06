@@ -78,6 +78,7 @@ void updatePosition_turtle(int nw_or) {
         case WEST:
             currentY += 1;  // Move west (left in X axis)
             break;
+        default: break;
     }
 }
 
