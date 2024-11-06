@@ -94,13 +94,13 @@ int checkDirection(int direction){
             nextX -= 1;
             break;
         case EAST:
-            nextY += 1;
+            nextY -= 1;
             break;
         case SOUTH:
             nextX += 1;
             break;
         case WEST:
-            nextY -= 1;
+            nextY += 1;
             break;
         default:
             return -1;  // Invalid direction
