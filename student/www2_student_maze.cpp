@@ -179,6 +179,8 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
   } else {
     // ROS_INFO("Next move is not MOVE_FORWARD, no position update");
   }
+  // Default return in case no return is reached in the above logic
+  return pos_;
 }
 
 /*
