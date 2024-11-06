@@ -135,7 +135,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
 
     if (shouldMove && !atEnd) {
       // ROS_INFO("ENTERS shouldMove !atEnd");
-      QPointF old_pos_ = pos_;
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       updatePosition(nw_or);
       int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
