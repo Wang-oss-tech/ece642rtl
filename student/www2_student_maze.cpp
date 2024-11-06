@@ -74,7 +74,6 @@ void updatePosition(int nw_or) {
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) 
 {
-  // return studentMoveTurtle(pos_, nw_or);
   static int32_t timer = TIMEOUT;                   // timer for managing movement
   
   Position futureX1, futureY1, futureX2, futureY2;  // future posistions based on orientation
