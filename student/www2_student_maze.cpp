@@ -126,7 +126,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
       for (int i = 0; i < numTurns; i++){
         // ROS_INFO("Left turn called: %d", i);
-        nw_or = translateOrnt(nw_or, nextMove); // update orientation
+        nw_or = translateOrnt(nw_or); // update orientation
       }
     }
     shouldMove = (nextMove == MOVE_FORWARD);
@@ -187,7 +187,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
  * Takes an orientation and a turtleMove and returns a new orienation
  * based on the move
  */
-int translateOrnt(int orientation, turtleMove nextMove) {
+int translateOrnt(int orientation) {
   switch (orientation){
     case NORTH:
       orientation = WEST;  // Turn left to face West if bumped
