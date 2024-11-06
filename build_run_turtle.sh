@@ -40,6 +40,7 @@ cd "$turtledir/../.."
 echo "Working from catkin workspace $(pwd)"
 echo ""
 
+
 # Locate mazefile, if any
 if [[ $# -eq 1 ]]; then
     if [ "${1: -5}" != ".maze" ]; then
