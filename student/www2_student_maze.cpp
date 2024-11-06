@@ -190,32 +190,16 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
 int translateOrnt(int orientation, turtleMove nextMove) {
   switch (orientation){
     case NORTH:
-      if (nextMove == TURN_RIGHT) {
-        orientation = EAST;  // Turn right to face East
-      } else if (nextMove == TURN_LEFT) { 
-        orientation = WEST;  // Turn left to face West if bumped
-      } 
+      orientation = WEST;  // Turn left to face West if bumped
       break;
     case EAST:
-      if (nextMove == TURN_RIGHT) {
-        orientation = SOUTH;  // Turn right to face South
-      } else if (nextMove == TURN_LEFT) { 
-        orientation = NORTH;  // Turn left to face North if bumped
-      }
+      orientation = NORTH;  // Turn left to face North if bumped
       break;
     case SOUTH:
-      if (nextMove == TURN_RIGHT) {
-        orientation = WEST;  // Turn right to face West
-      } else if (nextMove == TURN_LEFT) { 
-        orientation = EAST;  // Turn left to face East if bumped
-      } 
+      orientation = EAST;  // Turn left to face East if bumped
       break;
     case WEST:
-      if (nextMove == TURN_RIGHT) {
-        orientation = NORTH;  // Turn right to face North
-      } else if (nextMove == TURN_LEFT) { 
-        orientation = SOUTH;  // Turn left to face South if bumped
-      } 
+      orientation = SOUTH;  // Turn left to face South if bumped
       break;
     default:
       ROS_ERROR("Invalid orientation value 3: %d", orientation);
