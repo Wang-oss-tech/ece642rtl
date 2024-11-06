@@ -21,7 +21,6 @@ const int32_t START_POS = 50;         // starting position in center of 23x23 ar
 enum turtleMove{
     MOVE_FORWARD,
     TURN_LEFT,
-    TURN_RIGHT
 };
 
 // Enum to represent direction/orientation

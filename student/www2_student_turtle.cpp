@@ -25,7 +25,6 @@ static int32_t currentY = START_POS;  // Current relative Y position of the turt
 enum STATE {
     STATE_MOVE_FORWARD,
     STATE_TURN_LEFT,
-    STATE_TURN_RIGHT
 };
 
 
@@ -238,8 +237,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
             incrementVisits(currentX, currentY); // update visit count
             currentVisitIndex = 0;
             return std::make_pair(MOVE_FORWARD, 0);
-
-        
         case STATE_TURN_LEFT:
             // ROS_INFO("TURN LEFT (0)SENT TO MAZE\n--------------------");
             return std::make_pair(TURN_LEFT, numTurns);
