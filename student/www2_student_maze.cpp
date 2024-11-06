@@ -62,6 +62,8 @@ void updatePosition(int nw_or) {
         case WEST:
             relativeY += 1;  // Move west (left in X axis)
             break;
+        default:
+            break;
     }
 } 
 
