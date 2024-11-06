@@ -19,8 +19,6 @@
 
 // Constants for various states and timeout values
 const int32_t MAZE_SIZE = 100;         // size of internal tracking array (23x23)
-static int32_t relativeX = START_POS;
-static int32_t relativeY = START_POS;
 static int32_t currentX = START_POS;  // Current relative X position of the turtle
 static int32_t currentY = START_POS;  // Current relative Y position of the turtle
 
@@ -123,6 +121,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 3;   // One left turn needed
                 case SOUTH: return 2;   // Two left turns needed
                 case WEST:  return 1;   // Three left turns needed
+                default: break;
             }
             break;
 
@@ -132,6 +131,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 0;   // Already aligned
                 case SOUTH: return 3;   // One left turn needed
                 case WEST:  return 2;   // Two left turns needed
+                default: break;
             }
             break;
 
@@ -141,6 +141,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 1;   // Three left turns needed
                 case SOUTH: return 0;   // Already aligned
                 case WEST:  return 3;   // One left turn needed
+                default: break;
             }
             break;
 
@@ -150,6 +151,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 2;   // Two left turns needed
                 case SOUTH: return 1;   // Three left turns needed
                 case WEST:  return 0;   // Already aligned
+                default: break;
             }
             break;
 
