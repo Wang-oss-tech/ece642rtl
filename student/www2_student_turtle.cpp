@@ -233,6 +233,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
             ROS_INFO("MOVE_FORWARD (0)SENT TO MAZE\n--------------------");
             updatePosition_turtle(targetDirection);  // move forward
             incrementVisits(currentX, currentY); // update visit count
+            currentVisitIndex = 0;
             return std::make_pair(MOVE_FORWARD, 0);
 
         
