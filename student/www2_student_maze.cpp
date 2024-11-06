@@ -88,7 +88,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = pos_.y();
     futureX2.X = pos_.x();
     futureY2.Y = pos_.y();
-    ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
+    // ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
     switch (nw_or){
       case NORTH: // moving north increases Y
         futureY2.Y += MOVE_INCREMENT; 
@@ -110,36 +110,36 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
         break;
     }
-    ROS_INFO("Future Turtle Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
+    // ROS_INFO("Future Turtle Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-    ROS_INFO("Computed bumped %d", bumpedFlag);
+    // ROS_INFO("Computed bumped %d", bumpedFlag);
     atEnd = atend(pos_.x(), pos_.y());
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
     turtleMove nextMove = result.first;
     int numTurns = result.second;
-    ROS_INFO("Move Forward Received: %d", nextMove);
+    // ROS_INFO("Move Forward Received: %d", nextMove);
 
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
       for (int i = 0; i < numTurns; i++){
-        ROS_INFO("Left turn called: %d", i);
+        // ROS_INFO("Left turn called: %d", i);
         nw_or = translateOrnt(nw_or, nextMove); // update orientation
       }
     }
     shouldMove = (nextMove == MOVE_FORWARD);
-    ROS_INFO("shouldMove truth: %d", shouldMove);
-    ROS_INFO("atEnd truth: %d", atEnd);
+    // ROS_INFO("shouldMove truth: %d", shouldMove);
+    // ROS_INFO("atEnd truth: %d", atEnd);
 
     if (shouldMove && !atEnd) {
-      ROS_INFO("ENTERS shouldMove !atEnd");
+      // ROS_INFO("ENTERS shouldMove !atEnd");
       QPointF old_pos_ = pos_;
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       updatePosition(nw_or);
       int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
       displayVisits(visits);  // Update the display with the visit count
-      ROS_INFO("Moving Forward/Display Visits\n(X,Y): %d, %d | visits: %d\n--------------------------", relativeX, relativeY, visits);
+      // ROS_INFO("Moving Forward/Display Visits\n(X,Y): %d, %d | visits: %d\n--------------------------", relativeX, relativeY, visits);
       shouldMove = false;
     }
   }
@@ -177,7 +177,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
     }
     return pos_;
   } else {
-    ROS_INFO("Next move is not MOVE_FORWARD, no position update");
+    // ROS_INFO("Next move is not MOVE_FORWARD, no position update");
   }
 }
 
