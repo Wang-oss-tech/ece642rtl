@@ -216,6 +216,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     if (currentState == STATE_MOVE_FORWARD && bumped){
         ROS_INFO("Bumped into a wall. Trying the next direction.");
         currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
+        ROS_INFO("currrentVisitIndex Updated to %d", currentVisitIndex);
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
         if (numTurns > 0){
