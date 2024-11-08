@@ -27,9 +27,9 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 # Locate the ece642rtle directory
-turtledir=`rospack find ece642rtl`
+turtledir=`rospack find ece642rtle`
 if [ -z "$turtledir" ]; then
-    echo "Cannot locate package ece642rtl."
+    echo "Cannot locate package ece642rtle."
     echo "Did you run catkin_make (with no arguments) in the"
     echo " Catkin workspace before proceeding?"
     exit 1
@@ -39,7 +39,6 @@ fi
 cd "$turtledir/../.."
 echo "Working from catkin workspace $(pwd)"
 echo ""
-
 
 # Locate mazefile, if any
 if [[ $# -eq 1 ]]; then
@@ -111,4 +110,3 @@ trap 'kill_processes $STUDENT_PID $TURTLE_PID $ROSCORE_PID' SIGINT
 while [ 1 -eq 1 ]; do
     sleep 30
 done
-
