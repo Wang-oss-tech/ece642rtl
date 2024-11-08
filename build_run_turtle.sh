@@ -27,9 +27,9 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 # Locate the ece642rtle directory
-turtledir=`rospack find www2_files`
+turtledir=`rospack find ece642rtle`
 if [ -z "$turtledir" ]; then
-    echo "Cannot locate package www2_files."
+    echo "Cannot locate package ece642rtle."
     echo "Did you run catkin_make (with no arguments) in the"
     echo " Catkin workspace before proceeding?"
     exit 1
