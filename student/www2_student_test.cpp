@@ -6,8 +6,11 @@
  * in Project 9. It uses the CUnit framework (cunit.sourceforge.net)
  */
 
-#include "student_mock.h"
+#include "student_mock.h"  // Mock version of student functions for testing
+#include "student.h"        // The actual header with enums and type definitions
 #include <CUnit/Basic.h>
+#include <utility>          // For std::pair
+
 
 // Test for Transition T1: atEnd == false
 void test_T1_atEndFalse() {
