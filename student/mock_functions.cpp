@@ -1,6 +1,6 @@
 #include "student_mock.h"
 
-// Static variables to store the mock return values
+// Static variables to control mock return values
 static bool mock_bumped_value = false;
 static bool mock_atend_value = false;
 
@@ -14,12 +14,12 @@ bool atend(int x, int y) {
     return mock_atend_value;
 }
 
-// Helper function to set the mock value for bumped
+// Function to set the mock value for bumped
 void mock_set_bumped(bool value) {
     mock_bumped_value = value;
 }
 
-// Helper function to set the mock value for atend
+// Function to set the mock value for atend
 void mock_set_atend(bool value) {
     mock_atend_value = value;
 }
