@@ -23,4 +23,7 @@ bool atend(int x, int y);
 void incrementVisits(int32_t x, int32_t y);
 int32_t getVisits(int32_t x, int32_t y);
 
+// Declare the studentTurtleStep function
+std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or);
+
 #endif // STUDENT_MOCK_H
