@@ -1,16 +1,51 @@
-#ifndef STUDENT_MOCK_H
-#define STUDENT_MOCK_H
+/* 
+ * STUDENT NAME: William Wang
+ * ANDREW ID: www2
+ * LAST UPDATE: 9 Nov 2024
+ */
 
-#ifdef testing
+#include <iostream>
+#include <stdint.h>
+#include <utility>
+#include <QPointF>  // Ensure Qt is properly included
 
-#include <cstdio>       // For printf
-#include <QPointF>      // For QPointF type
-#include <cstdint>      // For int32_t
-#include <utility>      // For std::pair
+// Mock variables to store values for testing
+static bool mock_bumped_value = false;
+static bool mock_atend_value = false;
 
-// Mock definitions for constants and enums used in testing
-const int32_t START_POS = 50;
+// Mock implementation of bumped()
+bool bumped(int x1, int y1, int x2, int y2) {
+    return mock_bumped_value;
+}
 
+// Mock implementation of atend()
+bool atend(int x, int y) {
+    return mock_atend_value;
+}
+
+// Mock helper functions to set the values of bumped and atend
+void mock_set_bumped(bool value) {
+    mock_bumped_value = value;
+}
+
+void mock_set_atend(bool value) {
+    mock_atend_value = value;
+}
+
+// Other functions needed for the test
+int32_t getVisits(int32_t x, int32_t y);
+void incrementVisits(int32_t x, int32_t y);
+QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
+int translateOrnt(int orientation);
+std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or);
+
+// Turtle movement enumeration
+enum turtleMove {
+    MOVE_FORWARD,
+    TURN_LEFT,
+};
+
+// Enum to represent direction/orientation
 enum Direction {
     NORTH,
     EAST,
@@ -18,33 +53,25 @@ enum Direction {
     WEST
 };
 
-enum turtleMove {
-    MOVE_FORWARD,
-    TURN_LEFT,
-};
+// Constants
+const int32_t START_POS = 50; // starting position in center of 23x23 array
 
-// Mock ROS_ERROR macro to use printf in a testing environment
-#define ROS_ERROR(...) printf("ERROR: " __VA_ARGS__)
+// Static variables for test purposes
+static int32_t visitMap[23][23] = {0}; // Visit map to track number of visits
 
-// Mock function declarations
-bool bumped(int x1, int y1, int x2, int y2);
-bool atend(int x, int y);
-void displayVisits(int visits);
-bool moveTurtle(QPointF& pos_, int& nw_or);
+int32_t getVisits(int32_t x, int32_t y) {
+    if (x >= 0 && x < 23 && y >= 0 && y < 23) {
+        return visitMap[x][y];
+    } else {
+        std::cerr << "Invalid coordinates accessed in visitMap." << std::endl;
+        return 0;
+    }
+}
 
-// Mock versions of functions
-void mock_set_bumped(bool value);
-void mock_set_atend(bool value);
-
-// Other function prototypes from student.h for testing
-int32_t getVisits(int32_t x, int32_t y);
-void incrementVisits(int32_t x, int32_t y);
-QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or);
-int translateOrnt(int orientation);
-std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or);
-
-#else
-#include "student.h"  // Use the actual student.h if not in testing mode
-#endif
-
-#endif  // STUDENT_MOCK_H
+void incrementVisits(int32_t x, int32_t y) {
+    if (x >= 0 && x < 23 && y >= 0 && y < 23) {
+        visitMap[x][y]++;
+    } else {
+        std::cerr << "Invalid coordinates accessed in visitMap during increment." << std::endl;
+    }
+}

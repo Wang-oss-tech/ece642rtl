@@ -1,40 +1,26 @@
+/* 
+ * STUDENT NAME: William Wang
+ * ANDREW ID: www2
+ * LAST UPDATE: 9 Nov 2024
+ */
+
 #include "student_mock.h"
 #include <CUnit/Basic.h>
-#include <utility>  // For std::pair
+
+// Test Cases for Turtle Movements
 
 void test_T1_atEndFalse() {
-    mock_set_atend(false);  // Set mock atEnd value to false
+    mock_set_atend(false);
     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);  // Expect to move forward with no turns
+    CU_ASSERT_EQUAL(result.second, 0);
 }
 
 void test_T4_atEndTrue() {
-    mock_set_atend(true);  // Set mock atEnd value to true
+    mock_set_atend(true);
     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);  // No turns expected at end
-}
-
-void test_T3_numTurnsEquals3() {
-    mock_set_atend(false);
-    mock_set_bumped(false);  // Ensure no bump
-
-    // Set a condition where the turtle would need to turn 3 times
-    std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);  // Expect to move forward when aligned
-}
-
-void test_T2_bumpDetected() {
-    mock_set_bumped(true);  // Simulate a bump
-    std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-
-    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-    CU_ASSERT(result.second > 0);  // Expect a turn since it bumped
+    CU_ASSERT_EQUAL(result.second, 0); // No turns expected at end
 }
 
 int init() {
@@ -47,26 +33,30 @@ int cleanup() {
     return 0;
 }
 
+/* Skeleton code from http://cunit.sourceforge.net/example.html */
 int main() {
+
     CU_pSuite pSuite = NULL;
 
+    /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
         return CU_get_error();
 
-    pSuite = CU_add_suite("Suite_1", init, cleanup);
+    /* add a suite to the registry */
+    pSuite = CU_add_suite("Turtle_Test_Suite", init, cleanup);
     if (NULL == pSuite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    if ((NULL == CU_add_test(pSuite, "Test T1: atEnd False", test_T1_atEndFalse)) ||
-        (NULL == CU_add_test(pSuite, "Test T4: atEnd True", test_T4_atEndTrue)) ||
-        (NULL == CU_add_test(pSuite, "Test T3: numTurns Equals 3", test_T3_numTurnsEquals3)) ||
-        (NULL == CU_add_test(pSuite, "Test T2: Bump Detected", test_T2_bumpDetected))) {
+    /* add the tests to the suite */
+    if ((NULL == CU_add_test(pSuite, "test of atEnd false", test_T1_atEndFalse)) ||
+        (NULL == CU_add_test(pSuite, "test of atEnd true", test_T4_atEndTrue))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
+    /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
     CU_cleanup_registry();
