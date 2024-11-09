@@ -6,7 +6,7 @@
  * ANDREW ID: www2    
  * LAST UPDATE: 9/8/2024
  *
- * This file is an algorithm to solve the ece642rtle maze
+ * This file is an algorithm to solve the ece642rtle maze j
  * using the right-hand rule.
  */
 
