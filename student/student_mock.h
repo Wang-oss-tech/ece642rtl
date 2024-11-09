@@ -3,7 +3,10 @@
 
 #ifdef testing
 
-#include <cstdio>  // For printf
+#include <cstdio>       // For printf
+#include <QPointF>      // For QPointF type
+#include <cstdint>      // For int32_t
+#include <utility>      // For std::pair
 
 // Mock definitions for constants and enums used in testing
 const int32_t START_POS = 50;

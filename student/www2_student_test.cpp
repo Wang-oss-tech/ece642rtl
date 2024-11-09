@@ -1,5 +1,6 @@
 #include "student_mock.h"
 #include <CUnit/Basic.h>
+#include <utility>  // For std::pair
 
 void test_T1_atEndFalse() {
     mock_set_atend(false);  // Set mock atEnd value to false
