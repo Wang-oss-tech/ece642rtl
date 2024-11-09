@@ -18,6 +18,14 @@
 #endif
 
 
+#include <algorithm> // For std::sort
+#include <cstdio> // For fprintf with ROS_ERROR macro in testing mode
+
+#ifdef testing
+#define ROS_ERROR(...) fprintf(stderr, __VA_ARGS__)
+#endif
+
+
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 #include <utility>  // For std::pair
 

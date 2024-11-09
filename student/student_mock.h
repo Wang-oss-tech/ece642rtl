@@ -1,26 +1,26 @@
-// student_mock.h
+#ifndef STUDENT_MOCK_H
+#define STUDENT_MOCK_H
 
-#pragma once
-
+#include <stdint.h>
 #include <utility>
 
-// Mock variables
-extern bool mock_bumped_value;
-extern bool mock_atend_value;
+enum turtleMove {
+    MOVE_FORWARD,
+    TURN_LEFT
+};
 
-// Mock function definitions
-inline bool bumped(int x1, int y1, int x2, int y2) {
-    return mock_bumped_value;
-}
+enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+};
 
-inline bool atend(int x, int y) {
-    return mock_atend_value;
-}
+const int32_t START_POS = 50;
 
-inline void mock_set_bumped(bool value) {
-    mock_bumped_value = value;
-}
+bool bumped(int x1, int y1, int x2, int y2);
+bool atend(int x, int y);
+void incrementVisits(int32_t x, int32_t y);
+int32_t getVisits(int32_t x, int32_t y);
 
-inline void mock_set_atend(bool value) {
-    mock_atend_value = value;
-}
+#endif // STUDENT_MOCK_H
