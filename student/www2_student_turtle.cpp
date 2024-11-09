@@ -12,14 +12,12 @@
 
 #ifdef testing
 #include "student_mock.h"
+#else
+#include "student.h"
+#include "ros/ros.h"
 #endif
 
-#ifndef testing
-#include "student.h"
-#endif
 
-
-#include "student.h"
 #include <stdint.h>  // Include stdint.h for fixed-width integer types
 #include <utility>  // For std::pair
 
