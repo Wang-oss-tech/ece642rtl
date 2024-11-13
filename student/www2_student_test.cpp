@@ -49,19 +49,15 @@ void test_T2_numTurnsLessThan3() {
 //     CU_ASSERT_EQUAL(result.second, 0);
 // }
 void test_T3_numTurnsEquals3() {
-    // Initialize with expected preconditions
     mock_set_atend(false);
     mock_set_bumped(false);
+    mock_set_numTurns(3);
 
-    // Simulate numTurns incrementing to 3 if there’s no direct setter
-    for (int i = 0; i < 3; i++) {
-        studentTurtleStep(true, NORTH);
-    }
+    std::cout << "Debug: atEnd = " << mock_atend_value
+              << ", bumped = " << mock_bumped_value
+              << ", numTurns = " << mock_numTurns_value << std::endl;
 
-    // After reaching 3 turns, the turtle should transition to MOVE_FORWARD
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-    
-    // Check that we're in the state expected for numTurns == 3
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
