@@ -194,11 +194,9 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     for (int i = 0; i < 4; i++) {
         int visits = checkDirection(i);  // Get the number of visits for each direction
         visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
-        // ROS_INFO("Direction: %d, Visits: %d", i, visits);
     }
 
     // Sort the visit array in ascending order based on the visit count
-    // ROS_INFO("Sorting Array Based On Visit Count");
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
     // Declare targetDirection and initialize var. w/ current orientation

@@ -28,6 +28,8 @@ void test_T2_numTurnsLessThan3() {
     // Transition T2: S2 to S3
     // turtle turns left due to bump with positive turn count
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+    printf("student turtle step: move = %d, number of turns = %d\n\n\n",
+           result.first, result.second);
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
     CU_ASSERT(result.second > 0);  // Expect a turn since it bumped
 }
