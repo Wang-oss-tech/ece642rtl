@@ -53,7 +53,7 @@ void test_T3_numTurnsEquals3() {
 
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
 
-    printf("5th student turtle step: move = %d, number of turns = %d\n\n\n",
+    printf("\n\n5th student turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
 
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
