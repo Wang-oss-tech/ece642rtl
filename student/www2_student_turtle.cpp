@@ -206,7 +206,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
 
-    printf("Target Direction calculated: %d", targetDirection);
+    printf("\nTarget Direction calculated: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
