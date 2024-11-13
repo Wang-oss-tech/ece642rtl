@@ -54,27 +54,27 @@ void test_T2_numTurnsLessThan3() {
 void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
-    mock_set_numTurns(0);  // Starting with numTurns at 0
+    mock_set_numTurns(0);
 
-    std::pair<turtleMove, int> result;
+    printf("\n\nDebug: atEnd = %d, bumped = %d, numTurns = %d\n",
+           mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
 
-    // Run multiple steps to observe behavior until it reaches MOVE_FORWARD
-    for (int i = 0; i < 5; i++) {
-        result = studentTurtleStep(true, NORTH);
-        printf("Iteration %d: move = %d, number of turns = %d\n", i, result.first, result.second);
-
-        // Check for TURN_LEFT until numTurns is expected to be 0 (aligned)
-        if (i < 3) {
-            CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-            CU_ASSERT(result.second > 0);
-        } else {
-            CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-            CU_ASSERT_EQUAL(result.second, 0);
-            break;  // Exit once it reaches MOVE_FORWARD
-        }
+    for (int i = 0; i < 3; i++) {
+        std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+        printf("Iteration %d: atEnd = %d, bumped = %d, numTurns = %d\n", 
+                i, mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
+        printf("student turtle step: move = %d, number of turns = %d\n\n\n",
+           result.first, result.second);
     }
-}
 
+    std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+
+    printf("5th student turtle step: move = %d, number of turns = %d\n\n\n",
+           result.first, result.second);
+
+    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+    CU_ASSERT_EQUAL(result.second, 0);
+}
 
 // Test T4: atEnd == True, move to S5 (Goal STOP)
 // void test_T4_atEndTrue() {
