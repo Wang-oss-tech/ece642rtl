@@ -223,7 +223,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // State transition logic based on the number of turns
     if (numTurns > 0) {
         // ROS_INFO("Set state to state_turn_left");
-        numTurns --;
         currentState = STATE_TURN_LEFT;  // Turn towards the target direction
     } else {
         // ROS_INFO("Set state to state_move_forward");
