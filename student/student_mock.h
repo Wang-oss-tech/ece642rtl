@@ -30,6 +30,7 @@ int32_t getVisits(int32_t x, int32_t y);
 // Functions to set mock behavior for bumped and atend
 void mock_set_bumped(bool value);
 void mock_set_atend(bool value);
+void mock_set_numTurns(int value);
 
 // Function under test
 std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or);

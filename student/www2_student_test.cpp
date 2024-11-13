@@ -82,6 +82,7 @@ void test_T4_atEndTrue() {
     // Set goal state conditions
     mock_set_atend(true);
     mock_set_bumped(false);  // Ensure bumped isn’t interfering
+    
     // Set numTurns to zero if needed to avoid interference
     mock_set_numTurns(0);  // Assuming there’s a way to reset numTurns
 
