@@ -198,8 +198,10 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // Sort the visit array in ascending order based on the visit count
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
+
     for (int i = 0; i < 4; i ++){
-        printf("\nSorted Direction[%d]: %d", i, visitArray[i].second);
+        printf("\nSorted Direction[%d]: %d, Visit count: %d", i, visitArray[i].second, 
+                                                                 visitArray[i].first);
     }
 
     // Declare targetDirection and initialize var. w/ current orientation
