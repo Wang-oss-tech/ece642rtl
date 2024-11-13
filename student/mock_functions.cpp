@@ -30,7 +30,15 @@ void mock_set_numTurns(int value) {
     mock_numTurns_value = value;
 }
 
-// Optional: Getter for numTurns, if needed for checking in tests
+// Getter functions for debugging purposes
+bool mock_get_bumped() {
+    return mock_bumped_value;
+}
+
+bool mock_get_atend() {
+    return mock_atend_value;
+}
+
 int mock_get_numTurns() {
     return mock_numTurns_value;
 }

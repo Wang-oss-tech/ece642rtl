@@ -7,6 +7,7 @@ ANDREW ID: www2
 #include "student_mock.h"
 #include <CUnit/Basic.h>
 #include <utility>
+#include <stdio.h>  // For printf
 
 // Test T1: atEnd == False, moving to S2 (Check functions)
 void test_T1_atEndFalse() {
@@ -48,19 +49,20 @@ void test_T2_numTurnsLessThan3() {
 //     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
 //     CU_ASSERT_EQUAL(result.second, 0);
 // }
+
 void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
     mock_set_numTurns(3);
 
     printf("Debug: atEnd = %d, bumped = %d, numTurns = %d\n",
-       mock_atend_value, mock_bumped_value, mock_numTurns_value);
-
+           mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
 
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
+
 
 
 // Test T4: atEnd == True, move to S5 (Goal STOP)
