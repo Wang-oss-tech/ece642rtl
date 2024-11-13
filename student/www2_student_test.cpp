@@ -60,13 +60,15 @@ void test_T3_numTurnsEquals3() {
 
     for (int i = 0; i < 3; i++) {
         std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+        printf("\n\nIteration %d: atEnd = %d, bumped = %d, numTurns = %d\n", 
+                i, mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
+        printf("student turtle step: move = %d, number of turns = %d\n\n\n",
+           result.first, result.second);
     }
 
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-    printf("Debug: atEnd = %d, bumped = %d, numTurns = %d\n",
-           mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
 
-    printf("Debug: move = %d, number of turns = %d\n\n\n",
+    printf("5th student turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
 
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
