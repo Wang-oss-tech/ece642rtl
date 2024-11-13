@@ -33,9 +33,9 @@
 // Define size of the maze array
 
 // Constants for various states and timeout values
-const int32_t MAZE_SIZE = 100;         // size of internal tracking array (23x23)
-static int32_t currentX = START_POS;  // Current relative X position of the turtle
-static int32_t currentY = START_POS;  // Current relative Y position of the turtle
+const int32_t MAZE_SIZE = 100;                      // size of internal tracking array (23x23)
+static int32_t currentX = START_POS;                // Current relative X position of the turtle
+static int32_t currentY = START_POS;                // Current relative Y position of the turtle
 
 enum STATE {
     STATE_MOVE_FORWARD,
@@ -44,8 +44,8 @@ enum STATE {
 
 
 // Typedefs for readability and future flexibility
-typedef STATE State;       // Typedef for state representation
-typedef bool Flag;           // Typedef for boolean flags
+typedef STATE State;   // Typedef for state representation
+typedef bool Flag;     // Typedef for boolean flags
 
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
@@ -119,8 +119,6 @@ int checkDirection(int direction){
             return -1;  // Invalid direction
     }
 
-    // ROS_INFO("NextX: %d, NextY: %d", nextX, nextY);
-
     // Return the number of visits for this square if valid
     return getVisits(nextX, nextY);
 }
@@ -183,29 +181,37 @@ int calculateTurns(int currentDirection, int targetDirection) {
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
 std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
+    printf("\n\nstudentTurtleStep called");
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
-    static int numTurns = 0;  // Tracks the number of required turns
-    static int currentVisitIndex = 0;  // Tracks which direction to try next on a bump
+    static int numTurns = 0;                        // Tracks the number of required turns
+    static int currentVisitIndex = 0;               // Tracks which direction to try next on a bump
 
     // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
     // Populate the visit array with the number of visits for each direction
     for (int i = 0; i < 4; i++) {
-        int visits = checkDirection(i);  // Get the number of visits for each direction
+        int visits = checkDirection(i);             // Get the number of visits for each direction
         visitArray[i] = std::make_pair(visits, i);  // Store (visit count, direction) pairs
     }
 
     // Sort the visit array in ascending order based on the visit count
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
+    for (int i = 0; i < 4; i ++){
+        printf("\nSorted Direction[%d]: %d", i, visitArray[i].second);
+    }
+
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
-
     targetDirection = visitArray[currentVisitIndex].second;
+
+    printf("Target Direction calculated: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
+
+    printf("Number of Turns calculated: %d", numTurns);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
@@ -216,7 +222,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
 
     // If current state is bumped
     if (currentState == STATE_MOVE_FORWARD && bumped){
-        currentVisitIndex = (currentVisitIndex + 1) % 4;  // Cycle to the next direction
+        currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
         if (numTurns > 0){
@@ -228,8 +234,8 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         // Tells turtle to move forard
         case STATE_MOVE_FORWARD:
-            updatePosition_turtle(targetDirection);  // move forward
-            incrementVisits(currentX, currentY); // update visit count
+            updatePosition_turtle(targetDirection);     // move forward
+            incrementVisits(currentX, currentY);        // update visit count
             currentVisitIndex = 0;
             return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:

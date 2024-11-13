@@ -112,35 +112,27 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
         ROS_ERROR("Invalid orientation value 1: %d", nw_or);
         break;
     }
-    // ROS_INFO("Future Turtle Pos (X,Y): %d, %d", futureX2.X, futureY2.Y);
     bumpedFlag = bumped(futureX1.X, futureY1.Y, futureX2.X, futureY2.Y);
-    // ROS_INFO("Computed bumped %d", bumpedFlag);
     atEnd = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
 
     // Call to studentTurtleStep() to determine next step based on whether a bump occurred
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
     turtleMove nextMove = result.first;
     int numTurns = result.second;
-    // ROS_INFO("Move Forward Received: %d", nextMove);
 
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
       for (int i = 0; i < numTurns; i++){
-        // ROS_INFO("Left turn called: %d", i);
         nw_or = translateOrnt(nw_or); // update orientation
       }
     }
     shouldMove = (nextMove == MOVE_FORWARD);
-    // ROS_INFO("shouldMove truth: %d", shouldMove);
-    // ROS_INFO("atEnd truth: %d", atEnd);
 
     if (shouldMove && !atEnd) {
-      // ROS_INFO("ENTERS shouldMove !atEnd");
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       updatePosition(nw_or);
       int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
       displayVisits(visits);  // Update the display with the visit count
-      // ROS_INFO("Moving Forward/Display Visits\n(X,Y): %d, %d | visits: %d\n--------------------------", relativeX, relativeY, visits);
       shouldMove = false;
     }
   }
