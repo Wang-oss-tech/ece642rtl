@@ -55,7 +55,7 @@ void test_T3_numTurnsEquals3() {
     mock_set_bumped(false);
     mock_set_numTurns(0);
 
-    printf("Debug: atEnd = %d, bumped = %d, numTurns = %d\n",
+    printf("\n\nDebug: atEnd = %d, bumped = %d, numTurns = %d\n",
            mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
 
     for (int i = 0; i < 3; i++) {
@@ -65,7 +65,10 @@ void test_T3_numTurnsEquals3() {
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
     printf("Debug: atEnd = %d, bumped = %d, numTurns = %d\n",
            mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
-    
+
+    printf("Debug: move = %d, number of turns = %d\n",
+           result.first, result.second);
+
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
