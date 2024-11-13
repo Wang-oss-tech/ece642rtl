@@ -45,7 +45,7 @@ void test_T3_numTurnsEquals3() {
 
     for (int i = 0; i < 3; i++) {
         std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-        printf("Iteration %d: atEnd = %d, bumped = %d, numTurns = %d\n", 
+        printf("\nIteration %d: atEnd = %d, bumped = %d, numTurns = %d\n", 
                 i, mock_get_atend(), mock_get_bumped(), mock_get_numTurns());
         printf("student turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
@@ -59,17 +59,6 @@ void test_T3_numTurnsEquals3() {
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
-
-// Test T4: atEnd == True, move to S5 (Goal STOP)
-// void test_T4_atEndTrue() {
-//     // Transition T4: S1 to S5
-//     mock_set_atend(true);
-
-//     // when atEnd is true, the turtle moves forward with no additional turns
-//     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-//     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-//     CU_ASSERT_EQUAL(result.second, 0);  // No turns expected
-// }
 
 void test_T4_atEndTrue() {
     // Set goal state conditions
