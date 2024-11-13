@@ -49,20 +49,23 @@ void test_T2_numTurnsLessThan3() {
 //     CU_ASSERT_EQUAL(result.second, 0);
 // }
 void test_T3_numTurnsEquals3() {
-    // Setup to reach numTurns == 3
+    // Initialize with expected preconditions
     mock_set_atend(false);
     mock_set_bumped(false);
 
-    // Use a loop to simulate incrementing numTurns
+    // Simulate numTurns incrementing to 3 if there’s no direct setter
     for (int i = 0; i < 3; i++) {
         studentTurtleStep(true, NORTH);
     }
 
-    // Perform the step to verify the transition to the next state
+    // After reaching 3 turns, the turtle should transition to MOVE_FORWARD
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+    
+    // Check that we're in the state expected for numTurns == 3
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
+
 
 // Test T4: atEnd == True, move to S5 (Goal STOP)
 // void test_T4_atEndTrue() {
@@ -76,13 +79,17 @@ void test_T3_numTurnsEquals3() {
 // }
 
 void test_T4_atEndTrue() {
-    // Ensure we're setting the end state condition
+    // Set goal state conditions
     mock_set_atend(true);
-    mock_set_bumped(false);  // Ensure nothing interferes with the end state transition
+    mock_set_bumped(false);  // Ensure bumped isn’t interfering
+    // Set numTurns to zero if needed to avoid interference
+    mock_set_numTurns(0);  // Assuming there’s a way to reset numTurns
 
     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);  // Ensure goal action
-    CU_ASSERT_EQUAL(result.second, 0);  // No turns expected at goal
+
+    // Verify that we reach the goal state and stop with MOVE_FORWARD and no turns
+    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+    CU_ASSERT_EQUAL(result.second, 0);
 }
 
 
