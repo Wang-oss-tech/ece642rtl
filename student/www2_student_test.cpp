@@ -50,6 +50,7 @@ void test_T2_numTurnsLessThan3() {
 //     CU_ASSERT_EQUAL(result.second, 0);
 // }
 
+// Test T3: numTurns == 3, move to S4
 void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
