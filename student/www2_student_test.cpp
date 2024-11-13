@@ -7,7 +7,7 @@ ANDREW ID: www2
 #include "student_mock.h"
 #include <CUnit/Basic.h>
 #include <utility>
-#include <stdio.h>  // For printf
+#include <stdio.h>  
 
 // Test T1: atEnd == False, moving to S2 (Check functions)
 void test_T1_atEndFalse() {
@@ -72,8 +72,6 @@ void test_T3_numTurnsEquals3() {
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
-
-
 
 // Test T4: atEnd == True, move to S5 (Goal STOP)
 // void test_T4_atEndTrue() {
