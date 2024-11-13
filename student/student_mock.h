@@ -31,6 +31,9 @@ int32_t getVisits(int32_t x, int32_t y);
 void mock_set_bumped(bool value);
 void mock_set_atend(bool value);
 void mock_set_numTurns(int value);
+bool mock_get_bumped();
+bool mock_get_atend();
+int mock_get_numTurns();
 
 // Function under test
 std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or);
