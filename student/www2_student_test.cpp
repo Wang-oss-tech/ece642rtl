@@ -60,7 +60,7 @@ void test_T3_numTurnsEquals3() {
 
     std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);
+    CU_ASSERT_EQUAL(result.second, 3);
 }
 
 
