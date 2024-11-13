@@ -211,7 +211,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    printf("Number of Turns calculated: %d", numTurns);
+    printf("\nNumber of Turns calculated: %d", numTurns);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
