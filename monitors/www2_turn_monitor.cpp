@@ -44,9 +44,9 @@ void visitInterrupt(ros::Time t, int visits) {
     } else {
         ROS_INFO("[[%ld ns]] 'Turn' was sent. Data: orientation = %s", 
                     t.toNSec(), 
-                    or_string[cur_or].c_str());
+                    or_string[curr_or].c_str());
 
-        if (opp_orientations[cur_or] == prev_or) {
+        if (opp_orientations[curr_or] == prev_or) {
             ROS_WARN("VIOLATION: Turned  %s to %s", 
                      or_string[cur_or].c_str(), 
                      or_string[prev_or].c_str());
