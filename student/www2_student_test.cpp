@@ -98,13 +98,13 @@ void test_bumpedFalse_numTurnsGreaterThanZero() {
     mock_set_atend(false);
     mock_set_bumped(false);
 
-    // Expected outcome: turtle should move forward without turning
+    // Expected outcome: should continute turning left
     std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
 
     printf("\n\nstudent turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);
+    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
+    CU_ASSERT_EQUAL(result.second > 0);
 }
 
 // Test for target direction requires multiple turns
