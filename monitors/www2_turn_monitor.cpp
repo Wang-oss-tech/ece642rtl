@@ -32,7 +32,7 @@ static std::map<int, int> opp_orientations {
 static bool tick_first = true;
 
 // current orienation of tutle 
-static Orientation cur_or;
+static Orientation curr_or;
 
 // previous orientation of turtle 
 static Orientation prev_or;
@@ -44,7 +44,7 @@ void visitInterrupt(ros::Time t, int visits) {
     } else {
         ROS_INFO("[[%ld ns]] 'Turn' was sent. Data: orientation = %s", 
                     t.toNSec(), 
-                    orientation_val[cur_or].c_str());
+                    or_string[cur_or].c_str());
 
         if (opp_orientations[cur_or] == prev_or) {
             ROS_WARN("VIOLATION: Turned  %s to %s", 
@@ -61,7 +61,7 @@ void visitInterrupt(ros::Time t, int visits) {
  * if the locations differ by more than 1 in Manhattan Distance.
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
-  cur_or = o; 
+  curr_or = o; 
 }
 
 /*
