@@ -119,7 +119,6 @@ void test_multipleBumpsWithoutMoving() {
 
     for (int i = 0; i < 5; i++) {
         std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-        printf("\nIteration %d: move = %d, number of turns = %d\n", i, result.first, result.second);
         CU_ASSERT_EQUAL(result.first, TURN_LEFT);
         CU_ASSERT(result.second > 0);  // Turtle keeps turning due to bump
     }
