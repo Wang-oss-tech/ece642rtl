@@ -34,7 +34,6 @@ void mock_set_numTurns(int value);
 bool mock_get_bumped();
 bool mock_get_atend();
 int mock_get_numTurns();
-void reset_currentVisitIndex();
 
 
 
