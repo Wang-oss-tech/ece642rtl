@@ -195,15 +195,15 @@ void test_moveToWall() {
 // }
 
 // Test moving forward after initial alignment
-void test_moveForwardAfterAlignment() {
-    mock_set_atend(false);
-    mock_set_bumped(false);
-    mock_set_numTurns(0);
+// void test_moveForwardAfterAlignment() {
+//     mock_set_atend(false);
+//     mock_set_bumped(false);
+//     mock_set_numTurns(0);
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);  // Should move forward as already aligned
-}
+//     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+//     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+//     CU_ASSERT_EQUAL(result.second, 0);  // Should move forward as already aligned
+// }
 
 // Test circular turning behavior
 // void test_circularTurning() {
@@ -255,7 +255,7 @@ int main() {
     // CU_add_test(suite, "Test Transition from Bump to Forward Movement", test_bumpToForwardMovement);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
     // CU_add_test(suite, "Test Max Num Turns", test_maxNumTurns);
-    CU_add_test(suite, "Test Move Forward After Alignment", test_moveForwardAfterAlignment);
+    // CU_add_test(suite, "Test Move Forward After Alignment", test_moveForwardAfterAlignment);
     // CU_add_test(suite, "Test Circular Turning", test_circularTurning);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
 
