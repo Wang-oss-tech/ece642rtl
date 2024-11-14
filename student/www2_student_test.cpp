@@ -54,7 +54,7 @@ void test_T4_atEndTrue() {
     // Set numTurns to zero to avoid interference
     mock_set_numTurns(0);  
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
+    std::pair<turtleMove, int> result = studentTurtleStep(false, WEST);
     printf("\n\nmove: %d direction: %d\n", result.first, result.second);
 
     // Verify that we reach the goal state and stop with MOVE_FORWARD and no turns
