@@ -153,7 +153,7 @@ void test_continueTurningAfterTurnCountLimit() {
     mock_set_numTurns(3);  // Assume the turtle has already turned three times
 
     // We expect the turtle to keep turning left even though `numTurns` is at the limit
-    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
+    std::pair<turtleMove, int> result = studentTurtleStep(false, WEST);
     
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
     CU_ASSERT(result.second == 3);  // Expect the turn count to be maintained
