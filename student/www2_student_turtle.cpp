@@ -134,9 +134,11 @@ int calculateTurns(int currentDirection, int targetDirection) {
         case NORTH:
             switch (targetDirection) {
                 case NORTH: return 0;   // Already facing the right direction
-                case EAST:  return 3;   // One left turn needed
+                case EAST:  
+                    ROS_INFO("ENTERS east case HERE");
+                    return 3;   // three left turns needed
                 case SOUTH: return 2;   // Two left turns needed
-                case WEST:  return 1;   // Three left turns needed
+                case WEST:  return 1;   // one left turn needed
                 default: 
                     ROS_ERROR("INVALID DIRECTION");
                     break;
