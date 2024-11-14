@@ -186,6 +186,10 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     static int numTurns = 0;                        // Tracks the number of required turns
     static int currentVisitIndex = 0;               // Tracks which direction to try next on a bump
 
+    if (!bumped) {
+        currentVisitIndex = 0;  // Reset for a new sequence without a bump
+    }
+
     // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
 
