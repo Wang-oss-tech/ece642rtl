@@ -85,9 +85,6 @@ void test_bumpedFalse_numTurnsGreaterThanZero() {
 
     // Expected outcome: should continute turning left
     std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
-
-    printf("\n\nstudent turtle step: move = %d, number of turns = %d\n\n\n",
-           result.first, result.second);
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
     CU_ASSERT(result.second > 0);
 }
