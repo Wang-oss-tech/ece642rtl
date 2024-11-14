@@ -38,7 +38,7 @@ static Orientation curr_or;
 static Orientation prev_or;
 
 void visitInterrupt(ros::Time t, int visits) {
-    if (first_tick == true){
+    if (tick_first == true){
         prev_or = cur_or;
         tick_first = false;
     } else {
