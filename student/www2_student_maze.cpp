@@ -91,7 +91,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     futureY1.Y = static_cast<int32_t>(pos_.y());
     futureX2.X = static_cast<int32_t>(pos_.x());
     futureY2.Y = static_cast<int32_t>(pos_.y());
-    // ROS_INFO("Turtle Pos (X,Y): %d, %d", futureX1.X, futureY1.Y);
     switch (nw_or){
       case NORTH: // moving north increases Y
         futureY2.Y += MOVE_INCREMENT; 
@@ -120,8 +119,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
     turtleMove nextMove = result.first;
     int numTurns = result.second;
-
-
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
         nw_or = translateOrnt(nw_or); // update orientation

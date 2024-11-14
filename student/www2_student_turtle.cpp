@@ -42,7 +42,6 @@ enum STATE {
     STATE_TURN_LEFT,
 };
 
-
 // Typedefs for readability and future flexibility
 typedef STATE State;   // Typedef for state representation
 typedef bool Flag;     // Typedef for boolean flags
@@ -50,6 +49,7 @@ typedef bool Flag;     // Typedef for boolean flags
 // Static array to keep track of visits to each cell
 static int32_t visitMap[MAZE_SIZE][MAZE_SIZE] = {0}; // All cells initialized to zero
 
+// Get visits from given coordinates
 int32_t getVisits(int32_t x, int32_t y) {
     // Check if the x and y coordinates are within the valid range of the visitMap array
     if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
@@ -60,19 +60,17 @@ int32_t getVisits(int32_t x, int32_t y) {
     }
 }
 
-
 /**
  * @brief Function to increment the number of visits to a specific cell.
  */
 void incrementVisits(int32_t x, int32_t y) {
     // Check if the x and y coordinates are within the valid range of the visitMap array
     if (x >= 0 && x < MAZE_SIZE && y >= 0 && y < MAZE_SIZE) {
-        visitMap[x][y]++;  // Increment the visit count if coordinates are valid
+        visitMap[x][y]++;                                       // Increment the visit count if coordinates are valid
     } else {
         ROS_ERROR("Invalid coordinates (%d, %d) accessed in visitMap during increment.", x, y);
     }
 }
-
 
 /**
  * @brief Updates the current turtle's position based on its direction.
@@ -101,7 +99,6 @@ void updatePosition_turtle(int nw_or) {
 int checkDirection(int direction){
     int nextX = currentX;
     int nextY = currentY;
-
 
     // Calculate the next position based on the direction
     switch (direction) {
@@ -208,27 +205,18 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // Sort the visit array in ascending order based on the visit count
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
-    for (int i = 0; i < 4; i++){
-        //ROS_INFO("\nvisit array [%d]: %d, visit count: %d", i, visitArray[i].second,  visitArray[i].first);
-    }
-
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
 
-    //ROS_INFO("\n\ntarget direction: %d", targetDirection);
-    //ROS_INFO("\ncurrent visit index: %d", currentVisitIndex);
-
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    //ROS_INFO("\nnumTurns: %d", currentVisitIndex);
-
     // State transition logic based on the number of turns
     if (numTurns > 0) {
-        currentState = STATE_TURN_LEFT;  // Turn towards the target direction
+        currentState = STATE_TURN_LEFT;                         // Turn towards the target direction
     } else {
-        currentState = STATE_MOVE_FORWARD;  // Move forward if aligned to target direction
+        currentState = STATE_MOVE_FORWARD;                      // Move forward if aligned to target direction
     }
 
     // If current state is bumped
@@ -236,11 +224,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
         currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
-
-        //ROS_INFO("\n\nBUMPED OCCURED: new target direction: %d", targetDirection);
-        //ROS_INFO("\n current orientation: %d", nw_or);
-        //ROS_INFO("\n new current visit index: %d", currentVisitIndex);
-        //ROS_INFO("\n new numTurns: %d", numTurns);
 
         if (numTurns > 0){
             currentState = STATE_TURN_LEFT;
