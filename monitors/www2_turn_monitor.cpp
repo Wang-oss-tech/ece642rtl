@@ -55,7 +55,6 @@ void tickInterrupt(ros::Time t) {
     }
 }
 
-
 /*
  * Whenever the turtle moves, compare the current location
  * to the previous location and throw an invariant violation
