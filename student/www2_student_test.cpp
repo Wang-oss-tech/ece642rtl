@@ -57,8 +57,8 @@ void test_T3_numTurnsEquals3() {
     printf("\n\n5th student turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
 
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);
+    CU_ASSERT_EQUAL(result.first, LEFT_TURN);
+    CU_ASSERT_EQUAL(result.second, 3);
 }
 
 void test_T4_atEndTrue() {
