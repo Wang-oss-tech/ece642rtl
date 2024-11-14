@@ -220,8 +220,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
 
     ROS_INFO("\n\ntarget direction: %d", targetDirection);
     ROS_INFO("\ncurrent visit index: %d", currentVisitIndex);
-    
-
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);

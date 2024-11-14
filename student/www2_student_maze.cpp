@@ -120,13 +120,11 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
     turtleMove nextMove = result.first;
     int numTurns = result.second;
-    
+
 
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
-      for (int i = 0; i < numTurns; i++){
         nw_or = translateOrnt(nw_or); // update orientation
-      }
     }
     shouldMove = (nextMove == MOVE_FORWARD);
 
