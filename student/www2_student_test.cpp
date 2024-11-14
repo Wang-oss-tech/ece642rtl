@@ -38,7 +38,7 @@ void test_T3_numTurnsEquals3() {
     mock_set_bumped(false);
     mock_set_numTurns(0);
 
-
+    // Simulate 3 turns
     for (int i = 0; i < 3; i++) {
         std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
     }
@@ -55,7 +55,7 @@ void test_T4_atEndTrue() {
     mock_set_atend(true);
     mock_set_bumped(false);  // Ensure bumped isn’t interfering
     
-    // Set numTurns to zero if needed to avoid interference
+    // Set numTurns to zero to avoid interference
     mock_set_numTurns(0);  
 
     std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
@@ -72,7 +72,7 @@ void test_bumpedTrue_atEndFalse() {
     mock_set_atend(false);
     mock_set_bumped(true);
 
-    // Expected outcome: turtle should turn elft due to bump with positive turn count
+    // Expected outcome: turtle should turn left due to bump with positive turn count
     std::pair<turtleMove, int> result = studentTurtleStep(true, EAST);
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
     CU_ASSERT(result.second > 0);  // Turn left due to bump
@@ -150,9 +150,9 @@ void test_randomDirectionAfterTurns() {
 void test_continueTurningAfterTurnCountLimit() {
     mock_set_atend(false);
     mock_set_bumped(false);
-    mock_set_numTurns(3);  // Assume the turtle has already turned three times
+    mock_set_numTurns(3);  // turtle turned three times
 
-    // We expect the turtle to keep turning left even though `numTurns` is at the limit
+    // Expect the turtle to keep turning left despite `numTurns` is at the limit
     std::pair<turtleMove, int> result = studentTurtleStep(false, WEST);
     
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
@@ -179,7 +179,6 @@ int main() {
     CU_add_test(suite, "Test Multiple Bumps Without Moving", test_multipleBumpsWithoutMoving);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
-    // CU_add_test(suite, "Test Move Forward After Bump", test_moveForwardAfterBump);
     CU_add_test(suite, "Test Continue Turning After Turn Count Limit", test_continueTurningAfterTurnCountLimit);
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
