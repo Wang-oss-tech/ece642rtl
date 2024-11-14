@@ -50,7 +50,6 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation current_orientation) {
 /*
  * Empty interrupt handlers beyond this point
  */
-
 void tickInterrupt(ros::Time t) {
 }
 
