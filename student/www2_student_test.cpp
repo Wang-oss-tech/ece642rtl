@@ -61,15 +61,19 @@ void test_T3_numTurnsEquals3() {
     CU_ASSERT_EQUAL(result.second, 3);
 }
 
+// Test T3: atEnd == True, result.second = 0
 void test_T4_atEndTrue() {
     // Set goal state conditions
     mock_set_atend(true);
     mock_set_bumped(false);  // Ensure bumped isn’t interfering
     
     // Set numTurns to zero if needed to avoid interference
-    mock_set_numTurns(0);  // Assuming there’s a way to reset numTurns
+    mock_set_numTurns(0);  
 
     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+
+    printf("\n\nstudent turtle step: move = %d, number of turns = %d\n\n\n",
+           result.first, result.second);
 
     // Verify that we reach the goal state and stop with MOVE_FORWARD and no turns
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
