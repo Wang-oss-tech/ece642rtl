@@ -92,7 +92,9 @@ void updatePosition_turtle(int nw_or) {
         case WEST:
             currentY += 1;  // Move west (left in X axis)
             break;
-        default: break;
+        default: 
+            ROS_ERROR("INVALID DIRECTION");
+            break;
     }
 }
 
@@ -116,6 +118,7 @@ int checkDirection(int direction){
             nextY += 1;
             break;
         default:
+            ROS_ERROR("INVALID DIRECTION");
             return -1;  // Invalid direction
     }
 
@@ -134,7 +137,9 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 3;   // One left turn needed
                 case SOUTH: return 2;   // Two left turns needed
                 case WEST:  return 1;   // Three left turns needed
-                default: break;
+                default: 
+                    ROS_ERROR("INVALID DIRECTION");
+                    break;
             }
             break;
 
@@ -144,7 +149,9 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 0;   // Already aligned
                 case SOUTH: return 3;   // One left turn needed
                 case WEST:  return 2;   // Two left turns needed
-                default: break;
+                default: 
+                    ROS_ERROR("INVALID DIRECTION");
+                    break;
             }
             break;
 
@@ -154,7 +161,9 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 1;   // Three left turns needed
                 case SOUTH: return 0;   // Already aligned
                 case WEST:  return 3;   // One left turn needed
-                default: break;
+                default: 
+                    ROS_ERROR("INVALID DIRECTION");
+                    break;
             }
             break;
 
@@ -164,10 +173,11 @@ int calculateTurns(int currentDirection, int targetDirection) {
                 case EAST:  return 2;   // Two left turns needed
                 case SOUTH: return 1;   // Three left turns needed
                 case WEST:  return 0;   // Already aligned
-                default: break;
+                default: 
+                    ROS_ERROR("INVALID DIRECTION");
+                    break;
             }
             break;
-
         default:
             ROS_ERROR("Invalid direction: %d", currentDirection);
             return 0;  // Default case to prevent undefined behavior
@@ -217,7 +227,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // If current state is bumped
     if (currentState == STATE_MOVE_FORWARD && bumped){
         currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
-        // printf("\nBumped, New Current Visit Index: %d", currentVisitIndex);
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
         if (numTurns > 0){

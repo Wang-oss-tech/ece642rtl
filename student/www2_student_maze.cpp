@@ -64,6 +64,7 @@ void updatePosition(int nw_or) {
             relativeY += 1;  // Move west (left in X axis)
             break;
         default:
+            ROS_ERROR("INVALID ORIENTATION");
             break;
     }
 } 
@@ -169,8 +170,6 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int nw_or) {
         break;
     }
     return pos_;
-  } else {
-    // ROS_INFO("Next move is not MOVE_FORWARD, no position update");
   }
   // Default return in case no return is reached in the above logic
   return pos_;
