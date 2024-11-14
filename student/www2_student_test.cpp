@@ -70,7 +70,7 @@ void test_T4_atEndTrue() {
     // Set numTurns to zero if needed to avoid interference
     mock_set_numTurns(0);  
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
+    std::pair<turtleMove, int> result = studentTurtleStep(true, EAST);
 
     printf("\n\nstudent turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
