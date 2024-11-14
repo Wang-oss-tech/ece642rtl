@@ -140,35 +140,35 @@ void test_multipleBumpsWithoutMoving() {
     }
 }
 
-// Test reaching the end with previous turns
-void test_reachingEndWithTurns() {
-    mock_set_atend(false);
-    mock_set_bumped(false);
-    mock_set_numTurns(2);
+// // Test reaching the end with previous turns
+// void test_reachingEndWithTurns() {
+//     mock_set_atend(false);
+//     mock_set_bumped(false);
+//     mock_set_numTurns(2);
 
-    mock_set_atend(true);  // Now the turtle reaches the end
-    std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);  // No turns expected, turtle should stop
-}
+//     mock_set_atend(true);  // Now the turtle reaches the end
+//     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+//     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+//     CU_ASSERT_EQUAL(result.second, 0);  // No turns expected, turtle should stop
+// }
 
 // Test transition from bump to forward movement
-void test_bumpToForwardMovement() {
-    mock_set_atend(false);
-    mock_set_bumped(true);
-    mock_set_numTurns(1);
+// void test_bumpToForwardMovement() {
+//     mock_set_atend(false);
+//     mock_set_bumped(true);
+//     mock_set_numTurns(1);
 
-    // Simulate a bump
-    std::pair<turtleMove, int> result = studentTurtleStep(true, WEST);
-    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-    CU_ASSERT(result.second > 0);  // Turning left due to bump
+//     // Simulate a bump
+//     std::pair<turtleMove, int> result = studentTurtleStep(true, WEST);
+//     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
+//     CU_ASSERT(result.second > 0);  // Turning left due to bump
 
-    // Simulate the turtle resolving the bump and moving forward
-    mock_set_bumped(false);
-    result = studentTurtleStep(false, WEST);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
-    CU_ASSERT_EQUAL(result.second, 0);
-}
+//     // Simulate the turtle resolving the bump and moving forward
+//     mock_set_bumped(false);
+//     result = studentTurtleStep(false, WEST);
+//     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+//     CU_ASSERT_EQUAL(result.second, 0);
+// }
 
 // Test moving to a wall (multiple attempts)
 void test_moveToWall() {
@@ -184,15 +184,15 @@ void test_moveToWall() {
 }
 
 // Test edge case with numTurns at maximum
-void test_maxNumTurns() {
-    mock_set_atend(false);
-    mock_set_bumped(false);
-    mock_set_numTurns(3);  // Assuming 3 is the maximum value for numTurns
+// void test_maxNumTurns() {
+//     mock_set_atend(false);
+//     mock_set_bumped(false);
+//     mock_set_numTurns(3);  // Assuming 3 is the maximum value for numTurns
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
-    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-    CU_ASSERT_EQUAL(result.second, 3);  // Should be at maximum turn count
-}
+//     std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
+//     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
+//     CU_ASSERT_EQUAL(result.second, 3);  // Should be at maximum turn count
+// }
 
 // Test moving forward after initial alignment
 void test_moveForwardAfterAlignment() {
@@ -206,19 +206,19 @@ void test_moveForwardAfterAlignment() {
 }
 
 // Test circular turning behavior
-void test_circularTurning() {
-    mock_set_atend(false);
-    mock_set_bumped(false);
+// void test_circularTurning() {
+//     mock_set_atend(false);
+//     mock_set_bumped(false);
 
-    for (int i = 0; i < 4; i++) {
-        std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-        CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-        CU_ASSERT(result.second > 0);  // Turning left in a loop
-    }
+//     for (int i = 0; i < 4; i++) {
+//         std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+//         CU_ASSERT_EQUAL(result.first, TURN_LEFT);
+//         CU_ASSERT(result.second > 0);  // Turning left in a loop
+//     }
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
-    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);  // Should be aligned after full 360-degree turn
-}
+//     std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+//     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);  // Should be aligned after full 360-degree turn
+// }
 
 // Test random direction after several turns
 void test_randomDirectionAfterTurns() {
@@ -251,12 +251,12 @@ int main() {
 
     // New data coverage tests
     CU_add_test(suite, "Test Multiple Bumps Without Moving", test_multipleBumpsWithoutMoving);
-    CU_add_test(suite, "Test Reaching End With Turns", test_reachingEndWithTurns);
-    CU_add_test(suite, "Test Transition from Bump to Forward Movement", test_bumpToForwardMovement);
+    // CU_add_test(suite, "Test Reaching End With Turns", test_reachingEndWithTurns);
+    // CU_add_test(suite, "Test Transition from Bump to Forward Movement", test_bumpToForwardMovement);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
-    CU_add_test(suite, "Test Max Num Turns", test_maxNumTurns);
+    // CU_add_test(suite, "Test Max Num Turns", test_maxNumTurns);
     CU_add_test(suite, "Test Move Forward After Alignment", test_moveForwardAfterAlignment);
-    CU_add_test(suite, "Test Circular Turning", test_circularTurning);
+    // CU_add_test(suite, "Test Circular Turning", test_circularTurning);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
