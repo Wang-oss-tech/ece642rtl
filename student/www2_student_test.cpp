@@ -146,6 +146,25 @@ void test_randomDirectionAfterTurns() {
     CU_ASSERT(result.second > 0);
 }
 
+// Test moving forward after bumping into a wall
+void test_moveForwardAfterBump() {
+    mock_set_atend(false);
+    mock_set_bumped(true);  // Initial bump
+    mock_set_numTurns(0);
+
+    // Simulate the bump where the turtle turns to avoid the obstacle
+    std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
+    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
+    CU_ASSERT(result.second > 0);  // Expect a turn due to bump
+
+    // Now, set bumped to false, simulating a clear path
+    mock_set_bumped(false);
+
+    // Check that the turtle resumes moving forward
+    result = studentTurtleStep(false, NORTH);
+    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+    CU_ASSERT_EQUAL(result.second, 0);  // No turns expected as path is clear
+}
 
 
 // Main function to run the tests
@@ -167,6 +186,8 @@ int main() {
     CU_add_test(suite, "Test Multiple Bumps Without Moving", test_multipleBumpsWithoutMoving);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
+    CU_add_test(suite, "Test Move Forward After Bump", test_moveForwardAfterBump);
+
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
