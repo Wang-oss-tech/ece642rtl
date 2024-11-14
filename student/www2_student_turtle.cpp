@@ -184,7 +184,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     printf("\n\nstudentTurtleStep called");
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     static int numTurns = 0;                        // Tracks the number of required turns
-    static currentVisitIndex = 0;               // Tracks which direction to try next on a bump
+    static int currentVisitIndex = 0;               // Tracks which direction to try next on a bump
 
     // Array to store visits for all four directions: [NORTH, EAST, SOUTH, WEST]
     std::pair<int, int> visitArray[4];  // Pair of (visit count, direction)
