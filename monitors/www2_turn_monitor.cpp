@@ -25,7 +25,7 @@ static std::map<int, int> opp_orientations {
     {NORTH, SOUTH}, 
     {EAST, WEST}, 
     {SOUTH, NORTH}, 
-    {EAST, WEST}
+    {WEST, EAST}
 };
 
 // tick called fist time
