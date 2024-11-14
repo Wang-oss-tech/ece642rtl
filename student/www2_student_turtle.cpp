@@ -208,14 +208,23 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // Sort the visit array in ascending order based on the visit count
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
+    for (int i = 0; i < 4; i++){
+        ROS_INFO("\nvisit array [%d]: %d, visit count: %d", i, visitArray[i].second,  visitArray[i].first);
+    }
 
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
 
+    ROS_INFO("\n\ntarget direction: %d", targetDirection);
+    ROS_INFO("\ncurrent visit index: %d", currentVisitIndex);
+    
+
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
+
+    ROS_INFO("\nnumTurns: %d", currentVisitIndex);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
@@ -229,6 +238,11 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
         currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
+
+        ROS_INFO("\n\nBUMPED OCCURED: new target direction: %d", targetDirection);
+        ROS_INFO("\n new current visit index: %d", currentVisitIndex);
+        ROS_INFO("\n new numTurns: %d", currentVisitIndex);
+
         if (numTurns > 0){
             currentState = STATE_TURN_LEFT;
         }
