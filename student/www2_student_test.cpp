@@ -104,7 +104,7 @@ void test_bumpedFalse_numTurnsGreaterThanZero() {
     printf("\n\nstudent turtle step: move = %d, number of turns = %d\n\n\n",
            result.first, result.second);
     CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-    CU_ASSERT_EQUAL(result.second > 0);
+    CU_ASSERT(result.second > 0);
 }
 
 // Test for target direction requires multiple turns
