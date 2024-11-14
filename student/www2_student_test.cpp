@@ -32,7 +32,7 @@ void test_T2_numTurnsLessThan3() {
     CU_ASSERT(result.second > 0);  // Expect a turn since it bumped
 }
 
-// Test T3: numTurns == 3, move to S4
+// Test T3: numTurns == 3, S3 to S4
 void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
@@ -43,10 +43,9 @@ void test_T3_numTurnsEquals3() {
         std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
     }
 
-    std::pair<turtleMove, int> result = studentTurtleStep(true, NORTH);
-
-    CU_ASSERT_EQUAL(result.first, TURN_LEFT);
-    CU_ASSERT_EQUAL(result.second, 3);
+    std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+    CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
+    CU_ASSERT_EQUAL(result.second, 0);
 }
 
 // Test T4: atEnd == True
