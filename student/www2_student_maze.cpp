@@ -120,6 +120,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     std::pair<turtleMove, int> result = studentTurtleStep(bumpedFlag, nw_or);
     turtleMove nextMove = result.first;
     int numTurns = result.second;
+    
 
 
     if (numTurns != 0 && nextMove != MOVE_FORWARD){
@@ -132,8 +133,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     if (shouldMove && !atEnd) {
       pos_ = translatePos(pos_, nextMove, old_nw_or);            // updates Position
       updatePosition(nw_or);
-      int visits = getVisits(relativeX, relativeY);  // Get the visit count for the current position
-      displayVisits(visits);  // Update the display with the visit count
+      int visits = getVisits(relativeX, relativeY);             // Get the visit count for the current position
+      displayVisits(visits);                                    // Update the display with the visit count
       shouldMove = false;
     }
   }
