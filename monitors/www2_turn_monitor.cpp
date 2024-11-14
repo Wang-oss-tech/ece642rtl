@@ -7,54 +7,70 @@
  * to the current position to check the invariant.
  */
 
+#include <map>
+#include <string>
 #include "monitor_interface.h"
 
-// Keeps track of the last orientation received
-static Orientation last_orientation;
-static bool initialized = false;  // Tracks if this is the first orientation received
 
+// turn orientation macros into strings
+static std::map<int, std::string> or_string {
+    {NORTH, "North"},
+    {EAST, "East"},
+    {SOUTH, "South"},
+    {WEST, "West"}
+};
 
-// Helper function to calculate the absolute difference between two orientations
-int orientationDifference(Orientation a, Orientation b) {
-    int diff = abs(a - b);
-    // Adjust if the difference is more than half a circle (wrap-around case)
-    return diff > 180 ? 360 - diff : diff;
+// Opposite illegal orientations
+static std::map<int, int> opp_orientations {
+    {NORTH, SOUTH}, 
+    {EAST, WEST}, 
+    {SOUTH, NORTH}, 
+    {EAST, WEST}
+};
+
+// tick called fist time
+static bool tick_first = true;
+
+// current orienation of tutle 
+static Orientation cur_or;
+
+// previous orientation of turtle 
+static Orientation prev_or;
+
+void visitInterrupt(ros::Time t, int visits) {
+    if (first_tick == true){
+        prev_or = cur_or;
+        tick_first = false;
+    } else {
+        ROS_INFO("[[%ld ns]] 'Turn' was sent. Data: orientation = %s", 
+                    t.toNSec(), 
+                    orientation_val[cur_or].c_str());
+
+        if (opp_orientations[pose_orientation] == prev_or) {
+            ROS_WARN("VIOLATION: Turned  %s to %s", 
+                     or_string[cur_or].c_str(), 
+                     or_string[prev_or].c_str());
+        }
+        prev_or = curr_or;
+    }
 }
 
 /*
- * This interrupt checks if the turtle's orientation change exceeds 90 degrees
+ * Whenever the turtle moves, compare the current location
+ * to the previous location and throw an invariant violation
+ * if the locations differ by more than 1 in Manhattan Distance.
  */
-void poseInterrupt(ros::Time t, int x, int y, Orientation current_orientation) {
-    // Print current orientation info
-    ROS_INFO("[[%ld ns]] 'Pose' was sent. Orientation: %d", t.toNSec(), current_orientation);
-
-    // If this is the first pose received, initialize last_orientation and return
-    if (!initialized) {
-        last_orientation = current_orientation;
-        initialized = true;
-        return;
-    }
-
-    // Calculate the orientation difference
-    int orientation_diff = orientationDifference(last_orientation, current_orientation);
-
-    // Check if the orientation difference exceeds 90 degrees
-    if (orientation_diff > 90) {
-        ROS_WARN("VIOLATION: Orientation change from %d to %d exceeds 90 degrees!", last_orientation, current_orientation);
-    }
-
-    // Update last_orientation for the next tick
-    last_orientation = current_orientation;
+void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
+  pose_orientation = o; 
 }
 
 /*
  * Empty interrupt handlers beyond this point
  */
+
 void tickInterrupt(ros::Time t) {
 }
 
-void visitInterrupt(ros::Time t, int visits) {
-}
 
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
 }
