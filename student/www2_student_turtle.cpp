@@ -240,6 +240,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
         numTurns = calculateTurns(nw_or, targetDirection);
 
         ROS_INFO("\n\nBUMPED OCCURED: new target direction: %d", targetDirection);
+        ROS_INFO("\n current orientation: %d", nw_or);
         ROS_INFO("\n new current visit index: %d", currentVisitIndex);
         ROS_INFO("\n new numTurns: %d", currentVisitIndex);
 
