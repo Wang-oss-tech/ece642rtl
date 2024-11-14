@@ -41,7 +41,6 @@ void test_T3_numTurnsEquals3() {
     mock_set_numTurns(0);
 
     std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
-    printf("\n\nmove: %d direction: %d\n", result.first, result.second);
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
