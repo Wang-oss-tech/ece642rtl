@@ -41,6 +41,7 @@ void test_T3_numTurnsEquals3() {
     // Simulate 3 turns
     for (int i = 0; i < 3; i++) {
         std::pair<turtleMove, int> result = studentTurtleStep(false, NORTH);
+        printf("\n\nmove: %d direction: %d\n", result.first, result.second);
     }
 
     std::pair<turtleMove, int> result = studentTurtleStep(false, WEST);
