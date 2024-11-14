@@ -39,7 +39,7 @@ static Orientation prev_or;
 
 void visitInterrupt(ros::Time t, int visits) {
     if (tick_first == true){
-        prev_or = cur_or;
+        prev_or = curr_or;
         tick_first = false;
     } else {
         ROS_INFO("[[%ld ns]] 'Turn' was sent. Data: orientation = %s", 
