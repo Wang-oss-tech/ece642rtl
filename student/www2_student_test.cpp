@@ -166,12 +166,12 @@ int main() {
     CU_add_test(suite, "Test T2 numTurns < 3", test_T2_numTurnsLessThan3);
     CU_add_test(suite, "Test T3 numTurns == 3", test_T3_numTurnsEquals3);
     CU_add_test(suite, "Test T4 atEnd True", test_T4_atEndTrue);
+
+    // New data coverage tests
     CU_add_test(suite, "Test Bumped True atEnd False", test_bumpedTrue_atEndFalse);
     CU_add_test(suite, "Test Bumped False, numTurns > 0", test_bumpedFalse_numTurnsGreaterThanZero);
     CU_add_test(suite, "Test Multiple Turns Needed", test_multipleTurnsNeeded);
     CU_add_test(suite, "Test Invalid Direction", test_invalidDirection);
-
-    // New data coverage tests
     CU_add_test(suite, "Test Multiple Bumps Without Moving", test_multipleBumpsWithoutMoving);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
