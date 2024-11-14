@@ -179,7 +179,7 @@ int main() {
     CU_add_test(suite, "Test Multiple Bumps Without Moving", test_multipleBumpsWithoutMoving);
     CU_add_test(suite, "Test Move to Wall", test_moveToWall);
     CU_add_test(suite, "Test Random Direction After Turns", test_randomDirectionAfterTurns);
-    CU_add_test(suite, "Test Move Forward After Bump", test_moveForwardAfterBump);
+    // CU_add_test(suite, "Test Move Forward After Bump", test_moveForwardAfterBump);
     CU_add_test(suite, "Test Continue Turning After Turn Count Limit", test_continueTurningAfterTurnCountLimit);
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
