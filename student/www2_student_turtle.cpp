@@ -204,6 +204,8 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
                                                                  visitArray[i].first);
     }
 
+    printf("\nCurrent Visit Index: %d", currentVisitIndex);
+
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
@@ -225,6 +227,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // If current state is bumped
     if (currentState == STATE_MOVE_FORWARD && bumped){
         currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
+        printf("\nBumped, New Current Visit Index: %d", currentVisitIndex);
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
         if (numTurns > 0){
