@@ -61,7 +61,7 @@ void test_T3_numTurnsEquals3() {
     CU_ASSERT_EQUAL(result.second, 3);
 }
 
-// Test T3: atEnd == True, result.second = 0
+// Test T4: atEnd == True
 void test_T4_atEndTrue() {
     // Set goal state conditions
     mock_set_atend(true);

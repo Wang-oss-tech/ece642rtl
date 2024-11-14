@@ -181,7 +181,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
 std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
-    printf("\n\nstudentTurtleStep called");
+    // printf("\n\nstudentTurtleStep called");
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     static int numTurns = 0;                        // Tracks the number of required turns
     static int currentVisitIndex = 0;               // Tracks which direction to try next on a bump
@@ -199,23 +199,23 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
 
-    for (int i = 0; i < 4; i ++){
-        printf("\nSorted Direction[%d]: %d, Visit count: %d", i, visitArray[i].second, 
-                                                                 visitArray[i].first);
-    }
+    // for (int i = 0; i < 4; i ++){
+    //     printf("\nSorted Direction[%d]: %d, Visit count: %d", i, visitArray[i].second, 
+    //                                                              visitArray[i].first);
+    // }
 
-    printf("\nCurrent Visit Index: %d", currentVisitIndex);
+    // printf("\nCurrent Visit Index: %d", currentVisitIndex);
 
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
 
-    printf("\nTarget Direction calculated: %d", targetDirection);
+    // printf("\nTarget Direction calculated: %d", targetDirection);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    printf("\nNumber of Turns calculated: %d", numTurns);
+    // printf("\nNumber of Turns calculated: %d", numTurns);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
@@ -227,7 +227,7 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     // If current state is bumped
     if (currentState == STATE_MOVE_FORWARD && bumped){
         currentVisitIndex = (currentVisitIndex + 1) % 4;        // Cycle to the next direction
-        printf("\nBumped, New Current Visit Index: %d", currentVisitIndex);
+        // printf("\nBumped, New Current Visit Index: %d", currentVisitIndex);
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
         if (numTurns > 0){
