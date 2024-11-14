@@ -99,7 +99,7 @@ void test_bumpedFalse_numTurnsGreaterThanZero() {
     mock_set_bumped(false);
 
     // Expected outcome: turtle should move forward without turning
-    std::pair<turtleMove, int> result = studentTurtleStep(false, SOUTH);
+    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
 }
