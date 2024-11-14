@@ -135,7 +135,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
             switch (targetDirection) {
                 case NORTH: return 0;   // Already facing the right direction
                 case EAST:  
-                    ROS_INFO("ENTERS east case HERE");
+                    //ROS_INFO("ENTERS east case HERE");
                     return 3;   // three left turns needed
                 case SOUTH: return 2;   // Two left turns needed
                 case WEST:  return 1;   // one left turn needed
@@ -193,7 +193,7 @@ int calculateTurns(int currentDirection, int targetDirection) {
  * `bumpedFlag` tells us whether the turtle hit a wall in front.
  */
 std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
-    ROS_INFO("\n\nstudentTurtleStep called");
+    //ROS_INFO("\n\nstudentTurtleStep called");
     static State currentState = STATE_MOVE_FORWARD; // Current state of the turtle's movement
     static int numTurns = 0;                        // Tracks the number of required turns
     static int currentVisitIndex = 0;               // Tracks which direction to try next on a bump
@@ -211,20 +211,20 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     std::sort(visitArray, visitArray + 4);  // Sort by visit count
 
     for (int i = 0; i < 4; i++){
-        ROS_INFO("\nvisit array [%d]: %d, visit count: %d", i, visitArray[i].second,  visitArray[i].first);
+        //ROS_INFO("\nvisit array [%d]: %d, visit count: %d", i, visitArray[i].second,  visitArray[i].first);
     }
 
     // Declare targetDirection and initialize var. w/ current orientation
     int targetDirection = nw_or;
     targetDirection = visitArray[currentVisitIndex].second;
 
-    ROS_INFO("\n\ntarget direction: %d", targetDirection);
-    ROS_INFO("\ncurrent visit index: %d", currentVisitIndex);
+    //ROS_INFO("\n\ntarget direction: %d", targetDirection);
+    //ROS_INFO("\ncurrent visit index: %d", currentVisitIndex);
 
     // Calculate the number of turns required to align with the target direction
     numTurns = calculateTurns(nw_or, targetDirection);
 
-    ROS_INFO("\nnumTurns: %d", currentVisitIndex);
+    //ROS_INFO("\nnumTurns: %d", currentVisitIndex);
 
     // State transition logic based on the number of turns
     if (numTurns > 0) {
@@ -239,10 +239,10 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
         targetDirection = visitArray[currentVisitIndex].second;
         numTurns = calculateTurns(nw_or, targetDirection);
 
-        ROS_INFO("\n\nBUMPED OCCURED: new target direction: %d", targetDirection);
-        ROS_INFO("\n current orientation: %d", nw_or);
-        ROS_INFO("\n new current visit index: %d", currentVisitIndex);
-        ROS_INFO("\n new numTurns: %d", numTurns);
+        //ROS_INFO("\n\nBUMPED OCCURED: new target direction: %d", targetDirection);
+        //ROS_INFO("\n current orientation: %d", nw_or);
+        //ROS_INFO("\n new current visit index: %d", currentVisitIndex);
+        //ROS_INFO("\n new numTurns: %d", numTurns);
 
         if (numTurns > 0){
             currentState = STATE_TURN_LEFT;
@@ -253,13 +253,13 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         // Tells turtle to move forard
         case STATE_MOVE_FORWARD:
-            ROS_INFO("\n move forward called");
+            //ROS_INFO("\n move forward called");
             updatePosition_turtle(targetDirection);     // move forward
             incrementVisits(currentX, currentY);        // update visit count
             currentVisitIndex = 0;
             return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:
-            ROS_INFO("\n left turn called");
+            //ROS_INFO("\n left turn called");
             return std::make_pair(TURN_LEFT, numTurns);
         default:
             return std::make_pair(MOVE_FORWARD, 0);
