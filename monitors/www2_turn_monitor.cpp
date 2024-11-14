@@ -61,7 +61,6 @@ void visitInterrupt(ros::Time t, int visits) {
  * if the locations differ by more than 1 in Manhattan Distance.
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
-  curr_or = o; 
 }
 
 /*
