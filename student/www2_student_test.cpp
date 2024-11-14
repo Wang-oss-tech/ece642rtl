@@ -39,8 +39,6 @@ void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
     mock_set_numTurns(0);
-    reset_currentVisitIndex();
-
 
 
     printf("\n\nDebug: atEnd = %d, bumped = %d, numTurns = %d\n",
