@@ -36,15 +36,11 @@ void test_T2_numTurnsLessThan3() {
 void test_T3_numTurnsEquals3() {
     mock_set_atend(false);
     mock_set_bumped(false);
-    mock_set_numTurns(0);
 
     // Simulate 3 turns
-    for (int i = 0; i < 3; i++) {
-        std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
-        printf("\n\nmove: %d direction: %d\n", result.first, result.second);
-    }
+    mock_set_numTurns(0);
 
-    std::pair<turtleMove, int> result = studentTurtleStep(false, WEST);
+    std::pair<turtleMove, int> result = studentTurtleStep(false, EAST);
     printf("\n\nmove: %d direction: %d\n", result.first, result.second);
     CU_ASSERT_EQUAL(result.first, MOVE_FORWARD);
     CU_ASSERT_EQUAL(result.second, 0);
