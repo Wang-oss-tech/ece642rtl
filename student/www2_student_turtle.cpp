@@ -250,3 +250,6 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     } 
 }
 
+void reset_currentVisitIndex() {
+    currentVisitIndex = 0;
+}
