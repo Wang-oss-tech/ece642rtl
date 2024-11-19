@@ -44,10 +44,9 @@ static Orientation prev_or;
 
 void tickInterrupt(ros::Time t) {
     if (tick == true) {
-		if ( <= 1 && visit <= 1 && bump <= 1) {
-        
         if (bump_interrupt_cnt <= 1 && 
-            v)
+            visit_interrupt_cnt <= 1 && 
+            pose_interrupt_cnt <= 1){
             ROS_INFO("[[%ld ns]] 'Tick' received", 
                     t.toNSec());
 		} else {
@@ -63,12 +62,10 @@ void tickInterrupt(ros::Time t) {
 	} else {
 		tick = true;
 	}
-
     // reset counters
     pose_interrupt_cnt = 0;
     visit_interrupt_cnt = 0;
     bump_interrupt_cn = 0;
-
 }
 
 /*
