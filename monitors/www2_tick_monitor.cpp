@@ -1,10 +1,10 @@
 /*
- * Code by Milda Zizyte
+ * Name: William Wang
+ * ID: www2
  *
- * This monitor checks that the invariant "turtle shall not move more
- * than on square at a time" is not violated.
- * It keeps track of the previous position of the turtle and compares it
- * to the current position to check the invariant.
+ * 
+ * Between calls to tickInterrupt, there shall be at most one call 
+ * to each of poseInterrupt, visitsInterrupt, and bumpInterrupt
  */
 
 #include <map>
@@ -44,7 +44,10 @@ static Orientation prev_or;
 
 void tickInterrupt(ros::Time t) {
     if (tick == true) {
-		if (pose <= 1 && visit <= 1 && bump <= 1) {
+		if ( <= 1 && visit <= 1 && bump <= 1) {
+        
+        if (bump_interrupt_cnt <= 1 && 
+            v)
             ROS_INFO("[[%ld ns]] 'Tick' received", 
                     t.toNSec());
 		} else {

@@ -1,10 +1,8 @@
 /*
- * Code by Milda Zizyte
+ * Name: William Wang
+ * ID: www2
  *
- * This monitor checks that the invariant "turtle shall not move more
- * than on square at a time" is not violated.
- * It keeps track of the previous position of the turtle and compares it
- * to the current position to check the invariant.
+ * Turtle turns no more than 90 degrees per simulator time step
  */
 
 #include <map>

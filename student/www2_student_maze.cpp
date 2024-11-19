@@ -1,6 +1,4 @@
 /* 
- * Originally by Philip Koopman (koopman@cmu.edu)
- * and Milda Zizyte (milda@cmu.edu)
  *
  * STUDENT NAME: William Wang 
  * ANDREW ID: www2  
