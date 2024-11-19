@@ -50,12 +50,12 @@ void tickInterrupt(ros::Time t) {
             ROS_INFO("[[%ld ns]] 'Tick' received", 
                     t.toNSec());
 		} else {
-			ROS_WARN("VIOLATION: 'Tick' recieved but
-                    more than one poseInterrupt, visitsInterrupt, 
-                    and bumpInterrupt called\n
-                    pose_interrupt_cnt: %d \n
-                    visit_interrupt_cnt: %d \n
-                    bump_interrupt_cnt: %d \n",
+			ROS_WARN("VIOLATION: 'Tick' received but"
+                    "more than one poseInterrupt, visitsInterrupt,"
+                    "and bumpInterrupt called\n"
+                    "pose_interrupt_cnt: %d \n"
+                    "visit_interrupt_cnt: %d \n"
+                    "bump_interrupt_cnt: %d \n",
                     pose_interrupt_cnt, visit_interrupt_cnt, 
                     bump_interrupt_cnt);
 		}
