@@ -60,7 +60,7 @@ void tickInterrupt(ros::Time t) {
                     bump_interrupt_cnt);
 		}
 	} else {
-		tick = true;
+		tick_first = true;
 	}
     // reset counters
     pose_interrupt_cnt = 0;
