@@ -19,8 +19,8 @@ kill_processes() {
 		echo "" >> VIOLATIONS.txt
 		echo "Monitor $m Violations:" >> VIOLATIONS.txt
 		echo "" >> VIOLATIONS.txt
-		grep -C 5 "[ WARN]" $m.output.tmp >> VIOLATIONS.txt
-		m_viol=`grep "[ WARN]" $m.output.tmp | wc -l`
+		grep -C 5 "\[ WARN\]" $m.output.tmp >> VIOLATIONS.txt
+		m_viol=`grep "\[ WARN\]" $m.output.tmp | wc -l`
 		total_viol=$(( total_viol + m_viol))
 		rm $m.output.tmp
 		echo "" >> VIOLATIONS.txt
