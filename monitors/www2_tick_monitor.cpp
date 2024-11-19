@@ -43,7 +43,7 @@ static Orientation curr_or;
 static Orientation prev_or;
 
 void tickInterrupt(ros::Time t) {
-    if (tick == true) {
+    if (tick_first == true) {
         if (bump_interrupt_cnt <= 1 && 
             visit_interrupt_cnt <= 1 && 
             pose_interrupt_cnt <= 1){
