@@ -35,7 +35,6 @@ static bool bump_data[num_walls];
 void tickInterrupt(ros::Time t) {
 }
 
-
 // position and orientation is updated
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     current_position.x = x;
