@@ -33,8 +33,8 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
             ROS_INFO("[[%ld ns]] AtEnd at correct final location [%d,%d]", 
                       t.toNSec(), x, y);
         } else{
-            ROS_WARN("VIOLATION: Current position is [%d, %d]
-                      with supposed AtEnd location at [%d, %d]",
+            ROS_WARN("VIOLATION: Current position is [%d, %d]"
+                      "with supposed AtEnd location at [%d, %d]",
                       current_position.x, current_position.y,
                       x, y);
         }
