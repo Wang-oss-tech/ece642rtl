@@ -58,7 +58,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     if (update_initial == true){
         update_initial = false;
     } else if (update_initial == false){
-        if (!((prev_pos.y == y) && (prev_pos == y))){
+        if (!((prev_pos.y == y) && (prev_pos.x == x))){
             if (x == prev_pos.x + x_difference[o] &&
                 y == prev_pos.y + y_difference[o] && 
                 prev_or == o){
