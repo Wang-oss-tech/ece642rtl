@@ -72,10 +72,10 @@ void visitInterrupt(ros::Time t, int visits) {
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
     if (current_position.y == moved_pos.y &&
         current_position.x == moved_pos.x){
-        bumped_data[curr_or] = bumped;
+        bump_data[curr_or] = bumped;
     } else{
         for(int i = 0; i < num_walls; i++){
-            bumped_data[i] = true;
+            bump_data[i] = true;
         }
     }
 }
