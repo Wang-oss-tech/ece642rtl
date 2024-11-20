@@ -21,7 +21,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     }
 }
 
-// interrupt occurs when atend(x,y) retunr
+// interrupt occurs when atend(x,y) returns
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     if (atEnd == true){
         at_ending = true;
