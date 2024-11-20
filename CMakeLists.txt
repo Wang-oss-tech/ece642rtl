@@ -57,7 +57,7 @@ set(monitor_TARGETS_SRCS
   "ece642rtle_wall_monitor monitors/www2_wall_monitor.cpp"
   "ece642rtle_face_monitor monitors/www2_face_monitor.cpp"
   "ece642rtle_solved_monitor monitors/www2_solved_monitor.cpp"
-  # "ece642rtle_atend_monitor monitors/www2_atend_monitor.cpp"
+  "ece642rtle_atend_monitor monitors/www2_atend_monitor.cpp"
   )
 
 set(ece642rtle_monitor_main monitors/ros_monitor_interface.cpp)
