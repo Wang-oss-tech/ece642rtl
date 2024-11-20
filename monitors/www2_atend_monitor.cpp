@@ -28,8 +28,8 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
 // interrupt occurs when atend(x,y) returns
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     if (init_pos == true){
-        if(current_position == x &&
-           current_position == y){
+        if(current_position.x == x &&
+           current_position.y == y){
             ROS_INFO("[[%ld ns]] AtEnd at correct final location [%d,%d]", 
                       t.toNSec(), x, y);
         } else{
