@@ -42,23 +42,23 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     current_position.y = y;
     curr_or = o;
 
-    if (((current_position.y != y) || 
-          (current_position.x != x))){
-            if (bump_data[0] == false){
+    if (!((current_position.y == y) || 
+          (current_position.x == x))){
+            if (bump_data[o] == false){
                 ROS_INFO("[[%ld ns]] Wall not detected,"
                          "correct update at (%d,%d)", 
                           t.toNSec(), 
                           moved_pos.x, 
                           moved_pos.y);
             } else{
-                ROS_WARN("[[%ld ns]] Moved through wall at"
+                ROS_WARN("VIOLATION[[%ld ns]] Moved through wall at"
                          " (%d,%d)", 
                           moved_pos.x, 
                           moved_pos.y);
             }
             moved_pos.x = x;
             moved_pos.y = y;
-        }
+    }
 }
 
 /*
