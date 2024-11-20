@@ -62,7 +62,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
             if (x == prev_pos.x + x_difference[o] &&
                 y == prev_pos.y + y_difference[o] && 
                 prev_or == o){
-                ROS_WARN("Forward called sucessfully: \n Last Position: [%d], [%d]\n"
+                ROS_INFO("Forward called sucessfully: \n Last Position: [%d], [%d]\n"
                          "Current Position: [%d], [%d]\n"
                          "Current Orientation %s",
                          prev_pos.x,
