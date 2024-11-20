@@ -26,7 +26,7 @@ static std::map<int, int> opp_orientations {
     {WEST, EAST}
 };
 
-// tick called fist time
+// tick called first time
 static bool tick_first = true;
 
 // current orienation of tutle 

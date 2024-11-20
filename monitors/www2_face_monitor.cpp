@@ -18,6 +18,40 @@ static std::map<int, std::string> or_string {
     {WEST, "West"}
 };
 
+
+// Difference in X1
+static std::map<int, int> x1_diff {
+    {NORTH, 0},
+    {EAST, 1},
+    {SOUTH, 0},
+    {WEST, 0}
+};
+
+// Difference in X2
+static std::map<int, int> x2_diff {
+    {NORTH, 1},
+    {EAST, 1},
+    {SOUTH, 1},
+    {WEST, 0}
+};
+
+// Difference in Y1
+static std::map<int, int> y1_diff {
+    {NORTH, 0},
+    {EAST, 0},
+    {SOUTH, 1},
+    {WEST, 0}
+};
+
+// Difference in Y2
+static std::map<int, int> y2_diff {
+    {NORTH, 0},
+    {EAST, 1},
+    {SOUTH, 1},
+    {WEST, 1}
+};
+
+
 // current position
 static Pose current_position;
 
@@ -30,54 +64,49 @@ static Orientation curr_or;
 // number of walls to check
 const int num_walls = 4;
 
-// array for storing bump data
-static bool bump_data[num_walls];
+// first position change status
+bool initial_pos = true;
+
 
 void tickInterrupt(ros::Time t) {
 }
 
-
 // position and orientation is updated
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
-    current_position.x = x;
-    current_position.y = y;
-    curr_or = o;
-
-    if (!((current_position.y == y) && 
-          (current_position.x == x))){
-            if (bump_data[0] == false){
-                ROS_INFO("[[%ld ns]] Wall not detected,"
-                         "correct update at (%d,%d)", 
-                          t.toNSec(), 
-                          moved_pos.x, 
-                          moved_pos.y);
-            } else{
-                ROS_WARN("[[%ld ns]] Moved through wall at"
-                         " (%d,%d)", 
-                          moved_pos.x, 
-                          moved_pos.y);
-            }
-            moved_pos.x = x;
-            moved_pos.y = y;
-        }
+    if (initial_pos){
+        current_position.x = x;
+        current_position.y = y;
+        curr_or = o;
+        initial_pos = false;
+    }
 }
 
-/*
- * Empty interrupt handlers beyond this point
- */
 
 void visitInterrupt(ros::Time t, int visits) {
 }
 
 
+// interrupt occurs when bumped() is called 
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
-    if (current_position.y == moved_pos.y &&
-        current_position.x == moved_pos.x){
-        bump_data[curr_or] = bumped;
-    } else{
-        for(int i = 0; i < num_walls; i++){
-            bump_data[i] = true;
+    if(!initial_pos){
+        if((x1 == current_position.x + x1_diff[curr_or]) &&
+           (x2 == current_position.x + x2_diff[curr_or]) &&
+           (y1 == current_position.y + y1_diff[curr_or]) &&
+           (y2 == current_position.y + y2_diff[curr_or])){
+            ROS_INFO("[[%ld ns]] Bump correct at [%d,%d] at orientation %s", 
+                    t.toNSec(), 
+                    current_position.x, 
+                    current_position.y, 
+                    or_string[curr_or].c_str());
+        } else {
+            ROS_WARN("VIOLATION: Incorrect bump at (%d,%d) at orientation %s"
+                     "(x1, y1), (x2, y2): (%d,%d), (%d,%d)", 
+                      current_position.x, 
+                      current_position.y,
+                      or_string[curr_or].c_str(),
+                      x1, y1, x2, y2);
         }
+        initial_pos = true;
     }
 }
 
