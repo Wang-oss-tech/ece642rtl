@@ -11,13 +11,11 @@
 #include <string>
 #include "monitor_interface.h"
 
-
 // inital status call for poseInterrupt
 static bool init_pos = false;
 
 // current position
 static Pose current_position;
-
 
 // interrupt called when position and orientation is updated
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
@@ -39,9 +37,11 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
                       x, y);
         }
     }
-    init_pos = true;
+    if (!init_pos) {
+        init_pos = true;
+        return;
+    }
 }
-
 
 /* Empty Interrupts*/
 void tickInterrupt(ros::Time t) {
