@@ -40,7 +40,7 @@ void tickInterrupt(ros::Time t) {
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     current_position.x = x;
     current_position.y = y;
-    curr_or = 0;
+    curr_or = o;
 
     if (!((current_position.y == y) && 
           (current_position.x == x))){
