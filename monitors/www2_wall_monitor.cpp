@@ -74,7 +74,7 @@ void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
         current_position.x == moved_pos.x){
         bumped_data[curr_or] = bumped;
     } else{
-        for(int i = 0; i < SIZE; i++){
+        for(int i = 0; i < num_walls; i++){
             bumped_data[i] = true;
         }
     }
