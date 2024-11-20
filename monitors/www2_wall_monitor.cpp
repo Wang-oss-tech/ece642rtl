@@ -42,8 +42,8 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     current_position.y = y;
     curr_or = o;
 
-    if (((current_position.y != y) || 
-          (current_position.x != x))){
+    if (!((current_position.y == moved_pos.y) && 
+          (current_position.x == moved_pos.x))){
             if (bump_data[o] == false){
                 ROS_INFO("[[%ld ns]] Wall not detected,"
                          "correct update at (%d,%d)", 
