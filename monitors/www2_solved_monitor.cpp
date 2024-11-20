@@ -25,7 +25,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     if (atEnd == true){
         at_ending = true;
-        ROS_WARN("atEnd returns true at (%d, %d)", x, y);
+        ROS_INFO("[[%ld ns]] atEnd returns true at (%d, %d)", x, y);
     }
 }
 
