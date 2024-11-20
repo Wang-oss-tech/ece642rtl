@@ -82,9 +82,9 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
             }
         }
     }
-    last_pos.x = x;
-    last_pos.y = y;
-    last_orientation = o;
+    prev_pos.x = x;
+    prev_pos.y = y;
+    prev_or = o;
 }
 
 /*
