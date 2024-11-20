@@ -37,10 +37,7 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
                       x, y);
         }
     }
-    if (!init_pos) {
-        init_pos = true;
-        return;
-    }
+    init_pos = true;
 }
 
 /* Empty Interrupts*/
