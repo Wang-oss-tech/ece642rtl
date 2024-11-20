@@ -59,8 +59,8 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
         update_initial = false;
     } else if (update_initial == false){
         if (!((prev_pos.y == y) && (prev_pos == y))){
-            if (x == prev_pos.x + x_diff[o] &&
-                y == prev_pos.y + y_diff[o] && 
+            if (x == prev_pos.x + x_difference[o] &&
+                y == prev_pos.y + y_difference[o] && 
                 prev_or == o){
                 ROS_WARN("Forward called sucessfully: \n Last Position: [%d], [%d]\n"
                          "Current Position: [%d], [%d]\n"
@@ -69,7 +69,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
                          prev_pos.y,
                          x,
                          y,
-                         orientation_val[0].c_str());
+                         or_string[o].c_str());
             } else {
                 ROS_WARN("VIOLATION: \n Last Position: [%d], [%d]\n"
                          "Current Position: [%d], [%d]\n"
@@ -78,7 +78,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
                          prev_pos.y,
                          x,
                          y,
-                         orientation_val[0].c_str());
+                         or_string[o].c_str());
             }
         }
     }
