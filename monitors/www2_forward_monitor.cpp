@@ -30,7 +30,7 @@ static std::map<int, int> x_difference {
 };
 
 // Difference in Y
-static std::map<int, int> x_difference {
+static std::map<int, int> y_difference {
     {NORTH, -1},
     {EAST, 0},
     {SOUTH, 1},
