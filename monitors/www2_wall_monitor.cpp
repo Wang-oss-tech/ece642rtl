@@ -61,14 +61,6 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     }
 }
 
-/*
- * Empty interrupt handlers beyond this point
- */
-
-void visitInterrupt(ros::Time t, int visits) {
-}
-
-
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
     if (current_position.y == moved_pos.y &&
         current_position.x == moved_pos.x){
@@ -79,6 +71,14 @@ void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
         }
     }
 }
+
+/*
+ * Empty interrupt handlers beyond this point
+ */
+
+void visitInterrupt(ros::Time t, int visits) {
+}
+
 
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
 }

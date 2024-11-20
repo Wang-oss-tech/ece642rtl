@@ -26,6 +26,11 @@ static Orientation curr_or;
 // previous orientation of turtle 
 static Orientation prev_or;
 
+
+/**
+ * Interrupt triggers when moveTurtle is called
+ */
+
 void tickInterrupt(ros::Time t) {
     if (tick_first == true) {
         if (bump_interrupt_cnt <= 1 && 
@@ -54,12 +59,14 @@ void tickInterrupt(ros::Time t) {
 }
 
 /*
- * Whenever the turtle moves, compare the current location
- * to the previous location and throw an invariant violation
- * if the locations differ by more than 1 in Manhattan Distance.
+ * position interrupt when position or orientation updates
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     pose_interrupt_cnt = pose_interrupt_cnt + 1;
+}
+
+void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
+    bump_interrupt_cnt = bump_interrupt_cnt + 1;
 }
 
 /*
@@ -70,10 +77,6 @@ void visitInterrupt(ros::Time t, int visits) {
     visit_interrupt_cnt = visit_interrupt_cnt + 1;
 }
 
-
-void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
-    bump_interrupt_cnt = bump_interrupt_cnt + 1;
-}
 
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
 }

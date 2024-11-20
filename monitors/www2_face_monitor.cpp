@@ -82,10 +82,6 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
 }
 
 
-void visitInterrupt(ros::Time t, int visits) {
-}
-
-
 // interrupt occurs when bumped() is called 
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
     if(!initial_pos){
@@ -108,6 +104,10 @@ void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
         }
         initial_pos = true;
     }
+}
+
+/* Empty Interrupts */
+void visitInterrupt(ros::Time t, int visits) {
 }
 
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
