@@ -12,22 +12,6 @@
 #include "monitor_interface.h"
 
 
-// turn orientation macros into strings
-static std::map<int, std::string> or_string {
-    {NORTH, "North"},
-    {EAST, "East"},
-    {SOUTH, "South"},
-    {WEST, "West"}
-};
-
-// Opposite illegal orientations
-static std::map<int, int> opp_orientations {
-    {NORTH, SOUTH}, 
-    {EAST, WEST}, 
-    {SOUTH, NORTH}, 
-    {WEST, EAST}
-};
-
 // tick called fist time
 static bool tick_first = false;
 
@@ -63,7 +47,7 @@ void tickInterrupt(ros::Time t) {
 		tick_first = true;
 	}
 
-    
+
     // reset counters
     pose_interrupt_cnt = 0;
     visit_interrupt_cnt = 0;

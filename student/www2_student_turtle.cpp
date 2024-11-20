@@ -232,13 +232,11 @@ std::pair<turtleMove, int> studentTurtleStep(bool bumped, int nw_or) {
     switch (currentState){
         // Tells turtle to move forard
         case STATE_MOVE_FORWARD:
-            //ROS_INFO("\n move forward called");
             updatePosition_turtle(targetDirection);     // move forward
             incrementVisits(currentX, currentY);        // update visit count
             currentVisitIndex = 0;
             return std::make_pair(MOVE_FORWARD, 0);
         case STATE_TURN_LEFT:
-            //ROS_INFO("\n left turn called");
             return std::make_pair(TURN_LEFT, numTurns);
         default:
             return std::make_pair(MOVE_FORWARD, 0);
