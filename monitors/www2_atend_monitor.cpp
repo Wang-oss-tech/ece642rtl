@@ -1,3 +1,11 @@
+/*
+ * Name: William Wang
+ * ID: www2
+ *
+ * For any call to bumped (x1,y1,x2,y2), the turtle shall be facing the 
+ * wall segment with endpoints (x1,y1) and (x2, y2)
+ */
+
 #include <map>
 #include <string>
 #include <mutex> // Include mutex library
